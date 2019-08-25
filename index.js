@@ -9,13 +9,12 @@ var Typer = {
 	
 	init: function() {
 		accessCountimer=setInterval(function(){Typer.updLstChr();},500); 
-		Typer.text="Hey there, I am trying JS for the first time and I think I suck at this.\n\nplease be gentle... \n\n\n- Red"
 
 
-//		$.get(Typer.file,function(data) {
-//			Typer.text=data;
+		$.get(Typer.file,function(data) {
+			Typer.text=data;
 			Typer.text = Typer.text.slice(0, Typer.text.length-1);
-//		});
+		});
 	},
  
 	content:function() {
@@ -96,7 +95,7 @@ function replaceUrls(text) {
 }
 
 Typer.speed=3;
-Typer.file="red.txt"; // add your own name here
+Typer.file="red.txt";
 Typer.init();
  
 var timer = setInterval("t();", 30);

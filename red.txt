@@ -1,6 +1,5 @@
 Hey man,
 
-This is my first JS stuffs.  I just copy/pasted the shits so I have no idea how it works for now but I'll read through it and
-figure it out.  Deal ?
+This is just a test, I intend on figuring out this terminal sauce.
 
  - Red
