@@ -1,7 +1,25 @@
 .menu {
 	padding: 0px;
-	text-align: center;
 	background: #0aac8c;
 	color: white;
 	font-size: 30px;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
 }
+
+
+.menu * {
+	padding: 10px
+}
+
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%
+}
+
+.sticky + article {
+	  padding-top: 102px;
+}
+
