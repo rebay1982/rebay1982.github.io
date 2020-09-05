@@ -9,29 +9,43 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i">
 		<link rel="stylesheet" href="styles/reset.css">
 
-		<link rel="stylesheet" href="styles/debug.css">
+		<link rel="stylesheet" href="styles/-debug.css">
 
 		<link rel="stylesheet" href="styles/article.css">
-		<link rel="stylesheet" href="styles/image.css">
+		<link rel="stylesheet" href="styles/dropdown.css">
 		<link rel="stylesheet" href="styles/header.css">
+		<link rel="stylesheet" href="styles/image.css">
 		<link rel="stylesheet" href="styles/menu.css">
+		<link rel="stylesheet" href="styles/scrollbar.css">
 
 	</head>
+
+	<style>
+	</style>
 
 	<body>
 
 		<div class="header">
-				<h1>REDBAY</h1>
+				<h1>REDBAY - Coding like it's 1985</h1>
 		</div>
 
 		<div class="menu" id="topMenu">
 			<br>
-			<a href="#home">Home</a>
+			<a href="https://rebay1982.github.io">Home</a>
 			<a href="#about">About</a>
-			<a href="#blog">Blog</a>
-			<a href="#github">Github</a>
+			<div class="dropdown">
+				Blog
+				<div class="dropdown-content">
+					<a href="#">6502</a>
+					<a href="#">CTF Write Ups</a>
+					<a href="#">Misc</a>
+				</div>
+			</div>
+			<a href="https://github.com/rebay1982">Github</a>
 			<br>
 		</div>
+
+
 
 		<article id="somethingsomething">
 			<h1><a href="#somethingsomething">The <em>something</em> is everything</a></h1>
