@@ -1,7 +1,7 @@
 article {
 	display: grid;
 	grid-template-columns: 1fr 0.5in [cnt_start] 1.25in 7.5in 1.25in [cnt_end] 0.5in 1fr;
-	height: 100vh;
+	/*height: 100vh;*/
 
 	background: #4C566A;
 	color: #ECEFF4;
@@ -19,6 +19,6 @@ article * {
 	}
 }
 
-/*
- * h2, p:not(:last-child) { margin-bottom: 2.4rem; }
- * */
+
+h2, p:not(:last-child) { margin-bottom: 2.4rem; }
+
