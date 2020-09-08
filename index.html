@@ -24,11 +24,11 @@
 
 	<script>
 		function loadHeader() {
-			var h = document.getElementsById("header");
+			var h = document.getElementById("header");
 
 			var file = h.getAttribute("include-file");
 			var xhttp = new XMLHttpRequest();
-			xttp.onreadystatechange = function() {
+			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					h.innerHTML = this.responseText;
 				}
