@@ -18,14 +18,13 @@
 		<link rel="stylesheet" href="styles/menu.css">
 		<link rel="stylesheet" href="styles/scrollbar.css">
 
+		<link rel="import" href="header.html" id="header-temp">
 	</head>
 
 	<style>
 	</style>
 
 	<body>
-
-		<link rel="import" href="header.html">
 		<div id="header">
 		</div>
 
@@ -83,6 +82,14 @@
 					menu.classList.remove("sticky");
 				}
 			}
+
+			var headerTemplate = document.getElementById('header-temp');
+			var header = headerTemplate.import
+
+			var clone = document.importNode(header.content, true);
+
+
+			document.getElementById('header').appendChild(clone);
 		</script>
 	</body>
 </html>
