@@ -29,6 +29,7 @@
 			var file = h.getAttribute("include-file");
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
+				// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/readyState
 				if (this.readyState == 4) {
 					h.innerHTML = this.responseText;
 					h.removeAttribute("include-file");
