@@ -17,15 +17,33 @@
 		<link rel="stylesheet" href="styles/image.css">
 		<link rel="stylesheet" href="styles/menu.css">
 		<link rel="stylesheet" href="styles/scrollbar.css">
-
-		<link rel="import" href="header.html" id="header-temp">
 	</head>
 
 	<style>
 	</style>
 
+	<script>
+		function loadHeader() {
+			var h = document.getElementsById("header");
+
+			var file = h.getAttribute("include-file");
+			var xhttp = new XMLHttpRequest();
+			xttp.onreadystatechange = function() {
+				if (this.readyState == 4) {
+					h.innerHTML = this.responseText;
+				}
+				h.removeAttribute("include-file");
+			}
+			xhttp.open("GET", file, true);
+			xhttp.send();
+
+			return;
+		}
+	</script>
+
+
 	<body>
-		<div id="header">
+		<div id="header" include-file="header.html">
 		</div>
 
 		<article id="somethingsomething">
@@ -65,6 +83,8 @@
 		</article>
 
 		<script>
+			loadHeader();
+
 			// When the user scrolls the page, execute myFunction
 			window.onscroll = function() {myFunction()};
 
@@ -82,14 +102,6 @@
 					menu.classList.remove("sticky");
 				}
 			}
-
-			var headerTemplate = document.getElementById('header-temp');
-			var header = headerTemplate.import
-
-			var clone = document.importNode(header.content, true);
-
-
-			document.getElementById('header').appendChild(clone);
 		</script>
 	</body>
 </html>
