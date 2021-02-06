@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Installing ROCm-OpenCL runtime on Arch Linux</title>
       <link>/misc/rocm-opencl-runtime-hashcat/</link>
@@ -16,6 +16,16 @@
       <guid>/misc/rocm-opencl-runtime-hashcat/</guid>
       <description>Introduction Greetings folks, this is going to be a short but usefull one. For those in a hurry, skip to the Installation section.
 Let&amp;rsquo;s start by setting context. What are we trying to solve here? We&amp;rsquo;re here because we want to &amp;ldquo;recover&amp;rdquo; some passwords using hashcat. We have been through the excellent Arch Linux Wiki documentation for installing hashcat, got everything installed, tried using it, and got an error that the currently installed OpenCL driver is unstable and cannot be used.</description>
+    </item>
+    
+    <item>
+      <title>Doctor - HackTheBox Write-up</title>
+      <link>/infosec/htb/htb-doctor/</link>
+      <pubDate>Mon, 23 Nov 2020 00:25:37 -0500</pubDate>
+      
+      <guid>/infosec/htb/htb-doctor/</guid>
+      <description>Intro Greetings, here is my write-up for the doctor HackTheBox machine. I hope you enjoy the read! If you&amp;rsquo;re in a hurry, skip to the TL;DR section at the end.
+Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some recent CVE exploitation that can be accomplished with off-the-shelf tools.</description>
     </item>
     
   </channel>

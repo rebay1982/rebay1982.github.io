@@ -4,8 +4,19 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2021-02-05T00:00:00+00:00</lastmod>
+    <lastmod>2021-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/infosec/</loc>
+    <lastmod>2021-02-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/infosec/htb/</loc>
+    <lastmod>2021-02-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -19,12 +30,12 @@
   </url>
   
   <url>
-    <loc>/about/</loc>
-    <priority>0</priority>
+    <loc>/infosec/htb/htb-doctor/</loc>
+    <lastmod>2020-11-23T00:25:37-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/infosec/</loc>
+    <loc>/about/</loc>
     <priority>0</priority>
   </url>
   

