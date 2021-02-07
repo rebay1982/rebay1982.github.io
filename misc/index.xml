@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Miscellaneous on The Red Bay</title>
-    <link>/misc/</link>
+    <link>https://theredbay.net/misc/</link>
     <description>Recent content in Miscellaneous on The Red Bay</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/misc/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/misc/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Installing ROCm-OpenCL runtime on Arch Linux</title>
-      <link>/misc/rocm-opencl-runtime-hashcat/</link>
+      <link>https://theredbay.net/misc/rocm-opencl-runtime-hashcat/</link>
       <pubDate>Fri, 05 Feb 2021 00:00:00 +0000</pubDate>
       
-      <guid>/misc/rocm-opencl-runtime-hashcat/</guid>
+      <guid>https://theredbay.net/misc/rocm-opencl-runtime-hashcat/</guid>
       <description>Introduction Greetings folks, this is going to be a short but usefull one. For those in a hurry, skip to the Installation section.
 Let&amp;rsquo;s start by setting context. What are we trying to solve here? We&amp;rsquo;re here because we want to &amp;ldquo;recover&amp;rdquo; some passwords using hashcat. We have been through the excellent Arch Linux Wiki documentation for installing hashcat, got everything installed, tried using it, and got an error that the currently installed OpenCL driver is unstable and cannot be used.</description>
     </item>

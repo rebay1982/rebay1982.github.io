@@ -3,48 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/</loc>
+    <loc>https://theredbay.net/</loc>
     <lastmod>2021-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/infosec/</loc>
+    <loc>https://theredbay.net/infosec/</loc>
     <lastmod>2021-02-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/infosec/htb/</loc>
+    <loc>https://theredbay.net/infosec/htb/</loc>
     <lastmod>2021-02-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/misc/rocm-opencl-runtime-hashcat/</loc>
+    <loc>https://theredbay.net/misc/rocm-opencl-runtime-hashcat/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/misc/</loc>
+    <loc>https://theredbay.net/misc/</loc>
     <lastmod>2021-02-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/infosec/htb/htb-doctor/</loc>
+    <loc>https://theredbay.net/infosec/htb/htb-doctor/</loc>
     <lastmod>2020-11-23T00:25:37-05:00</lastmod>
   </url>
   
   <url>
-    <loc>/about/</loc>
+    <loc>https://theredbay.net/about/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://theredbay.net/categories/</loc>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://theredbay.net/tags/</loc>
   </url>
   
 </urlset>

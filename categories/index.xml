@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on The Red Bay</title>
-    <link>/categories/</link>
+    <link>https://theredbay.net/categories/</link>
     <description>Recent content in Categories on The Red Bay</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Reda Baydoun</copyright><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Reda Baydoun</copyright><atom:link href="https://theredbay.net/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
