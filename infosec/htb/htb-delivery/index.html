@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Delivery - HackTheBox Write-up :: The Red Bay</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Intro Hello all and welcome to my write-up for the delivery HackTheBox machine. For those looking for a quick step-by-step guide, please skip to the TL;DR section at the end.
+delivery is an easy machine, even by HackTheBox standards. There isn&amp;rsquo;t much more to it than reading and poking around but it still teaches us some basics enumeration, configuration and some password cracking with hashcat.
+First things first. Let&amp;rsquo;s add the delivery." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-delivery/" />
+
+
+
+
+<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
+
+  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="redbay" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Delivery - HackTheBox Write-up">
+<meta property="og:description" content="Write-up for the &#39;Delivery&#39; box from HackTheBox.eu" />
+<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-delivery/" />
+<meta property="og:site_name" content="The Red Bay" />
+
+  
+    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-03-20 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    The Red Bay
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/about">About</a></li>
+              
+            
+              
+                <li><a href="http://github.com/rebay1982">GitHub</a></li>
+              
+            
+              
+                <li><a href="/infosec">Infosec</a></li>
+              
+            
+              
+                <li><a href="/misc">Misc</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="http://github.com/rebay1982">GitHub</a></li>
+      
+    
+      
+        <li><a href="/infosec">Infosec</a></li>
+      
+    
+      
+        <li><a href="/misc">Misc</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://theredbay.net/infosec/htb/htb-delivery/">Delivery - HackTheBox Write-up</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-03-20 
+      </span>
+    
+    
+    <span class="post-author">:: redbay</span>
+    
+  </div>
+
+  
+
+  
+
+  
+    <div class="table-of-contents">
+      <h2>
+        
+          Table of Contents
+        
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#initial-recon">Initial Recon</a></li>
+    <li><a href="#user">User</a></li>
+    <li><a href="#root">Root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Hello all and welcome to my write-up for the <code>delivery</code> HackTheBox machine. For those looking for a
+quick step-by-step guide, please skip to the <a href="#tldr">TL;DR</a> section at the end.</p>
+<p><img src="/img/htb-delivery/infocard.png" alt=""></p>
+<p><code>delivery</code> is an easy machine, even by HackTheBox standards. There isn&rsquo;t much more to it than
+reading and poking around but it still teaches us some basics enumeration, configuration and
+some password cracking with <code>hashcat</code>.</p>
+<p>First things first. Let&rsquo;s add the <code>delivery.htb</code> entry to our hosts file, point that to
+<code>10.10.10.222</code>, and get to work.</p>
+<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As with any machine, let&rsquo;s start by running an <code>nmap</code> scan to see what ports are open on the
+target machine.</p>
+<pre><code>$ sudo nmap -sV -T4 -A -p- 10.10.10.222
+
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-06 08:17 EST
+Nmap scan report for delivery.htb (10.10.10.222)
+Host is up (0.030s latency).
+Not shown: 65532 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey:
+|   2048 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 (RSA)
+|   256 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 (ECDSA)
+|_  256 b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c (ED25519)
+80/tcp   open  http    nginx 1.14.2
+|_http-server-header: nginx/1.14.2
+|_http-title: Welcome
+8065/tcp open  unknown
+| fingerprint-strings:
+|   GenericLines, Help, RTSPRequest, SSLSessionReq, TerminalServerCookie:
+|     HTTP/1.1 400 Bad Request
+|     Content-Type: text/plain; charset=utf-8
+|     Connection: close
+|     Request
+|   GetRequest:
+|     HTTP/1.0 200 OK
+|     Accept-Ranges: bytes
+|     Cache-Control: no-cache, max-age=31556926, public
+|     Content-Length: 3108
+|     Content-Security-Policy: frame-ancestors 'self'; script-src 'self' cdn.rudderlabs.com
+|     Content-Type: text/html; charset=utf-8
+|     Last-Modified: Sat, 06 Mar 2021 09:36:48 GMT
+|     X-Frame-Options: SAMEORIGIN
+|     X-Request-Id: 716993bnstdu3cu87b9dsch7bh
+|     X-Version-Id: 5.30.0.5.30.1.57fb31b889bf81d99d8af8176d4bbaaa.false
+|     Date: Sat, 06 Mar 2021 13:19:54 GMT
+|     &lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0&quot;&gt;&lt;meta name=&quot;robots&quot; content=&quot;noindex, nofollow&quot;&gt;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&lt;title&gt;Mattermost&lt;/title&gt;&lt;meta name=&quot;mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;&lt;meta name=&quot;application-name&quot; content=&quot;Mattermost&quot;&gt;&lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no&quot;&gt;&lt;link re
+|   HTTPOptions:
+|     HTTP/1.0 405 Method Not Allowed
+|     Date: Sat, 06 Mar 2021 13:19:54 GMT
+|_    Content-Length: 0
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+   28.75 ms delivery.htb (10.10.10.222)
+
+[ ... Voluntarily leaving out unnecessary information ... ]
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 118.89 seconds
+</code></pre><p>We can see that ports <code>22</code>, <code>80</code>, and <code>8065</code> are open.</p>
+<ul>
+<li>Port <code>22</code> is simply SSH. This has high potential for being our foot hold on the machine but we&rsquo;ll
+get to that later.</li>
+<li>Port <code>80</code> is the standard HTTP port and we gather that <a href="https://www.nginx.com/"><code>nginx</code></a> is
+serving it from the <code>nmap</code> scan.</li>
+<li>Port <code>8065</code> is unknown and not common but we can see that it&rsquo;s answering to <code>GET</code> HTTP requests.
+The title <code>&lt;title&gt;Mattermost&lt;/title&gt;</code> along with a quick web search reveal
+<a href="https://mattermost.com/">Mattermost</a> - an open source collaboration project.</li>
+</ul>
+<p>Now that we have a list of target ports, it&rsquo;s time for some visual exploration! Let&rsquo;s pull out our
+favorite web browser and go web surfing!</p>
+<h3 id="web-surfing">Web Surfing<a href="#web-surfing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Pointing our web browser to <a href="http://delivery.htb/">http://delivery.htb/</a> brings up a page instructing us to check out the
+help desk for an account. Clicking on &ldquo;Contact Us&rdquo; provides us the links and information to do just
+that. The link to the help desk is <code>helpdesk.delivery.htb</code> and there&rsquo;s also mention of the
+MatterMost server, available at <code>delivery.htb:8065</code>.</p>
+<p><img src="/img/htb-delivery/contact-us.png" alt=""></p>
+<p>Let&rsquo;s head on to the help desk to open up an account and see where that leads us.</p>
+<h3 id="help-desk">Help Desk<a href="#help-desk" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Here&rsquo;s what the support center looks like.</p>
+<p><img src="/img/htb-delivery/helpdesk.png" alt=""></p>
+<p>There isn&rsquo;t much here besides an option to open a new ticket and an option for checking a ticket&rsquo;s
+status. Account creation it is then.</p>
+<p><img src="/img/htb-delivery/newticket.png" alt=""></p>
+<p>Nothing too complicated up until now. We&rsquo;ve been granted a <code>@delivery.htb</code> address, a requirement
+to access the MatterMost server on port <code>8065</code>. We&rsquo;re also instructed that if we want add extra
+information to the ticket, we can simply email the <code>@delivery.htb</code> address.</p>
+<p>Viewing the ticket through &ldquo;Check Ticket Status&rdquo; is also possible by providing the email we used to
+create it along with the ticket number. Let&rsquo;s leave it for now and concentrate on getting the
+MatterMost account setup.</p>
+<h3 id="mattermost">MatterMost<a href="#mattermost" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Navigating to <code>delivery.htb:8065</code> allows us to log into the MatterMost server but we must first
+sign up for an account. Now, if we follow the instructions, we should be providing our new
+<code>@delivery.htb</code> email address so let&rsquo;s go ahead and fill in the form.</p>
+<p><img src="/img/htb-delivery/mm-signup.png" alt=""></p>
+<p>A validation email gets sent to the <code>@delivery.htb</code> address once the registration is complete. As
+previously stated, emails sent to the <code>@delivery.htb</code> address will appear as extra information in
+the ticket. After pulling it up, we see a new entry in it with the registration information and
+a link to verify our email address. Here&rsquo;s what it should look like:</p>
+<p><img src="/img/htb-delivery/mm-email.png" alt=""></p>
+<p>Use the link to verify the account and sign into the MatterMost server. We are then presented with
+a couple of prompts that will eventually lead us into joining the &ldquo;Internal&rdquo; channel.</p>
+<p><img src="/img/htb-delivery/mm-internal.png" alt=""></p>
+<p>Right off the bat, we see a message from <code>root</code> providing credentials to the server. If we remember
+from the <a href="#initial-recon">recon</a> step, the SSH port is open on this box so we can give these
+credentials a shot. But first, let&rsquo;s go poke around a bit more. Looking at the &ldquo;about&rdquo; section of
+any application is a good habit to develop. Insights on what the application is built with can be
+gleaned. Here&rsquo;s the about secion for MatterMost.</p>
+<p><img src="/img/htb-delivery/mm-about.png" alt=""></p>
+<p>Awesome, we now know we&rsquo;re dealing with version <code>5.30.1</code>. This information can be useful if we are
+to go dig for vulnerabilities on Google. Another interesting fact is that the underlying database
+is <code>mysql</code>. This too is good information to keep in the back of our minds as we go forward.</p>
+<p>Anyway, back to the credentials.</p>
+<pre><code>$ ssh maildeliverer@10.10.10.222
+maildeliverer@10.10.10.222's password:
+Linux Delivery 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  5 06:09:50 2021 from 10.10.14.5
+maildeliverer@Delivery:~$
+</code></pre><p>Ok, that was embarassingly easy. We were able to leverage the credentials <code>root</code> gave out in the
+Internal channel to login to the server. It won&rsquo;t always be this easy but this can actually happen
+if a company&rsquo;s password sharing hygiene is bad. Now that we&rsquo;ve got our foothold, let&rsquo;s go digging
+for that user flag.</p>
+<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Being already logged it, let&rsquo;s figure out who <code>maildeliverer</code> actually is.</p>
+<pre><code>maildeliverer@Delivery:~$ ls -la
+total 28
+drwxr-xr-x 3 maildeliverer maildeliverer 4096 Jan  3 23:12 .
+drwxr-xr-x 3 root          root          4096 Dec 26 09:01 ..
+lrwxrwxrwx 1 root          root             9 Dec 28 07:04 .bash_history -&gt; /dev/null
+-rw-r--r-- 1 maildeliverer maildeliverer  220 Dec 26 09:01 .bash_logout
+-rw-r--r-- 1 maildeliverer maildeliverer 3526 Dec 26 09:01 .bashrc
+drwx------ 3 maildeliverer maildeliverer 4096 Dec 28 06:58 .gnupg
+-rw-r--r-- 1 maildeliverer maildeliverer  807 Dec 26 09:01 .profile
+-r-------- 1 maildeliverer maildeliverer   33 Mar 21 11:22 user.txt
+maildeliverer@Delivery:~$
+</code></pre><p>The <code>user.txt</code> file is right there and <code>maildeliverer</code> is its owner. <code>cat</code>ing the contents provides
+us the user flag.</p>
+<pre><code>maildeliverer@Delivery:~$ cat user.txt
+3b9e171484b660251a906fb574c136f2
+</code></pre><p>Up until now, no real complexity. Just a painful (but realistic) sign up process. A take away would
+be to never share credentials in a messaging application but that already resonates as a big no no
+with anyone remotely conscious about security.</p>
+<p>Next up, the <code>root</code> flag.</p>
+<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We can gather from the about section that MatterMost uses MySQL as its database engine. For anyone
+having done any form of development, applications are usually configured to connect to the database
+using a connection string. Often times this is done through a configuration file and not all users
+should have access to it.</p>
+<p>Armed with this knowledge, let&rsquo;s go looking for some configurations. Digging around in the
+MatterMost installation directory allows us to quickly stumble upon the configuration file. We can
+find it here <code>/opt/mattermost/config</code>. Since we&rsquo;re looking for some <code>mysql</code> credentials, throwing a
+<code>grep</code> command against it sounds like a good idea.</p>
+<pre><code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json  | grep -B5 -A5 -i mysql
+        &quot;DesktopMinVersion&quot;: &quot;&quot;,
+        &quot;IosLatestVersion&quot;: &quot;&quot;,
+        &quot;IosMinVersion&quot;: &quot;&quot;
+    },
+    &quot;SqlSettings&quot;: {
+        &quot;DriverName&quot;: &quot;mysql&quot;,
+        &quot;DataSource&quot;: &quot;mmuser:Crack_The_MM_Admin_PW@tcp(127.0.0.1:3306)/mattermost?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s&quot;,
+        &quot;DataSourceReplicas&quot;: [],
+        &quot;DataSourceSearchReplicas&quot;: [],
+        &quot;MaxIdleConns&quot;: 20,
+        &quot;ConnMaxLifetimeMilliseconds&quot;: 3600000,
+maildeliverer@Delivery:/opt/mattermost/config$
+</code></pre><p>Bingo, our hunch was correct. The part of the connection string that we&rsquo;re interested in is
+<code>mmuser:Crack_The_MM_Admin_PW</code>. This is the user name and the password the application uses to
+connect to the local MySQL DB server. Also, from the connection string, we see that the database
+the MatterMost application uses is <code>mattermost</code>.</p>
+<p>The password also hints at something. <code>Crack_The_MM_Admin_PW</code> is a pretty straight forward clue
+of what to do next. For now, our next step is to connect to <code>mysql</code>. All the client tools are
+actually already installed on the machine so we can use them right out of the box.</p>
+<p>We won&rsquo;t go over how to use the <code>mysql</code> command but a quick <code>--help</code> flag or a Google search can
+help us out.</p>
+<p>Let&rsquo;s go ahead and connect to it.</p>
+<pre><code>maildeliverer@Delivery:/opt/mattermost/config$ mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 86717
+Server version: 10.3.27-MariaDB-0+deb10u1 Debian 10
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]&gt; use mattermost
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [mattermost]&gt;
+</code></pre><p>What we can guess is that we&rsquo;re looking for a Users table of some sorts that contains (maybe) the
+user credentials in it. MySQL provides commands to list all tables it has in the database we&rsquo;re
+connected to. In this case, the database is <code>mattermost</code> &ndash; the reason why we typed
+<code>use mattermost</code>.</p>
+<p>Here&rsquo;s the output of the <code>show tables;</code> command.</p>
+<pre><code>MariaDB [mattermost]&gt; show tables;
++------------------------+
+| Tables_in_mattermost   |
++------------------------+
+| Audits                 |
+| Bots                   |
+| ChannelMemberHistory   |
+
+...
+
+| UserGroups             |
+| UserTermsOfService     |
+| Users                  |
++------------------------+
+46 rows in set (0.001 sec)
+</code></pre><p>The output is shortened to make it fit a bit better and as expected, there actually is a <code>Users</code>
+table. All we have to do now is list the entries of that table by leveraging some basic SQL.
+For those unfamiliar with SQL, you can find more information <a href="https://www.w3schools.com/sql/">here</a>.</p>
+<pre><code>MariaDB [mattermost]&gt; select * from Users \G;
+</code></pre><p>The tailing <code>\G</code> is for formatting purposes. We can narrow down the list to the user we&rsquo;re
+interested in, <code>root</code>.</p>
+<pre><code>*************************** 5. row ***************************
+                Id: dijg7mcf4tf3xrgxi5ntqdefma
+          CreateAt: 1608992692294
+          UpdateAt: 1609157893370
+          DeleteAt: 0
+          Username: root
+          Password: $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+          AuthData: NULL
+       AuthService:
+             Email: root@delivery.htb
+     EmailVerified: 1
+          Nickname:
+         FirstName:
+          LastName:
+          Position:
+             Roles: system_admin system_user
+    AllowMarketing: 1
+             Props: {}
+       NotifyProps: {&quot;channel&quot;:&quot;true&quot;,&quot;comments&quot;:&quot;never&quot;,&quot;desktop&quot;:&quot;mention&quot;,&quot;desktop_sound&quot;:&quot;true&quot;,&quot;email&quot;:&quot;true&quot;,&quot;first_name&quot;:&quot;false&quot;,&quot;mention_keys&quot;:&quot;&quot;,&quot;push&quot;:&quot;mention&quot;,&quot;push_status&quot;:&quot;away&quot;}
+LastPasswordUpdate: 1609157893370
+ LastPictureUpdate: 0
+    FailedAttempts: 0
+            Locale: en
+          Timezone: {&quot;automaticTimezone&quot;:&quot;Africa/Abidjan&quot;,&quot;manualTimezone&quot;:&quot;&quot;,&quot;useAutomaticTimezone&quot;:&quot;true&quot;}
+         MfaActive: 0
+         MfaSecret:
+</code></pre><p>This is great, we have a hash in the <code>password</code> field for the <code>root</code> user &ndash; we&rsquo;re making good
+progress here. This is what will require cracking. A hash is the output of a hashing function.
+These functions take a string of text as input and produce a fixed length output, regardless of
+the original text length. They require cracking because this operation isn&rsquo;t reversible. More about
+cryptographic hash functions can be found
+<a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">here</a>.</p>
+<p>If we remember the original post from the <code>root</code> user in the MatterMost Internal channel, there&rsquo;s a
+request to stop using the same password or variants of <code>PleaseSubscribe!</code> along with a hint that
+the password isn&rsquo;t in the RockYou DB but special &ldquo;rules&rdquo; using <code>hashcat</code> can be used to crack them.
+This makes the next steps super obvious. We&rsquo;re going to be using <code>hashcat</code> to crack the password.
+Since it&rsquo;s a variation of <code>PleaseSusbcribe!</code>, we can think of using custom rules to brute force it.
+The custom rule we&rsquo;ll be looking at will look something like appended characters to the
+<code>PleaseSubscribe!</code> string.</p>
+<p>Before cracking anything with <code>hashcat</code>, we need to identify the type of hash we&rsquo;re dealing with.
+There exists a bunch of tools online to do just that and you can pump a hash into it and the tool
+will tell you what type of hash it is.</p>
+<p>The hash we got from the MySQL database is a <a href="https://en.wikipedia.org/wiki/Bcrypt">BCrypt</a> hash.
+Using <code>hashcat</code> we can do a brute force an attack on the hash that we stored in a <code>hash.txt</code> file.</p>
+<pre><code>hashcat -a 3 -m 3200 hash.txt PleaseSubscribe!?a?a
+hashcat (v6.1.1) starting...
+
+OpenCL API (OpenCL 2.1 AMD-APP (3188.4)) - Platform #1 [Advanced Micro
+Devices, Inc.]
+=====================================================================================
+* Device #1: Ellesmere, 8128/8192 MB (6745 MB allocatable), 36MCU
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 72
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+
+Applicable optimizers applied:
+* Zero-Byte
+* Single-Hash
+* Single-Salt
+* Brute-Force
+
+Watchdog: Temperature abort trigger set to 90c
+
+Host memory required for this attack: 143 MB
+
+$2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO:PleaseSubscribe!21
+
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: bcrypt $2*$, Blowfish (Unix)
+Hash.Target......: $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v...JwgjjO
+Time.Started.....: Sun Mar 14 17:36:03 2021 (2 secs)
+Time.Estimated...: Sun Mar 14 17:36:05 2021 (0 secs)
+Guess.Mask.......: PleaseSubscribe!?a?a [18]
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:      135 H/s (7.81ms) @ Accel:1 Loops:4 Thr:8 Vec:1
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 288/9025 (3.19%)
+Rejected.........: 0/288 (0.00%)
+Restore.Point....: 0/9025 (0.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:1020-1024
+Candidates.#1....: PleaseSubscribe!!! -&gt; PleaseSubscribe!*_
+Hardware.Mon.#1..: Util:  0% Core:1110MHz Mem:2250MHz Bus:16
+
+Started: Sun Mar 14 17:35:59 2021
+Stopped: Sun Mar 14 17:36:07 2021
+</code></pre><p>Ding ding ding ding ding! We were successful in cracking the password &ndash; <code>PleaseSubscribe!21</code>.
+Without going into too much detail of what the parameters actually are, let&rsquo;s concentrate on the
+last one. An explanation for the others can be found using <code>hashcat</code>&rsquo;s <code>--help</code> flag.</p>
+<p>The last parameter is the actual pattern to use for the brute force. We provide the prefix along
+with a placeholder for alphanumeric characters (<code>?a</code>). This instructs <code>hashcat</code> to try
+<code>PleaseSubscribe!</code> followed by two alphanumeric characters. It will cycles through all possibilities
+for each until it either successfully matches the hash or exhausts all possibilities.</p>
+<p>Not shown here is the actual &ldquo;try&rdquo; of <code>PleaseSubscribe!?a</code> that didn&rsquo;t yield any results. The next
+logical step was <code>?a?a</code> as using something like <code>PleaseSubscribe!?a?a?a?a</code> would cycle through four
+character combinations only, skipping over two character combinations.</p>
+<p>In any case, we now have <code>root</code>&rsquo;s password: <code>PleaseSubscribe!21</code>. Still logged into the SSH session
+for the <code>maildeliverer</code> user, we can try to escalate privileges using <code>su</code></p>
+<pre><code>maildeliverer@Delivery:~$ su
+Password:
+root@Delivery:/home/maildeliverer# cat /root/root.txt
+c6b16aa7f637fc4e61444854fac70874
+</code></pre><p>And there you have it, as simple as that!</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><code>delivery</code> seems to have been geared towards new comers as it doesn&rsquo;t involve any exploitation and
+doesn&rsquo;t require extensive knowledge in penetration testing. It nicely guides the user through the
+steps to get an account created and gives out obvious clues on what to do next. It doesn&rsquo;t leave
+the individual stranded or discouraged so it is well done in that sense. This box also introduces
+the basic concepts of getting access to a system, finding credentials stored in configuration files,
+and using common tools to recover password from hashes.</p>
+<p>Thanks for sticking around and as usual, hope you enjoyed the read!
+Until next time, happy hacking!</p>
+<ul>
+<li>redbay</li>
+</ul>
+<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Add <code>10.10.10.222 delivery.htb</code> to your hosts file.</li>
+<li>Suft to <code>http://delivery.htb</code> and click on <code>Contact Us</code>.</li>
+<li>Follow on screen instructions to create an account on the MatterMost service.</li>
+<li>Once in the MatterMost server, take note of the messages <code>root</code> left in the Internal channel.</li>
+</ol>
+<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Use the credentials <code>root</code> gave out in MatterMost to SSH into the machine: <code>ssh maildeliverer@10.10.10.222</code> and use <code>Youve_G0t_Mail!</code> as password.</li>
+<li><code>cat user.txt</code> &ndash;&gt;  <code>3b9e171484b660251a906fb574c136f2</code></li>
+</ol>
+<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Get MySQL password from the MatterMost config: <code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json | grep -B5 -A5 -i mysql</code></li>
+<li>Log into MySQL: <code> mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;</code></li>
+<li>Connect to MatterMost DB: <code>use mattermost</code></li>
+<li>Dump user databse and find root user hash: <code>select * from Users;</code> &ndash;&gt; <code>2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO</code></li>
+<li>Crack it with <code>hashcat -a 3 -m 3200 &lt;hash.txt&gt; PleaseSubscribe!?a?a</code> &ndash;&gt; <code>PleaseSubscribe!21</code></li>
+<li>Use cracked password to <code>su</code> as <code>root</code></li>
+<li><code>cat /root/root.txt</code> &ndash;&gt; <code>c6b16aa7f637fc4e61444854fac70874</code></li>
+</ol>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Reda Baydoun</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://theredbay.net/assets/main.js"></script>
+<script src="https://theredbay.net/assets/prism.js"></script>
+
+
+  <script src="https://theredbay.net/assets/languageSelector.js"></script>
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

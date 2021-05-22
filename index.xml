@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Delivery - HackTheBox Write-up</title>
+      <link>https://theredbay.net/infosec/htb/htb-delivery/</link>
+      <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://theredbay.net/infosec/htb/htb-delivery/</guid>
+      <description>Intro Hello all and welcome to my write-up for the delivery HackTheBox machine. For those looking for a quick step-by-step guide, please skip to the TL;DR section at the end.
+delivery is an easy machine, even by HackTheBox standards. There isn&amp;rsquo;t much more to it than reading and poking around but it still teaches us some basics enumeration, configuration and some password cracking with hashcat.
+First things first. Let&amp;rsquo;s add the delivery.</description>
+    </item>
+    
     <item>
       <title>Installing ROCm-OpenCL runtime on Arch Linux</title>
       <link>https://theredbay.net/misc/rocm-opencl-runtime-hashcat/</link>
