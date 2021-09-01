@@ -3,12 +3,15 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://theredbay.net/</loc>
-    <lastmod>2021-03-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-09-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url><url>
     <loc>https://theredbay.net/infosec/</loc>
-    <lastmod>2021-03-20T00:00:00+00:00</lastmod>
+    <lastmod>2021-09-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url><url>
+    <loc>https://theredbay.net/infosec/htb/htb-spectra/</loc>
+    <lastmod>2021-09-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://theredbay.net/infosec/htb/htb-delivery/</loc>
     <lastmod>2021-03-20T00:00:00+00:00</lastmod>

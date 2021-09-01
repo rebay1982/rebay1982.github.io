@@ -9,6 +9,16 @@
     <copyright>Reda Baydoun</copyright>
     <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/infosec/htb/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Spectra - HackTheBox Write-up</title>
+      <link>https://theredbay.net/infosec/htb/htb-spectra/</link>
+      <pubDate>Wed, 01 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://theredbay.net/infosec/htb/htb-spectra/</guid>
+      <description>Intro Hello all, here&amp;rsquo;s an other one for your entertainment purposes! Today, we will be looking at spectra &amp;ndash; A bit late since this box was solved back in May of 2021 but I didn&amp;rsquo;t get to the walkthrough part until now.
+The information card states that this is an easy machine and was released at the beginning of the year. One difference from others that we&amp;rsquo;ve looked at up until now is that the OS states Other.</description>
+    </item>
+    
+    <item>
       <title>Delivery - HackTheBox Write-up</title>
       <link>https://theredbay.net/infosec/htb/htb-delivery/</link>
       <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
