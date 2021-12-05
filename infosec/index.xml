@@ -7,6 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Wed, 01 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/infosec/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/infosec/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Journey to CISSP</title>
+      <link>https://theredbay.net/infosec/cissp/</link>
+      <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://theredbay.net/infosec/cissp/</guid>
+      <description>Intro Well, it&amp;rsquo;s finally done. Over the holiday period in 2020, I vowed that 2021 would be the year where I solidified my credentials in cyber security. Move from a passive &amp;ldquo;I&amp;rsquo;m interested in security&amp;rdquo; to walking the walk. The main objective is to eventually make a move into a cyber security centered role. I think there are multiple ways of achieving this and they all require different levels of efforts.</description>
+    </item>
+    
   </channel>
 </rss>

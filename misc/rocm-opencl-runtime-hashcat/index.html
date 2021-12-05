@@ -247,7 +247,7 @@ In my specific case, <code>z3</code> and  <code>ninja</code> were missing.</p>
 <h2 id="testing">Testing<a href="#testing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>We are now able to use <code>clinfo</code> to list information related to the OpenCL installation. It will look
 something like this:</p>
-<pre><code>$ clinfo
+<pre tabindex="0"><code>$ clinfo
 Number of platforms                               1
   Platform Name                                   AMD Accelerated Parallel Processing
   Platform Vendor                                 Advanced Micro Devices, Inc.
@@ -270,7 +270,7 @@ Number of devices                                 1
 ...
 </code></pre><p>Now that the installation is validated, let&rsquo;s give <code>hashcat</code> a spin and see if it still complains
 about unstable drivers and implementations.</p>
-<pre><code>$ hashcat -mXXXX hashes.txt worldlist.txt
+<pre tabindex="0"><code>$ hashcat -mXXXX hashes.txt worldlist.txt
 hashcat (v6.1.1) starting...
 
 OpenCL API (OpenCL 2.0 AMD-APP.dbg (3212.0)) - Platform #1 [Advanced Micro Devices, Inc.]

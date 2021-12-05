@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>The Journey to CISSP :: The Red Bay</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Intro Well, it&amp;rsquo;s finally done. Over the holiday period in 2020, I vowed that 2021 would be the year where I solidified my credentials in cyber security. Move from a passive &amp;ldquo;I&amp;rsquo;m interested in security&amp;rdquo; to walking the walk. The main objective is to eventually make a move into a cyber security centered role. I think there are multiple ways of achieving this and they all require different levels of efforts." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://theredbay.net/infosec/cissp/" />
+
+
+
+
+<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
+
+  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="redbay" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The Journey to CISSP">
+<meta property="og:description" content="In this article, I will delve into the journey that led me to pass the ISC2 CISSP certification exam." />
+<meta property="og:url" content="https://theredbay.net/infosec/cissp/" />
+<meta property="og:site_name" content="The Red Bay" />
+
+  
+    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-11-13 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    The Red Bay
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/about">About</a></li>
+              
+            
+              
+                <li><a href="http://github.com/rebay1982">GitHub</a></li>
+              
+            
+              
+                <li><a href="/infosec">Infosec</a></li>
+              
+            
+              
+                <li><a href="/misc">Misc</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="http://github.com/rebay1982">GitHub</a></li>
+      
+    
+      
+        <li><a href="/infosec">Infosec</a></li>
+      
+    
+      
+        <li><a href="/misc">Misc</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://theredbay.net/infosec/cissp/">The Journey to CISSP</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-11-13 
+      </span>
+    
+    
+    <span class="post-author">:: redbay</span>
+    
+  </div>
+
+  
+
+  
+
+  
+    <div class="table-of-contents">
+      <h2>
+        
+          Table of Contents
+        
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cissp-what-is-it">CISSP. What is it?</a></li>
+    <li><a href="#getting-certified">Getting Certified</a></li>
+    <li><a href="#how">How</a></li>
+    <li><a href="#the-exam">The Exam</a></li>
+    <li><a href="#the-result">The Result</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Well, it&rsquo;s finally done. Over the holiday period in 2020, I vowed that 2021 would be the year where
+I solidified my credentials in cyber security. Move from a passive &ldquo;I&rsquo;m interested in security&rdquo; to
+walking the walk. The main objective is to eventually make a move into a cyber security centered
+role. I think there are multiple ways of achieving this and they all require different levels of
+efforts. This blog is one of them. I learned so much from reading articles and attending security
+conferences over the past few years. Writing walkthoughs for challenges and HackTheBox machines
+are a way for me to give back on the knowledge sharing front. It also serves as a reminder on how
+I solved them too.</p>
+<p>Another way is to actually get certified from a leading authority on cyber security certifications
+such as ISC2. For context, I&rsquo;m a member of the security champion chapter where I work. This group is
+overseen by the security organization of the company and invites individual contributors and
+managers who have an interest in security to participate in security activities. Whether it&rsquo;s
+attending informative presentations, enforcing securty policies, or ensuring static analysis scans
+are in place, the goal is to make the software development organization sensitive to security. Have
+security be a part of the design phase instead of just implementing it as an after thought. Anyway,
+the security group were organizing a CISSP study group for 2021 to get some of their members
+certified. They also extended the invitation to security champions from the rest of the
+organization. I saw this as a great opportunity and just jumped on it without really knowing what
+I was getting in to.</p>
+<h2 id="cissp-what-is-it">CISSP. What is it?<a href="#cissp-what-is-it" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>So, what is the CISSP certification? It stands for Certified Information System Security
+Professional. This is one of the oldest and most saught after cyber security focused certifications,
+seeing its inception in the late 90s by the ISC2 organization. It is regularily regarded as a
+&ldquo;mile wide, inch deep&rdquo; type of certification. It will attest that you have a basic understanding of
+eight security domains. None of them are terribly technical but are more oriented towards process,
+standards, implementing security controls, and overseeing their success. Now, this doesn&rsquo;t mean
+there aren&rsquo;t any technical aspects to it. You will need to understand a good number of technical
+details about network protocols, encryption algorithms, physical controls, and more. You need to
+understand these technical details to make the best decisions regarding their implementation and
+validating their efficacy in securing the assets you&rsquo;re tyring to protect.</p>
+<p>For more details, I highly suggest checking out the official
+<a href="https://www.isc2.org/Certifications/CISSP">ISC2 CISSP</a> site. Do go over the
+<a href="https://www.isc2.org/Certifications/CISSP#pills-1">&ldquo;Who Earns the CISSP&rdquo;</a> to see if it&rsquo;s the right
+choice for your career aspirations.</p>
+<h2 id="getting-certified">Getting Certified<a href="#getting-certified" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I won&rsquo;t go over the details on what you need to do to get certified by ISC2 as a CISSP as this
+information is already available on the <a href="https://www.isc2.org/Certifications/CISSP">ISC2 site</a>.
+What I will talk about, though, is the exami and what to expect from it.</p>
+<p>There are two types of exams. The one in native English is composed of 100 to 150 questions,
+depending and how much data is required to assess your knowledge. You dispose of 180 minutes to
+complete the exam, regardless if it takes 100 or 150 questions for the assessment. The second exam
+type is the exam in languages other than English. You are required to answer 300 questions over a
+320 minute time period. The passing grade is 700/1000.</p>
+<p>The questions cover all 8 security domains and you are required to select the correct answer out of
+four available ones. This sounds relatively easy but the nature of the questions is what makes this
+exam difficult. It&rsquo;s not a technical exam, and sometimes implementing the best technical control is
+not the correct answer. This is where understanding the fundamental concepts is a lot more important
+than memorizing which port number a certain service listens on.</p>
+<p>Now that you know what you&rsquo;re up against, I&rsquo;ll walk you through how I prepared for this.</p>
+<h2 id="how">How<a href="#how" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>How to get started studying to pass the exam for this certification is the big question. There is a
+pletora of material out there ranging from payed video courses, Youtube channels dedicated to it,
+books, practice exams, etc. I suggest you have a look at the
+<a href="https://www.reddit.com/r/cissp/"><code>r/cissp</code></a> sub-reddit. A good majority of people who pass the exam
+will list the material they used for studying. They will also grade the material on how useful it
+was to them. In any case, I&rsquo;ll be describing what worked for me in this article. Obviously this is
+not a method that is garanteed to make you pass so your milage may vary.</p>
+<h3 id="preparing-for-the-marathon">Preparing for the Marathon<a href="#preparing-for-the-marathon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Regardless of the material you intend to use, the most important things you will need to establish
+are</p>
+<ol>
+<li>A study plan.</li>
+<li>Support.</li>
+</ol>
+<p>This is a marathon than can span over multiple months so you absolutely need a plan with objective
+milestones if you are to ever get this done. This not something you do in your spare time either.
+You absolutely need to dedicate time for it and not just give it the time &ldquo;left over&rdquo; at the end of
+the day. I think this is why it&rsquo;s important to make sure you really want or really need this. Tt is
+a huge investment of your time and will require a good deal of sacrifices.</p>
+<p>The other important aspect is having support. Whether it&rsquo;s your partner or colleagues at work, it&rsquo;s
+good having people support you in this endeavour. The study group that was organized at work kept
+me honest and reading through the material. People around you are in the same boat with the same
+objective so there is a good deal of knowledge sharing and people helping each other out. Support
+from my immediate family was really important as well. My partner understood how important this
+certification was for me and supported me through it even when the going got tough (more on that
+later). It&rsquo;s very important to recognize that they are sacrificing their time as well to help you
+achieve this goal.</p>
+<p>Now that we have the basics covered, time to find the study material and get started!</p>
+<h3 id="assimilating-the-material">Assimilating the Material<a href="#assimilating-the-material" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The organizer of our study group suggested we use the
+<a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One CISSP (8e)</a>
+by Shon Harris and read through the whole thing. This way, everyone in the group would have the same
+baseline and understanding of the 8 security domains. I don&rsquo;t know about you, but reading 1200 pages
+and remembering everything isn&rsquo;t part of my super powers. Right off the bat, I knew this would pose
+a considerable challenge for me. I developped a strategy that served me well down the road, but more
+on that later.</p>
+<p>The group would meet for 30 minutes on a weekly basis, discussing what was read in the previous
+week. We would dedicate 2 weeks for reading every chapter with longer chapters being allotted 3
+weeks for completion. If you do some quick math, that&rsquo;s about 18 weeks (close to 5 months).</p>
+<p>The fact that the group would set these milestones in reading the material kept me honest about
+reading the book. My schedule looked something like this: I would spend about 1 hour and 30 minutes
+3 week nights out of 5 every week reading the book. On weekends, I would wake up early and read for
+3 hours on Saturday and Sunday mornings. That is about 10 and a half hours of reading every week.</p>
+<p>This part of the plan was to assimilate the material, the support was from the group and kept me
+on track. My partner also kept reminding me regularily that I had this commitment, especially on
+days where I was tired and not motivated to crack the book open and get started. One again, support
+is one of the most important and beneficial parts of this marathon.</p>
+<h4 id="remembering-the-material">Remembering the Material<a href="#remembering-the-material" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>You actually learn a lot from reading but just reading wasn&rsquo;t going to cut it. Not for me anyway. I
+have a tendency to need to read and re-read things multiple times before they start  sticking. One
+strategy I adopted is note taking while I&rsquo;m reading. This forced me to read and reprocess the
+information while writing it down in a note book. I carefully picked definitions, lists and things I
+thought would be important things to remember. The leader of the study group would also hint us at
+things that would be important to have memorized for the exam. This allowed me to more easily
+identify material that would be worth while to write down. This does take a considerable amount of
+time but will pay off in the end. It generates valuable artifacts: Personal summaries of each
+chapter. To give you an idea, the longer chapters generated close to 60 hand written pages while
+the average sat at around 35 pages. I could now skim over my notes if I needed a refresher. If
+the notes weren&rsquo;t enough, I could target specific parts of the book to re-read.</p>
+<p>When I concluded a chapter, I would stop for the day and re-read my notes the next day. At the end
+of each chapter, the book has about 40 comprehensive questions. I would answer them without looking
+at my notes and book and then grade myself. This allowed me to map my knowledge gaps and identify
+which domains I knew I needed to spend more time on during the study portion of the plan.</p>
+<p>When I completed reading the book, I re-read my entire personal notes to refresh the material from
+all the chapters. Some of them were read 3-4 months ago so the information had started to fade a
+bit. I then tackled the 150 comprehensive questions at the end of the book. These question covered
+the entire book so it was a good way to assess where I was positioned in my understanding and
+knowledge.</p>
+<h3 id="the-study">The Study<a href="#the-study" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>After reading the whole thing, it was time to study. My objective here was to &ldquo;use&rdquo; the knowledge I
+had accrued to keep it fresh. For those who haven&rsquo;t read my <a href="/about/">about section</a>, I come from
+a computer/software engineering background, not security or networking. I do not use this knowledge
+or work through it on a daily basis so keeping it fresh proved to be a challenge.</p>
+<p>The plan would be to answer practice tests. Every single time I would get an answer wrong, I would
+write down the correct answer and try to understand why I got it wrong in the first place. This
+would serve me well as refresh material in the last stretch of the studying effort later on. This
+was actually a suggestion from our study group&rsquo;s leader &ndash; this is how he got through it. It
+resonated well with me as this is how I used to study back in university to make the study material
+stick: Answer all possible questions I could get my hands on. It worked well in the past so why not
+now?</p>
+<p>Again, the up side of this method is that I also ended up with notes I could review later on for
+questions or portions I knew I had trouble with.</p>
+<h4 id="choosing-the-practice-material">Choosing the Practice Material<a href="#choosing-the-practice-material" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Choosing the practice test material was also a suggestion from our study group leader: The
+<a href="https://www.isc2.org/Training/Self-Study-Resources">Official Practice Tests</a> book offered by ISC2.
+Unfortunately, I had access to the 2nd edition which didn&rsquo;t have the reviewed material for 2021 and
+the renewed edition wasn&rsquo;t out yet either.</p>
+<p>The <a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One</a> exam
+book also had a product key to access a large amount of practice questions, organized by domain. It
+also allowed you to customize your exam too. More on that later.</p>
+<h4 id="the-first-break-mistake-1">The First Break (Mistake #1)<a href="#the-first-break-mistake-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>After reading the book over 4-5 months, following a rigorous schedule, I decided I needed a little
+break. I started off thinking maybe a week would be enough but that week extended into two weeks,
+then three and finally 30 days. 30 days after I completed reading the book I still hadn&rsquo;t answered
+a single question from a practice exam.</p>
+<p>When I finally decided to get started, I came to the frightening realization that a lot of the
+material now seemed very distant and I had trouble recalling the majority of it. I couldn&rsquo;t remember
+acronyms, I couldn&rsquo;t remember security architecture and framework standards, I couldn&rsquo;t remember
+network technologies, etc. My refresher notes were very useful in getting me back up to speed here.</p>
+<p>I highly recommend taking a break after reading the book. It&rsquo;s important to let everything sink in
+and take a break from it. This avoid you getting sick of it and abandoning the whole project all
+together. It also reminds you that there are other things in life besides studying for the CISSP
+exam. A word of warning though. Before you take that break, set a specific date at which you
+will start working on the preparation and study again. Without a set date, you will wander and
+procrastinate. The longer you wait, the more likely you are to forget what you just spend 5 months
+learning. You will not want to get started with the questions because you know it will confirm that
+you started forgetting the knowledge you worked hard to acquire. Just that thought is enough
+to discourage most. So take a week or two but set a specific date at which you will start again.
+It will avoid you unnecessary stress and limit streching the preparation out for nothing.</p>
+<h4 id="execution">Execution<a href="#execution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>As I briefly touched upon above, the plan is to answer as much questions as possible. Here&rsquo;s how I
+organized the execution and how I used the practice exams.</p>
+<p>I started by re-reading ALL my hand written notes from domains 1 through 8. Everything. If you&rsquo;ve
+been following along that&rsquo;s close to 300 hand written pages. I was able to cut through that in about
+3 days, spending about 1 hour and 30 minutes on it each evening.</p>
+<p>From there, I tried two 100 question comprehensive exams. It had a mixed bag of questions from all
+8 domains. The strategy I adopted is I would do a practice exam. This took around 1 hour and 45
+minutes to 2 hours for 100 questions. The following night, I would go over the wrong questions,
+understand why I got them wrong, write down the correct answer and the explanation of why it was the
+correct answer. That took around 1 hour and 30 minutes to get through as well. One side note, I wrote
+down questions that I wasn&rsquo;t sure about or &ldquo;best guessed&rdquo; the answer. After the exam, regardless of
+if I got it  right or wrong, I would try to understand why the answer is correct and why the others
+were wrong.</p>
+<p>The results of these two first exams were OK. I managed to get in the low 70% mark. It was
+encouraging to see that I was at least able to get a passing grade but it was way too close to call
+myself prepared. To remediate that, I decided to re-read my hand written notes for each specific
+security domain and then do a 150 question exam that covered the domain. This was to re-enforce my
+knowledge of each domain before attemping an other mixed-bag exam.</p>
+<p>The schedule transformed itself to something along the lines of one exam Monday or Tuesday with
+a correction session on Thursday. Friday was off. Saturday morning would be an exam morning and I
+would correct the exam on Sunday morning. That&rsquo;s about two exams per week so it took somewhere between
+5 to 6 weeks of work to get through the 8 domains and 4 mixed-bag exams.</p>
+<p>It had been fruitful. I had saturated the Official Practice Tests pool and was getting results in
+the upper 80%, a way more comfortable position to be in.</p>
+<p>This is when I should have scheduled my exam, but I didn&rsquo;t. For some reason, I was hesitant to call
+myself ready. My summer vacation was right around the corner and I just decided to &ldquo;handle&rdquo; it when
+I would get back from my time off. I also didn&rsquo;t want to risk failing the exam and have that event
+drain my mood during my time off. So I took an other break!</p>
+<h4 id="the-second-break-mistake-2----i-almost-quit">The Second Break (Mistake #2 &ndash; I Almost Quit)<a href="#the-second-break-mistake-2----i-almost-quit" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Coming back from my vacation, very refreshed, I needed more questions to answer. This is when I
+registered my
+<a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One CISSP</a>
+practice exam key and&hellip; sat on it.</p>
+<p>That was it. I would come back from work exhausted every evening. I also wanted to do other things
+with my time on weekends. I didn&rsquo;t have a fixed date to start getting serious about it again and,
+the longer I waited, the less I wanted to get confronted with the reality that this hard earned
+knowledge is slowly slipping away. My partner would ask me why I wasn&rsquo;t studying or working on some
+practice exam. This is when I even seriously considered quitting. I had learned alot from this
+experience, gained a lot of knowledge, the majority of the work was done so why would I bother to
+get a certification or try to pass an exam anyway? I tried rationalizing not going through with it
+to the end. I think the real reason is that I was affraid of attemping the exam and risking failure.
+Regardless of all my efforts, my preparation, my dedication and perseverence, I was still convinced
+that I had a higher chance of failing than passing.</p>
+<p>During this time, my partner reminded me often how much it would be a shame to forfeit everything
+at the very end without even trying.Not going through with it would also be unfair to her because
+she sacrified a good deal of time of her own supporting me on this journey.</p>
+<h4 id="the-wake-up-call">The Wake Up Call<a href="#the-wake-up-call" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>Around 6 to 7 weeks pass between going on vacation and the wake up call from the study group leader.
+We had had multiple conversations about being ready for the exam and that candidates that are
+scoring in the high 80% on practice exams usually pass. He bluntly asked me what am I wanting for to
+schedule my exam if I was already scoring good grades on the practice tests. Eveyrone in the group
+either already successfully passed their exam during the summer or had the exam scheduled for early
+October. Everyone passed and I am the only one that still hasn&rsquo;t at least scheduled it.</p>
+<p>I didn&rsquo;t have a good answer for him&hellip;</p>
+<p>I knew that without a date, I  wouldn&rsquo;t have enough healthy pressure to build a new study plan,
+study, and work through the last set of practice tests. That evening, I did it. In early October I
+scheduled my exam for mid-November. I gave myself 5 weeks to come up with a plan, execute it and be
+ready for the exam on November 13th.</p>
+<h4 id="the-last-stretch">The Last Stretch<a href="#the-last-stretch" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h4>
+<p>The plan now was similar to the previous one, but a lot more intensive. I re-read everything I had
+up until now &ndash; the hand written notes from reading the book earlier in the year and all the exam
+correction notes I had taken. That was the first step to getting everything back in memory for me.</p>
+<p>Over the following three weeks, I did 100 question practice exams for all 8 domains. As with the
+previous set of practice exams, I would write down all questions I got wrong with the explanation of
+why I got it wrong.</p>
+<p>I usually had social gatherings (remote, thanks Covid-19) scheduled every Wednesday evenings that
+I had to withdraw my presence from to get this done. The people from those gatherings were super
+supportive and understanding and wished me luck. This, again, shows how support from your family,
+friends, and colleages is such an important part of the journey.</p>
+<p>By now, I was scoring in the high 80% again on every domain. I did enjoy the questions from the
+<a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One Exam Guide</a> a
+bit more. They felt more oriented towards decision making than typical technical yes/no questions.
+Questions needed to be read carefully to be able to answer them correctly. I did find myself getting
+answers wrong because I mis-read a portion of the question. By now I was scoring between 85% and 90%
+on each individual domains and I still had 8 days to go before the actual exam. That last weekend
+was spent doing a comprehensive exam in the morning and correcting it in the afternoon. The first
+two week nights of that last week were also spent doing an exam and a correction the following
+evening.</p>
+<p>Side note here, another thing I did find interesting with the
+<a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One Exam Guide</a>
+practice tests is that the results for mixed-bag tests were broken down per domain. Although you
+score a total of 85%, it&rsquo;s interesting to see if you at least have 70% in all domain. You could see
+it in the exam results with this product and it proved to be useful to focus on certain weaker
+domains.</p>
+<p>And that is it. Still scoring high 80%. It was time to let everything sink in. At this point, there
+isn&rsquo;t much you can do but rest and wait for the exam. Maybe a little touch up here and there but
+there isn&rsquo;t time for much more. It&rsquo;s time to focus on getting enough rest, managing anxiety and
+getting the exam done.</p>
+<h2 id="the-exam">The Exam<a href="#the-exam" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The exam was on a Saturday morning so I made sure to clear the remainder of my practice exams early
+in the week and have a couple of days to relax a bit. I also had Friday off from work and a three
+hour drive to Montreal ahead of me to get to where the test center is. My folks live in Montreal so
+it was good opportunity to drive down there and spend some time with them Friday. I did take about 2
+hours from my Friday afternoon to go over a few last minute material I knew I had trouble
+memorizing. Also took a walk in the early evening with my mother where we spent some time looking at
+the Moon and Jupiter in the sky. Essentially, keeping my mind off the exam. I then went to bed
+around 8h30 PM to wind down and get ready to get a good night&rsquo;s sleep.</p>
+<p>I can&rsquo;t stress this enough how important it is to be well rested for the exam. Not only will you
+be a lot more focused during the exam, you will be more equiped to fend off stress, anxiety,  and
+even panic. These can seriously distract you from the task at hand and you need to have the energy
+to keep your emotions under control.</p>
+<p>I&rsquo;ll pause here for a second. Besides being well rested and comfortable with the material, it is
+imperative that you have faith in yourself. You got this. At this point, I was still worried about
+failing but I switched my mindset from failure being catastrophic to failure being an inconveinience
+of having to take the exam a second time in 30 days. I repeated to myself that I did everything I
+could, I had seriously dedicated the time to learn, study, and prepare for this exam. I didn&rsquo;t
+try to cut corners or take a cheap and easy route. If I did fail, it would have to be an outside
+factor and not my knowledge or competence. Again, there is no reason for you to fail if you did
+everything right. Have faith in yourself.</p>
+<p>In the morning, I received multiple pictures and videos from my children and partner, expressing
+their support and how much they believe I can pull this off. This unconditional support carried me a
+lot and had to be the most heartwarming thing I have experienced in a long time. I&rsquo;m just
+reiterating how important support from your family and friends is important to get through these
+types of things. I was more stressed about arriving on time at the test center than the actual exam
+and I got there about an hour early. No big deal, they took me right in and the exam started.</p>
+<p>Most people will tell you that the exam has no resemblance to anything they have seen in the past.
+It is true to a certain extent and this is where the whole &ldquo;think like a manager&rdquo; thing comes from.
+Don&rsquo;t try to solve for something specifically. There are no perfect answer. Just answers that are
+not as bad as the others and this is good in my honest opinion as this is the kind of situation that
+you will be dealing with as a CISSP. You will not have a perfect solution, only solutions where you
+will need to find the best compromise. As far as question style goes, they didn&rsquo;t feel that foreign
+to me &ndash; they seemed to line up nicely with what I had experienced from the Shon Harris
+<a href="https://www.oreilly.com/library/view/cissp-all-in-one-exam/9781260142648/">All-In-One Exam Guide</a>
+book.</p>
+<p>As for execution, I had gotten some hints from the <a href="https://www.reddit.com/r/cissp/"><code>r/cissp</code></a>
+sub-reddit about taking the first 20-25 questions slow as this is where the exam does its assessment
+of which domains are your weaker ones. Regardless if this is true or not, I spent a solid 40 minutes
+of my time carefully reading all the questions and their answers before answering. A lot of comments
+come up that it is normal that you feel that you are failing the exam the whole time. After 25
+questions, I couldn&rsquo;t say I felt I was failing but I couldn&rsquo;t say I felt I was succeeding either. I
+was answering the questions to the best of my knowledge but no answer was coming up as &ldquo;this is
+clearly the correct one&rdquo;.</p>
+<p>As you can gather from the majority of blog posts and posts in the sub-reddit about the exam, the
+strategy is to quickly eliminate 50% of the answers, re-read the question, and pick the most likely
+candidate in the remaining two. The exam is mentally exhausting in that sense. I was doing a lot
+slower than the practice exams where I would, most of the time, find the obvious answer and spend
+less than 20 seconds on a question. I was spending minutes and I was answering my 75th question when
+I glanced at the clock. I had been working on this exam for 1 hour and 50 minutes. I did get a jolt
+of adrenaline at that moment but had the energy to avoid it turning into panic. I had to pick up the
+pace if I needed time to reach 150 questions to get a pass. I wanted to avoid a situation where the
+exam goes over 100 questions and I only have 20 minutes on the clock to complete it.</p>
+<p>I took a couple of minutes to gather my thoughts, refocus, and get back to work. I started reading
+questions faster, reading the answers and making quicker answer elimination decisions. I stopped
+over-thinking everything and just kept taking decisions on what I thought the best answer was and
+move on to the next. 20 minutes later I was answering question 100. I clicked on what I thought was
+the correct answer, clicked next, and the exam ended.</p>
+<p>That was it. I either passed or failed miserably.</p>
+<h2 id="the-result">The Result<a href="#the-result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I don&rsquo;t know about every one else, but I was expecting a lot of emotions upon receiving my result.
+Whether I passed or failed, I knew it would be intense. I did remind myself a few times that the
+result of failing would just be me having to drive back next month to take the exam again and having
+to shell out more money for the exam fee. It sucks, but merely an inconvienience at this point.</p>
+<p>On the flip side, I had been studying and preparing for this exam for the better part of the year.
+Close to 10 months in total. Passing it would mean the end of this laborious schedule I had set up
+for myself. I would be on my way to get endorced and certified as a CISSP &ndash; what I had set out to
+do at the beginning of the year to solidify my credentials in cyber security.</p>
+<p>Anyway, I walked up to the clerc at the reception, gave her my ID and she promptly gave me my result
+sheet. I walked out of the test center  and found a quiet spot where I feverishly looked for
+&ldquo;congratulations&rdquo; on the paper I was handed. There it was, first word in the first paragraph.
+&ldquo;Congratulations!&rdquo;. I didn&rsquo;t care to read the rest at this point and, as expected, a huge rush of
+excitement, relief, and joy came rushing through. I took a couple of minutes alone to collect myself
+before calling home to inform my partner and kids that it was a success. Hearing everyone cheer at
+the other end was great. I&rsquo;ll never forget it. They are the real heros here though as they have been
+incredibly supportive, understanding, and have been putting up with my unavailability for the past
+10 months. I was now free to spend more time with them and appreciate every single minute of it.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The key take away is have a plan and stick to it. This is a marathon. Regardless of the resources
+you will be using to learn the material, set goals and dates by which you want to get things done.
+The study group at work helped me for the learning part and getting the book read cover to cover.
+Note taking here is a must unless you can easily memorise 1200 pages. Notes will also serve you well
+for reviewing the material later on if you need to.</p>
+<p>The next thing you should prepare for is the studying part. Do practice exams. A lot of them. I
+mainly used practice exams that came with the resources I used and it was enough for me. In total,
+I did around 20 or 22 practice exams. Again, writing down every wrong answer and every good answer
+I wasn&rsquo;t sure about. This is time consuming but will heavily pay off in the end as you can review
+your weak spots and the concepts you don&rsquo;t understand well.</p>
+<p>Support is also a super important part of the journey. Had I not had it in the moments where I
+doubted myself or felt like quitting, I wouldn&rsquo;t be writing this article today. Be grateful for any
+small thing someone does to help and support you. You are the one preparing for the exam and they
+are the ones enabling you to do it.</p>
+<p>Last but not least, believe in yourself. You got this. There is absoolutely no reason for you to
+fail if you took the time to seriously prepare for the exam. Rest well the night before. You will
+need a good amount of energy to keep your focus and your emotions in check during the exam.</p>
+<p>If you&rsquo;re still with me, thanks for reading. I hope you enjoyed the read as much as I enjoyed
+writing about this incredible journey that took up most of my year in 2021. On that note, I hope
+to see you all again shortly as I should resume work on HackTheBox machines and other challenges now
+that I have all this spare time on my hands!</p>
+<ul>
+<li>redbay</li>
+</ul>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Reda Baydoun</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://theredbay.net/assets/main.js"></script>
+<script src="https://theredbay.net/assets/prism.js"></script>
+
+
+  <script src="https://theredbay.net/assets/languageSelector.js"></script>
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

