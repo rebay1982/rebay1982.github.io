@@ -7,7 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Sat, 13 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Previse - HackTheBox Write-up</title>
+      <link>https://theredbay.net/infosec/htb/htb-previse/</link>
+      <pubDate>Fri, 24 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://theredbay.net/infosec/htb/htb-previse/</guid>
+      <description>Intro Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP studies are behind me and certification is done. Haven&amp;rsquo;t done any in a while so let&amp;rsquo;s kick it off with an easy one.
+This is a Linux based machine, easy, and going to be retired in a few weeks. It&amp;rsquo;s also m4lwhere&amp;rsquo;s first machine so this might be fresh and interesting.
+Before we dig in, this article won&amp;rsquo;t be as detailed as the others.</description>
+    </item>
+    
     <item>
       <title>The Journey to CISSP</title>
       <link>https://theredbay.net/infosec/cissp/</link>

