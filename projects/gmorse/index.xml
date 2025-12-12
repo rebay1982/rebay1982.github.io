@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>GMorse - A complete Morse code decoder from scratch on The Red Bay</title>
+    <link>https://theredbay.net/projects/gmorse/</link>
+    <description>Recent content in GMorse - A complete Morse code decoder from scratch on The Red Bay</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://theredbay.net/projects/gmorse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GMorse Part 1 - Project Layout</title>
+      <link>https://theredbay.net/projects/gmorse/part1/</link>
+      <pubDate>Sat, 04 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>https://theredbay.net/projects/gmorse/part1/</guid>
+      <description>&lt;p&gt;If you made here, I&amp;rsquo;m assuming you&amp;rsquo;re at least intrigued about what it takes to implement a Morse code decoder. This is&#xA;going to be a multi-part article. In this first part I&amp;rsquo;ll be laying down the foundation of the project, identifying what&#xA;makes up a functional decoder, and break down the project into different steps.&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction-to-morse-code&#34;&gt;Introduction to Morse code&lt;/h2&gt;&#xA;&lt;p&gt;So what &lt;em&gt;IS&lt;/em&gt; Morse code? You&amp;rsquo;ve probably at least heard the term before or maybe actually heard some in an old movie or&#xA;on Youtube. Morse code was invented by Samuel Morse in the first part of the 19th century when he co-developed an&#xA;electric telegraph system with Josepth Henry and Alfred Vail. The &amp;ldquo;on&amp;rdquo;/&amp;ldquo;off&amp;rdquo; nature of the telegraph system&amp;rsquo;s electrical&#xA;signals made it obvious that establishing a code to transmit natural language over electric wire was necessary.&#xA;Essentially, Morse code encodes all the letters of the alphabet (and some symbols) into sequences of short and long&#xA;electrical pulses, seperated by varying lengths of silences. Conventionally, short pulses are referred to as &amp;ldquo;dits&amp;rdquo;&#xA;while long pulses are referred to as &amp;ldquo;dahs&amp;rdquo;.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>The Red Bay</title>
+    <title>Infosec on The Red Bay</title>
     <link>https://theredbay.net/infosec/</link>
-    <description>Recent content on The Red Bay</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Infosec on The Red Bay</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Fri, 24 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/infosec/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://theredbay.net/infosec/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Journey to CISSP</title>
       <link>https://theredbay.net/infosec/cissp/</link>
       <pubDate>Sat, 13 Nov 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://theredbay.net/infosec/cissp/</guid>
-      <description>Intro Well, it&amp;rsquo;s finally done. Over the holiday period in 2020, I vowed that 2021 would be the year where I solidified my credentials in cyber security. Move from a passive &amp;ldquo;I&amp;rsquo;m interested in security&amp;rdquo; to walking the walk. The main objective is to eventually make a move into a cyber security centered role. I think there are multiple ways of achieving this and they all require different levels of efforts.</description>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;Well, it&amp;rsquo;s finally done. Over the holiday period in 2020, I vowed that 2021 would be the year where&#xA;I solidified my credentials in cyber security. Move from a passive &amp;ldquo;I&amp;rsquo;m interested in security&amp;rdquo; to&#xA;walking the walk. The main objective is to eventually make a move into a cyber security centered&#xA;role. I think there are multiple ways of achieving this and they all require different levels of&#xA;efforts. This blog is one of them. I learned so much from reading articles and attending security&#xA;conferences over the past few years. Writing walkthoughs for challenges and HackTheBox machines&#xA;are a way for me to give back on the knowledge sharing front. It also serves as a reminder on how&#xA;I solved them too.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -4,51 +4,37 @@
     <title>HackTheBox - Write-ups on The Red Bay</title>
     <link>https://theredbay.net/infosec/htb/</link>
     <description>Recent content in HackTheBox - Write-ups on The Red Bay</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <copyright>Reda Baydoun</copyright>
-    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://theredbay.net/infosec/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 24 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://theredbay.net/infosec/htb/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Previse - HackTheBox Write-up</title>
+      <title>Previse</title>
       <link>https://theredbay.net/infosec/htb/htb-previse/</link>
       <pubDate>Fri, 24 Dec 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://theredbay.net/infosec/htb/htb-previse/</guid>
-      <description>Intro Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP studies are behind me and certification is done. Haven&amp;rsquo;t done any in a while so let&amp;rsquo;s kick it off with an easy one.
-This is a Linux based machine, easy, and going to be retired in a few weeks. It&amp;rsquo;s also m4lwhere&amp;rsquo;s first machine so this might be fresh and interesting.
-Before we dig in, this article won&amp;rsquo;t be as detailed as the others.</description>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;Hey all, as promised, I can now spend more time doing some HackTheBox machines since my CISSP&#xA;studies are behind me and certification is done. Haven&amp;rsquo;t done any in a while so let&amp;rsquo;s kick it off&#xA;with an easy one.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://theredbay.net/img/htb-previse/infocard.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;This is a  Linux based machine, easy, and going to be retired in a few weeks. It&amp;rsquo;s also &lt;code&gt;m4lwhere&lt;/code&gt;&amp;rsquo;s&#xA;first machine so this might be fresh and interesting.&lt;/p&gt;</description>
     </item>
-    
     <item>
-      <title>Spectra - HackTheBox Write-up</title>
+      <title>Spectra</title>
       <link>https://theredbay.net/infosec/htb/htb-spectra/</link>
       <pubDate>Wed, 01 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://theredbay.net/infosec/htb/htb-spectra/</guid>
-      <description>Intro Hello all, here&amp;rsquo;s an other one for your entertainment purposes! Today, we will be looking at spectra &amp;ndash; A bit late since this box was solved back in May of 2021 but I didn&amp;rsquo;t get to the walkthrough part until now.
-The information card states that this is an easy machine and was released at the beginning of the year. One difference from others that we&amp;rsquo;ve looked at up until now is that the OS states Other.</description>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;Hello all, here&amp;rsquo;s an other one for your entertainment purposes! Today, we will be looking at&#xA;&lt;code&gt;spectra&lt;/code&gt; &amp;ndash; A bit late since this box was solved back in May of 2021 but I didn&amp;rsquo;t get to the&#xA;walkthrough part until now.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://theredbay.net/img/htb-spectra/infocard.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;The information card states that this is an easy machine and was released at the beginning of the&#xA;year. One difference from others that we&amp;rsquo;ve looked at up until now is that the OS states &lt;strong&gt;Other&lt;/strong&gt;.&#xA;This just means that it&amp;rsquo;s not necessarily a Linux box so we&amp;rsquo;ll keep that in mind while we look&#xA;around. To break this box, we will also be going over a couple of new tools. We will be looking at&#xA;&lt;a href=&#34;https://github.com/OJ/gobuster&#34;&gt;Gobuster&lt;/a&gt; and &lt;a href=&#34;https://www.metasploit.com&#34;&gt;Metasploit&lt;/a&gt; so do take&#xA;the time to either install &lt;a href=&#34;https://www.kali.org/&#34;&gt;Kali Linux&lt;/a&gt; and have the tools ready to go or&#xA;install them on your machine before proceeding &amp;ndash; installing and configuring them is out of scope&#xA;for this article.&lt;/p&gt;</description>
     </item>
-    
     <item>
-      <title>Delivery - HackTheBox Write-up</title>
+      <title>Delivery</title>
       <link>https://theredbay.net/infosec/htb/htb-delivery/</link>
       <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://theredbay.net/infosec/htb/htb-delivery/</guid>
-      <description>Intro Hello all and welcome to my write-up for the delivery HackTheBox machine. For those looking for a quick step-by-step guide, please skip to the TL;DR section at the end.
-delivery is an easy machine, even by HackTheBox standards. There isn&amp;rsquo;t much more to it than reading and poking around but it still teaches us some basics enumeration, configuration and some password cracking with hashcat.
-First things first. Let&amp;rsquo;s add the delivery.</description>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;Hello all and welcome to my write-up for the &lt;code&gt;delivery&lt;/code&gt; HackTheBox machine. For those looking for a&#xA;quick step-by-step guide, please skip to the &lt;a href=&#34;#tldr&#34;&gt;TL;DR&lt;/a&gt; section at the end.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://theredbay.net/img/htb-delivery/infocard.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;delivery&lt;/code&gt; is an easy machine, even by HackTheBox standards. There isn&amp;rsquo;t much more to it than&#xA;reading and poking around but it still teaches us some basics enumeration, configuration and&#xA;some password cracking with &lt;code&gt;hashcat&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;First things first. Let&amp;rsquo;s add the &lt;code&gt;delivery.htb&lt;/code&gt; entry to our hosts file, point that to&#xA;&lt;code&gt;10.10.10.222&lt;/code&gt;, and get to work.&lt;/p&gt;</description>
     </item>
-    
     <item>
-      <title>Doctor - HackTheBox Write-up</title>
+      <title>Doctor</title>
       <link>https://theredbay.net/infosec/htb/htb-doctor/</link>
       <pubDate>Mon, 23 Nov 2020 00:25:37 -0500</pubDate>
-      
       <guid>https://theredbay.net/infosec/htb/htb-doctor/</guid>
-      <description>Intro Greetings, here is my write-up for the doctor HackTheBox machine. I hope you enjoy the read! If you&amp;rsquo;re in a hurry, skip to the TL;DR section at the end.
-Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some recent CVE exploitation that can be accomplished with off-the-shelf tools.</description>
+      <description>&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;&#xA;&lt;p&gt;Greetings, here is my write-up for the &lt;code&gt;doctor&lt;/code&gt; HackTheBox machine. I hope you enjoy the read! If&#xA;you&amp;rsquo;re in a hurry, skip to the &lt;a href=&#34;#tldr&#34;&gt;TL;DR&lt;/a&gt; section at the end.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://theredbay.net/img/htb-doctor/infocard.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because&#xA;its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some&#xA;recent CVE exploitation that can be accomplished with off-the-shelf tools. As we will see, the&#xA;hardest part in breaking &lt;code&gt;doctor&lt;/code&gt; is finding &lt;strong&gt;where&lt;/strong&gt; to exploit it and getting a foot hold on it.&#xA;A real head scratcher that reminds us that the solution is always right under our nose.  We&amp;rsquo;re&#xA;either overthinking it or simply not seeing it.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

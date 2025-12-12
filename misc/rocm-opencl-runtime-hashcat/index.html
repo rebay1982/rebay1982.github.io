@@ -1,193 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  
-    <title>Installing ROCm-OpenCL runtime on Arch Linux :: The Red Bay</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Introduction Greetings folks, this is going to be a short but usefull one. For those in a hurry, skip to the Installation section.
-Let&amp;rsquo;s start by setting context. What are we trying to solve here? We&amp;rsquo;re here because we want to &amp;ldquo;recover&amp;rdquo; some passwords using hashcat. We have been through the excellent Arch Linux Wiki documentation for installing hashcat, got everything installed, tried using it, and got an error that the currently installed OpenCL driver is unstable and cannot be used." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://theredbay.net/misc/rocm-opencl-runtime-hashcat/" />
-
-
-
-
-<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
-
-  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="redbay" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Installing ROCm-OpenCL runtime on Arch Linux">
-<meta property="og:description" content="Having trouble getting ROCm-OpenCL installed on Arch Linux for use with hashcat? You insist on only using pacman as your package manager? Your search is over... Hopefully this article can be of help to you!" />
-<meta property="og:url" content="https://theredbay.net/misc/rocm-opencl-runtime-hashcat/" />
-<meta property="og:site_name" content="The Red Bay" />
-
-  
-    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-
-  <meta property="article:published_time" content="2021-02-05 00:00:00 &#43;0000 UTC" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Installing ROCm-OpenCL runtime on Arch Linux</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="red">
+<body>
+  <div class="container">
+    <nav class="sidebar">
+			<h1>The Red Bay</h1>
 
+			<ul>
+	<a href="/">Home</a>
+	<a href="/projects/">Projects</a>
+	<a href="/infosec/">Infosec</a>
+	<a href="/infosec/htb/">Hack the Box</a>
+	<a href="/misc/">Misc</a>
+	<a href="/about/">About</a>
+</ul>
 
-<div class="container center headings--one-size">
+			<p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    The Red Bay
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
+    </nav>
+    <main class="content">
+      
   
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
-
-          <ul class="menu__sub-inner-more hidden">
-            
-              
-                <li><a href="/about">About</a></li>
-              
-            
-              
-                <li><a href="http://github.com/rebay1982">GitHub</a></li>
-              
-            
-              
-                <li><a href="/infosec">Infosec</a></li>
-              
-            
-              
-                <li><a href="/misc">Misc</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="http://github.com/rebay1982">GitHub</a></li>
-      
-    
-      
-        <li><a href="/infosec">Infosec</a></li>
-      
-    
-      
-        <li><a href="/misc">Misc</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
   
-</header>
+	<h1>Installing ROCm-OpenCL runtime on Arch Linux</h1>
+	<time datetime="2021-02-05T00:00:00&#43;00:00">February 5, 2021</time>
 
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://theredbay.net/misc/rocm-opencl-runtime-hashcat/">Installing ROCm-OpenCL runtime on Arch Linux</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2021-02-05 
-      </span>
-    
-    
-    <span class="post-author">:: redbay</span>
-    
-  </div>
-
-  
-
-  
-
-  
-    <div class="table-of-contents">
-      <h2>
-        
-          Table of Contents
-        
-      </h2>
-      <nav id="TableOfContents">
-  <ul>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#testing">Testing</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-  </ul>
-</nav>
-    </div>
-  
-
-  <div class="post-content"><div>
-        <h1 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<p>Greetings folks, this is going to be a short but usefull one. For those in a hurry, skip to the
+  <p>Greetings folks, this is going to be a short but usefull one. For those in a hurry, skip to the
 <a href="./#installation">Installation</a> section.</p>
 <p>Let&rsquo;s start by setting context. What are we trying to solve here? We&rsquo;re here because we want to
 &ldquo;recover&rdquo; some passwords using <code>hashcat</code>. We have been through the excellent Arch Linux Wiki
@@ -212,8 +55,8 @@ considers unstable and refuses to run on. What&rsquo;s our open source alternati
 <p>This is where everything got complicated real fast. Adding to the complexity is insisting on
 only using <code>pacman</code> as the package manager. For stubborn folks, there&rsquo;s always a way and that&rsquo;s what
 we&rsquo;re going to prove here so let&rsquo;s get to work.</p>
-<h2 id="installation">Installation<a href="#installation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="finding-the-right-repositories">Finding the Right Repositories<a href="#finding-the-right-repositories" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="installation">Installation</h2>
+<h3 id="finding-the-right-repositories">Finding the Right Repositories</h3>
 <p>First and foremost, we&rsquo;re going to checkout the ROCm Arch
 <a href="https://github.com/rocm-arch/rocm-arch">repository</a>. It contains all the PKGBUILD files you will
 need for what is in the official ROCm
@@ -224,7 +67,7 @@ in the ROCm Arch repository read me and be done with it. But that would have bee
 Let&rsquo;s keep our heads down and carry on.</p>
 <p>After checking out the repository, we&rsquo;re ready to start installing packages. The end goal here is
 to get the <code>rocm-opencl-runtime</code> installed.</p>
-<h3 id="installation-order-and-dependencies">Installation Order and Dependencies<a href="#installation-order-and-dependencies" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="installation-order-and-dependencies">Installation Order and Dependencies</h3>
 <p>One does not simply install the <code>rocm-opencl-runtime</code> package. We need to manually install its
 dependencies first.</p>
 <p>Here&rsquo;s a complete list of what we will need to install and in what specific order. There is a
@@ -244,7 +87,7 @@ package.</p>
 expect <code>llvm-amdgpu</code> to need extra dependencies not listed here. Install and carry on.
 In my specific case, <code>z3</code> and  <code>ninja</code> were missing.</p>
 <p>Once <code>rocm-opencl-runtime</code> is installed, we can move on to testing.</p>
-<h2 id="testing">Testing<a href="#testing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="testing">Testing</h2>
 <p>We are now able to use <code>clinfo</code> to list information related to the OpenCL installation. It will look
 something like this:</p>
 <pre tabindex="0"><code>$ clinfo
@@ -285,7 +128,7 @@ INFO: All hashes found in potfile! Use --show to display them.
 Started: Sun Jan 31 18:35:36 2021
 Stopped: Sun Jan 31 18:35:38 2021
 </code></pre><p>Perfect, <code>hashcat</code> can now leverage the GPU through the OpenCL runtime we just installed.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>There you have it, we were able to get the <code>rocm-opencl-runtime</code> package installed by using
 <code>pacman</code> only. Honestly, it would have been a lot simpler to just use <code>yay</code> but we demonstrated that
 it&rsquo;s possible to do it with <code>pacman</code> with a little extra work. Bonus points, we were able to
@@ -297,41 +140,10 @@ system.</p>
 <li>redbay</li>
 </ul>
 
-      </div></div>
+  <p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  
 
-  
-
-</div>
-
+    </main>
   </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">
-        <span>Reda Baydoun</span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="https://theredbay.net/assets/main.js"></script>
-<script src="https://theredbay.net/assets/prism.js"></script>
-
-
-  <script src="https://theredbay.net/assets/languageSelector.js"></script>
-
-
-
-
-
-
-  
-</div>
-
 </body>
 </html>

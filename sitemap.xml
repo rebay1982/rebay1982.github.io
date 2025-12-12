@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://theredbay.net/projects/gmorse/</loc>
+    <lastmod>2025-10-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://theredbay.net/projects/gmorse/part1/</loc>
+    <lastmod>2025-10-04T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://theredbay.net/</loc>
-    <lastmod>2021-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2025-10-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://theredbay.net/infosec/</loc>
     <lastmod>2021-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url><url>
     <loc>https://theredbay.net/infosec/htb/htb-previse/</loc>
     <lastmod>2021-12-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://theredbay.net/projects/</loc>
+    <lastmod>2021-11-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://theredbay.net/infosec/cissp/</loc>
     <lastmod>2021-11-13T00:00:00+00:00</lastmod>
@@ -35,7 +42,6 @@
     <lastmod>2020-11-23T00:25:37-05:00</lastmod>
   </url><url>
     <loc>https://theredbay.net/about/</loc>
-    <priority>0</priority>
   </url><url>
     <loc>https://theredbay.net/categories/</loc>
   </url><url>

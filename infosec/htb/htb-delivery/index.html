@@ -1,195 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  
-    <title>Delivery - HackTheBox Write-up :: The Red Bay</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Intro Hello all and welcome to my write-up for the delivery HackTheBox machine. For those looking for a quick step-by-step guide, please skip to the TL;DR section at the end.
-delivery is an easy machine, even by HackTheBox standards. There isn&amp;rsquo;t much more to it than reading and poking around but it still teaches us some basics enumeration, configuration and some password cracking with hashcat.
-First things first. Let&amp;rsquo;s add the delivery." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-delivery/" />
-
-
-
-
-<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
-
-  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="redbay" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Delivery - HackTheBox Write-up">
-<meta property="og:description" content="Write-up for the &#39;Delivery&#39; box from HackTheBox.eu" />
-<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-delivery/" />
-<meta property="og:site_name" content="The Red Bay" />
-
-  
-    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-
-  <meta property="article:published_time" content="2021-03-20 00:00:00 &#43;0000 UTC" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Delivery</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="red">
+<body>
+  <div class="container">
+    <nav class="sidebar">
+			<h1>The Red Bay</h1>
 
+			<ul>
+	<a href="/">Home</a>
+	<a href="/projects/">Projects</a>
+	<a href="/infosec/">Infosec</a>
+	<a href="/infosec/htb/">Hack the Box</a>
+	<a href="/misc/">Misc</a>
+	<a href="/about/">About</a>
+</ul>
 
-<div class="container center headings--one-size">
+			<p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    The Red Bay
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
+    </nav>
+    <main class="content">
+      
   
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
-
-          <ul class="menu__sub-inner-more hidden">
-            
-              
-                <li><a href="/about">About</a></li>
-              
-            
-              
-                <li><a href="http://github.com/rebay1982">GitHub</a></li>
-              
-            
-              
-                <li><a href="/infosec">Infosec</a></li>
-              
-            
-              
-                <li><a href="/misc">Misc</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="http://github.com/rebay1982">GitHub</a></li>
-      
-    
-      
-        <li><a href="/infosec">Infosec</a></li>
-      
-    
-      
-        <li><a href="/misc">Misc</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
   
-</header>
+	<h1>Delivery</h1>
+	<time datetime="2021-03-20T00:00:00&#43;00:00">March 20, 2021</time>
 
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://theredbay.net/infosec/htb/htb-delivery/">Delivery - HackTheBox Write-up</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2021-03-20 
-      </span>
-    
-    
-    <span class="post-author">:: redbay</span>
-    
-  </div>
-
-  
-
-  
-
-  
-    <div class="table-of-contents">
-      <h2>
-        
-          Table of Contents
-        
-      </h2>
-      <nav id="TableOfContents">
-  <ul>
-    <li><a href="#initial-recon">Initial Recon</a></li>
-    <li><a href="#user">User</a></li>
-    <li><a href="#root">Root</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#tldr">TL;DR</a></li>
-  </ul>
-</nav>
-    </div>
-  
-
-  <div class="post-content"><div>
-        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+  <h1 id="intro">Intro</h1>
 <p>Hello all and welcome to my write-up for the <code>delivery</code> HackTheBox machine. For those looking for a
 quick step-by-step guide, please skip to the <a href="#tldr">TL;DR</a> section at the end.</p>
 <p><img src="/img/htb-delivery/infocard.png" alt=""></p>
@@ -198,8 +39,8 @@ reading and poking around but it still teaches us some basics enumeration, confi
 some password cracking with <code>hashcat</code>.</p>
 <p>First things first. Let&rsquo;s add the <code>delivery.htb</code> entry to our hosts file, point that to
 <code>10.10.10.222</code>, and get to work.</p>
-<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="initial-recon">Initial Recon</h2>
+<h3 id="enumeration">Enumeration</h3>
 <p>As with any machine, let&rsquo;s start by running an <code>nmap</code> scan to see what ports are open on the
 target machine.</p>
 <pre tabindex="0"><code>$ sudo nmap -sV -T4 -A -p- 10.10.10.222
@@ -260,14 +101,14 @@ The title <code>&lt;title&gt;Mattermost&lt;/title&gt;</code> along with a quick 
 </ul>
 <p>Now that we have a list of target ports, it&rsquo;s time for some visual exploration! Let&rsquo;s pull out our
 favorite web browser and go web surfing!</p>
-<h3 id="web-surfing">Web Surfing<a href="#web-surfing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="web-surfing">Web Surfing</h3>
 <p>Pointing our web browser to <a href="http://delivery.htb/">http://delivery.htb/</a> brings up a page instructing us to check out the
 help desk for an account. Clicking on &ldquo;Contact Us&rdquo; provides us the links and information to do just
 that. The link to the help desk is <code>helpdesk.delivery.htb</code> and there&rsquo;s also mention of the
 MatterMost server, available at <code>delivery.htb:8065</code>.</p>
 <p><img src="/img/htb-delivery/contact-us.png" alt=""></p>
 <p>Let&rsquo;s head on to the help desk to open up an account and see where that leads us.</p>
-<h3 id="help-desk">Help Desk<a href="#help-desk" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="help-desk">Help Desk</h3>
 <p>Here&rsquo;s what the support center looks like.</p>
 <p><img src="/img/htb-delivery/helpdesk.png" alt=""></p>
 <p>There isn&rsquo;t much here besides an option to open a new ticket and an option for checking a ticket&rsquo;s
@@ -279,7 +120,7 @@ information to the ticket, we can simply email the <code>@delivery.htb</code> ad
 <p>Viewing the ticket through &ldquo;Check Ticket Status&rdquo; is also possible by providing the email we used to
 create it along with the ticket number. Let&rsquo;s leave it for now and concentrate on getting the
 MatterMost account setup.</p>
-<h3 id="mattermost">MatterMost<a href="#mattermost" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="mattermost">MatterMost</h3>
 <p>Navigating to <code>delivery.htb:8065</code> allows us to log into the MatterMost server but we must first
 sign up for an account. Now, if we follow the instructions, we should be providing our new
 <code>@delivery.htb</code> email address so let&rsquo;s go ahead and fill in the form.</p>
@@ -318,7 +159,7 @@ maildeliverer@Delivery:~$
 Internal channel to login to the server. It won&rsquo;t always be this easy but this can actually happen
 if a company&rsquo;s password sharing hygiene is bad. Now that we&rsquo;ve got our foothold, let&rsquo;s go digging
 for that user flag.</p>
-<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="user">User</h2>
 <p>Being already logged it, let&rsquo;s figure out who <code>maildeliverer</code> actually is.</p>
 <pre tabindex="0"><code>maildeliverer@Delivery:~$ ls -la
 total 28
@@ -339,7 +180,7 @@ us the user flag.</p>
 be to never share credentials in a messaging application but that already resonates as a big no no
 with anyone remotely conscious about security.</p>
 <p>Next up, the <code>root</code> flag.</p>
-<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="root">Root</h2>
 <p>We can gather from the about section that MatterMost uses MySQL as its database engine. For anyone
 having done any form of development, applications are usually configured to connect to the database
 using a connection string. Often times this is done through a configuration file and not all users
@@ -518,7 +359,7 @@ Password:
 root@Delivery:/home/maildeliverer# cat /root/root.txt
 c6b16aa7f637fc4e61444854fac70874
 </code></pre><p>And there you have it, as simple as that!</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p><code>delivery</code> seems to have been geared towards new comers as it doesn&rsquo;t involve any exploitation and
 doesn&rsquo;t require extensive knowledge in penetration testing. It nicely guides the user through the
 steps to get an account created and gives out obvious clues on what to do next. It doesn&rsquo;t leave
@@ -530,20 +371,20 @@ Until next time, happy hacking!</p>
 <ul>
 <li>redbay</li>
 </ul>
-<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="tldr">TL;DR</h2>
+<h3 id="foothold">Foothold</h3>
 <ol>
 <li>Add <code>10.10.10.222 delivery.htb</code> to your hosts file.</li>
 <li>Surf to <code>http://delivery.htb</code> and click on <code>Contact Us</code>.</li>
 <li>Follow on screen instructions to create an account on the MatterMost service.</li>
 <li>Once in the MatterMost server, take note of the messages <code>root</code> left in the Internal channel.</li>
 </ol>
-<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="user-1">User</h3>
 <ol>
 <li>Use the credentials <code>root</code> gave out in MatterMost to SSH into the machine: <code>ssh maildeliverer@10.10.10.222</code> and use <code>Youve_G0t_Mail!</code> as password.</li>
 <li><code>cat user.txt</code> &ndash;&gt;  <code>3b9e171484b660251a906fb574c136f2</code></li>
 </ol>
-<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="root-1">Root</h3>
 <ol>
 <li>Get MySQL password from the MatterMost config: <code>maildeliverer@Delivery:/opt/mattermost/config$ cat config.json | grep -B5 -A5 -i mysql</code></li>
 <li>Log into MySQL: <code> mysql -u mmuser --password=&quot;Crack_The_MM_Admin_PW&quot;</code></li>
@@ -554,41 +395,10 @@ Until next time, happy hacking!</p>
 <li><code>cat /root/root.txt</code> &ndash;&gt; <code>c6b16aa7f637fc4e61444854fac70874</code></li>
 </ol>
 
-      </div></div>
+  <p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  
 
-  
-
-</div>
-
+    </main>
   </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">
-        <span>Reda Baydoun</span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="https://theredbay.net/assets/main.js"></script>
-<script src="https://theredbay.net/assets/prism.js"></script>
-
-
-  <script src="https://theredbay.net/assets/languageSelector.js"></script>
-
-
-
-
-
-
-  
-</div>
-
 </body>
 </html>

@@ -1,194 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-  
-    <title>Spectra - HackTheBox Write-up :: The Red Bay</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Intro Hello all, here&amp;rsquo;s an other one for your entertainment purposes! Today, we will be looking at spectra &amp;ndash; A bit late since this box was solved back in May of 2021 but I didn&amp;rsquo;t get to the walkthrough part until now.
-The information card states that this is an easy machine and was released at the beginning of the year. One difference from others that we&amp;rsquo;ve looked at up until now is that the OS states Other." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://theredbay.net/infosec/htb/htb-spectra/" />
-
-
-
-
-<link rel="stylesheet" href="https://theredbay.net/assets/style.css">
-
-  <link rel="stylesheet" href="https://theredbay.net/assets/red.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="https://theredbay.net/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="https://theredbay.net/img/favicon/red.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="redbay" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Spectra - HackTheBox Write-up">
-<meta property="og:description" content="Write-up for the &#39;Spectra&#39; box from HackTheBox.eu" />
-<meta property="og:url" content="https://theredbay.net/infosec/htb/htb-spectra/" />
-<meta property="og:site_name" content="The Red Bay" />
-
-  
-    <meta property="og:image" content="https://theredbay.net/img/favicon/red.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-
-  <meta property="article:published_time" content="2021-09-01 00:00:00 &#43;0000 UTC" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spectra</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="red">
+<body>
+  <div class="container">
+    <nav class="sidebar">
+			<h1>The Red Bay</h1>
 
+			<ul>
+	<a href="/">Home</a>
+	<a href="/projects/">Projects</a>
+	<a href="/infosec/">Infosec</a>
+	<a href="/infosec/htb/">Hack the Box</a>
+	<a href="/misc/">Misc</a>
+	<a href="/about/">About</a>
+</ul>
 
-<div class="container center headings--one-size">
+			<p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    The Red Bay
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
+    </nav>
+    <main class="content">
+      
   
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-      
-        <ul class="menu__sub-inner">
-          <li class="menu__sub-inner-more-trigger">Menu ▾</li>
-
-          <ul class="menu__sub-inner-more hidden">
-            
-              
-                <li><a href="/about">About</a></li>
-              
-            
-              
-                <li><a href="http://github.com/rebay1982">GitHub</a></li>
-              
-            
-              
-                <li><a href="/infosec">Infosec</a></li>
-              
-            
-              
-                <li><a href="/misc">Misc</a></li>
-              
-            
-          </ul>
-        </ul>
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About</a></li>
-      
-    
-      
-        <li><a href="http://github.com/rebay1982">GitHub</a></li>
-      
-    
-      
-        <li><a href="/infosec">Infosec</a></li>
-      
-    
-      
-        <li><a href="/misc">Misc</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
   
-</header>
+	<h1>Spectra</h1>
+	<time datetime="2021-09-01T00:00:00&#43;00:00">September 1, 2021</time>
 
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://theredbay.net/infosec/htb/htb-spectra/">Spectra - HackTheBox Write-up</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2021-09-01 
-      </span>
-    
-    
-    <span class="post-author">:: redbay</span>
-    
-  </div>
-
-  
-
-  
-
-  
-    <div class="table-of-contents">
-      <h2>
-        
-          Table of Contents
-        
-      </h2>
-      <nav id="TableOfContents">
-  <ul>
-    <li><a href="#initial-recon">Initial Recon</a></li>
-    <li><a href="#user">User</a></li>
-    <li><a href="#root">Root</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
-    <li><a href="#tldr">TL;DR</a></li>
-  </ul>
-</nav>
-    </div>
-  
-
-  <div class="post-content"><div>
-        <h1 id="intro">Intro<a href="#intro" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+  <h1 id="intro">Intro</h1>
 <p>Hello all, here&rsquo;s an other one for your entertainment purposes! Today, we will be looking at
 <code>spectra</code> &ndash; A bit late since this box was solved back in May of 2021 but I didn&rsquo;t get to the
 walkthrough part until now.</p>
@@ -204,7 +46,7 @@ for this article.</p>
 <p>And, as usual, if time is your #1 priority, skip to the <a href="#tldr">TL;DR</a> section at the end for the
 step by step solution.</p>
 <p>Without further do, let&rsquo;s dig in!</p>
-<h2 id="initial-recon">Initial Recon<a href="#initial-recon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="initial-recon">Initial Recon</h2>
 <p>Before we start, let&rsquo;s pop <code>10.10.10.229</code> as the <code>spectra.htb</code> entry in our hosts file and get an
 <code>nmap</code> scan going.</p>
 <pre tabindex="0"><code>$ nmap -A -T4 -p- spectra.htb
@@ -233,7 +75,7 @@ Nmap done: 1 IP address (1 host up) scanned in 51.92 seconds
 expecting to learn anything? :)</p>
 <p>Alright, we have ports <code>22</code>, <code>80</code>, and <code>3306</code> open &ndash; that&rsquo;s SSH, HTTP, and MySQL, respectively.
 Let&rsquo;s start by investigating the HTTP server.</p>
-<h3 id="surfs-up">Surf&rsquo;s Up<a href="#surfs-up" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="surfs-up">Surf&rsquo;s Up</h3>
 <p>First and foremost, let&rsquo;s go pull out our ultra specialized hacking tool: our web browser. We need
 to figure out what the HTTP server is serving up. In this case the web server is
 <a href="https://www.nginx.com/"><code>nginx</code></a> so it could be a proxy, a gateway, or configured as a load
@@ -261,7 +103,7 @@ web browser to different endpoints of files on the web server but that&rsquo;s n
 here. There comes a time where tools can greatly accelerate manual operations like this. We call
 them enumeration tools. We will be using <a href="https://github.com/OJ/gobuster">Gobuster</a> so let&rsquo;s get
 familiar with it in the next section.</p>
-<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="enumeration">Enumeration</h3>
 <p>Gobuster is defined as a web enumeration tool. It needs two things, obviously a target and a
 file containing a list of endpoints to test, AKA a wordlist. Wordlists are text files that contain
 a list of endpoints &ndash; the concept is similar to a worldlist used for password cracking. Common
@@ -300,8 +142,8 @@ is the WordPress portal, and we also already listed the <code>/testing</code> di
 most of the guesswork around the HTTP discovery. We are going to dig further in the <code>/testing</code>
 directory because it seems to contain some PHP source files and some configuration files for
 WordPress.</p>
-<h2 id="user">User<a href="#user" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="foothold">Foothold<a href="#foothold" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="user">User</h2>
+<h3 id="foothold">Foothold</h3>
 <p>As stated previously, we noticed some interesting files while looking around in the <code>/testing</code>
 directory. We can start by taking a look at some configuration files. Why configuration files? They
 often contain credentials to databases, or to third party systems the WordPress website might use or
@@ -349,7 +191,7 @@ that reqquires advanced technical skills. We&rsquo;re just looking around and wh
 sensitive information laying around. As a best practice, directories containing credentials or
 configuration files shouldn&rsquo;t be made accessible to the outside world. These things should always be
 locked down and their contents validated for any potentially sensitive information.</p>
-<h3 id="exploitation">Exploitation<a href="#exploitation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="exploitation">Exploitation</h3>
 <p>Alright, let&rsquo;s move on. We now have a target system and version &ndash; WordPress 5.4.2 in our case.
 Armed with this information, let&rsquo;s go scour the Internet to find a potential vulnerability. The
 objective of all this is to obtain some form of shell on the machine. More specifically, we&rsquo;re
@@ -498,7 +340,7 @@ built our own exploit for kicks (and an interesting challenge that would be) but
 we opted on exploring and using Metasploit. We got a minimal shell, then moved on to make it
 interactive with a small Python program. Our next steps are enumeration with an objective
 of privilege escalation, and going after the &ldquo;user&rdquo; account and get that user flag.</p>
-<h3 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="privilege-escalation">Privilege Escalation</h3>
 <p>First things first, let&rsquo;s start by identifying which user we will need to &ldquo;attack&rdquo;. We can do a
 quick scan of the <code>/etc/passwd</code> file. It is world readable and contains information on the users but
 no password hashes. Those can be found in the <code>/etc/shadow</code> file but only <code>root</code> has read access to
@@ -591,7 +433,7 @@ Passwords, for any kind of feature, shouldn&rsquo;t be stored in plain text on t
 on world readable files like in this example. This is such a great  example of why this should be
 avoided.</p>
 <p>Next up, moving up the ranks and reaching <code>root</code> access!</p>
-<h2 id="root">Root<a href="#root" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="root">Root</h2>
 <p>When trying to escalate privileges from a normal user to <code>root</code>, we need to find either a flaw in a
 software or service that is running as that privilegeid user, or we need to find a misconfiguration
 in the system that will allow us to execute commands as the privileged user. In the case of
@@ -632,7 +474,7 @@ second one that will setup some form of access persistence. In our use case, we&
 flag so the first solution is enough. In a real world penetration test, we would prefer the
 persistence solution so that we could easily regain root privileges to the machine without going
 through all the steps listed above. This is how threat actors operate too.</p>
-<h3 id="flag-solution">Flag Solution<a href="#flag-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flag-solution">Flag Solution</h3>
 <p>We know that the flag we&rsquo;re after is inside the file <code>/root/root.txt</code>. Our script, when invoked
 through <code>sudo /sbin/initctl</code>, is running with root privileges. It will have the required access to
 read the <code>root.txt</code> file, something our <code>katie</code> user doesn&rsquo;t have.</p>
@@ -673,7 +515,7 @@ d44519713b889d5e1f9e536d0c6df2fc
 </code></pre><p>And there it is! the root flag! As stated above, this is good enough for our use case. But say we
 wish to have root access to the machine, not just dump the contents of a single file. Let&rsquo;s find out
 how we can achieve that in the next section.</p>
-<h3 id="persistent-solution">Persistent Solution<a href="#persistent-solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="persistent-solution">Persistent Solution</h3>
 <p>The persistent solution is similar to the <a href="#flag-solution">flag solution</a> but we&rsquo;re going to be
 replacing the script with the following command.</p>
 <pre tabindex="0"><code>chmod +s /bin/bash
@@ -690,8 +532,7 @@ the -p option is not supplied, no startup files are read, shell functions are no
 the environment, the SHELLOPTS, BASHOPTS, CDPATH, and GLOBIGNORE variables, if they appear in the
 environment, are ignored, and the effective user id is set to the real user id. If the -p option
 is supplied at invocation, the startup behavior is the same, but the effective user id is not
-reset.</p>
-</blockquote>
+reset.</p></blockquote>
 <p>What this means is that if we want to successfully inherit the root uid and gid, we will need
 to invoke <code>bash</code> with the <code>-p</code> option.</p>
 <pre tabindex="0"><code>katie@spectra /etc/init $ /bin/bash -p
@@ -706,7 +547,7 @@ modify an already existing job (on which <code>katie</code> had write access to)
 make a <code>katie</code> readable copy of the <code>root.txt</code> file, or motifying the <code>SETUID</code> flag on the
 <code>/bin/bash</code> file to allow us to run a <code>bash</code> shell with root privileges. Again, no hacking magic,
 simply exploitation of a misconfigured system.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p><code>Spectra</code> was a great box in the sense that it was relatively accessible and easy to do. It also
 gave us the opportunity to learn about Gobuster, the Metasploit framework, <code>sudo</code> configurations,
 and a bit more about <code>bash</code>. We also had the opportunity to build our own exploit to get that
@@ -717,8 +558,8 @@ user name, and exploiting misconfigurations across the system. <code>Spectra</co
 of small misconfigurations can snowball into full-on privilege escalation.</p>
 <p>That&rsquo;s all for now then, I hope you enjoyed reading about <code>spectra</code> as much as I enjoyed writing
 about it. Until next time, happy hacking!</p>
-<h2 id="tldr">TL;DR<a href="#tldr" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="foothold-1">Foothold<a href="#foothold-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="tldr">TL;DR</h2>
+<h3 id="foothold-1">Foothold</h3>
 <ol>
 <li>Add <code>10.10.10.229 spectra.htb</code> to your hosts file.</li>
 <li>Surf to <code>http://spectra.htb/testing/wp-config.php.save</code> and use the &ldquo;view source&rdquo; feature of your
@@ -727,14 +568,14 @@ browser to pick up the <code>DB_PASSWORD</code>: <code>devteam01</code>.</li>
 <code>USERNAME</code> to <code>administrator</code>, the <code>PASSWORD</code> to <code>devteam01</code>, and the <code>TARGETURI</code> to <code>/main</code>.</li>
 <li>Get a low privilege <code>nginx</code> shell.</li>
 </ol>
-<h3 id="user-1">User<a href="#user-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="user-1">User</h3>
 <ol>
 <li>The user we&rsquo;re after is <code>katie</code>. Her password is saved in <code>/etc/autologin/passwd</code>:
 <code>SummerHereWeCome!!</code> for use with an auto login feature.</li>
 <li>SSH login using these credentials: <code>ssh katie@10.10.10.229</code>.</li>
 <li>Run <code>cat /home/katie/user.txt</code>: <code>e89d27fe195e9114ffa72ba8913a6130</code>.</li>
 </ol>
-<h3 id="root-1">Root<a href="#root-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="root-1">Root</h3>
 <ol>
 <li>Modify the <code>/etc/init/test.conf</code> file to add <code>chmod +s /bin/bash</code> in the script section.</li>
 <li>Run <code>sudo /sbin/initctl start test</code>.</li>
@@ -742,41 +583,10 @@ browser to pick up the <code>DB_PASSWORD</code>: <code>devteam01</code>.</li>
 <li>Run <code>cat /root/root.txt</code>: <code>d44519713b889d5e1f9e536d0c6df2fc</code>.</li>
 </ol>
 
-      </div></div>
+  <p class="copyright">Copyright 2025. All rights reserved.</p>
 
-  
 
-  
-
-</div>
-
+    </main>
   </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">
-        <span>Reda Baydoun</span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="https://theredbay.net/assets/main.js"></script>
-<script src="https://theredbay.net/assets/prism.js"></script>
-
-
-  <script src="https://theredbay.net/assets/languageSelector.js"></script>
-
-
-
-
-
-
-  
-</div>
-
 </body>
 </html>

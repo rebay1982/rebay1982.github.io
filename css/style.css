@@ -1,0 +1,123 @@
+a {
+  color: #ffff00;
+  text-decoration: none;
+}
+
+body {
+  font-family: hack, hack;
+	font-size: 14px;
+
+  color: #cccccc;
+
+  margin: 0;
+  padding: 0;
+
+  text-shadow: 
+		0 0 5px #aaaaaa,
+		0 0 10px #aaaaaa;
+}
+
+code {
+  font-family: inherit;
+  background-color: #222;
+  border-radius: 5px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: inherit;
+  color: #ffffff;
+
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+h1::before {
+	content: "[ "
+}
+
+h1::after {
+	content: " ]"
+}
+
+h2::before {
+	content: "> "
+}
+
+h3::before {
+	content: ">> "
+}
+
+h4::before {
+	content: ">>> "
+}
+
+h5::before {
+	content: ">>>> "
+}
+
+h6::before {
+	content: ">>>>> "
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+pre {
+  background-color: #222;
+  font-family: inherit;
+
+  border-radius: 5px;
+  padding: 1em;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.container {
+  background-color: #111;
+
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  background-color: #000;
+
+  flex: 1;
+  padding: 1rem;
+}
+
+.copyright {
+	font-size: 12px;
+}
+
+.sidebar {
+  width: 160px;
+  flex-shrink: 0;
+
+  align-self: flex-start;
+  position: sticky;
+  position: -webkit-sticky; /* Safari compat */
+  top: 0;
+
+  padding: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.sidebar a {
+  color: #cccccc;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar a:hover {
+  color: #ffff00;
+	font-weight: bold;
+}
+
