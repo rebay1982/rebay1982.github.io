@@ -4,7 +4,7 @@ a {
 }
 
 body {
-  font-family: hack, hack;
+  font-family: "Hack", "Fira Code", Consolas, "Courrier New", monospace;
 	font-size: 14px;
 
   color: #cccccc;

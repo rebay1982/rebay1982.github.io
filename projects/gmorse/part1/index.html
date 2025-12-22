@@ -30,27 +30,27 @@
 	<h1>GMorse Part 1 - Project Layout</h1>
 	<time datetime="2025-10-04T00:00:00&#43;00:00">October 4, 2025</time>
 
-  <p>If you made here, I&rsquo;m assuming you&rsquo;re at least intrigued about what it takes to implement a Morse code decoder. This is
+  <p>If you made here, I&rsquo;m assuming you&rsquo;re at least intrigued about what it takes to implement a morse code decoder. This is
 going to be a multi-part article. In this first part I&rsquo;ll be laying down the foundation of the project, identifying what
 makes up a functional decoder, and break down the project into different steps.</p>
-<h2 id="introduction-to-morse-code">Introduction to Morse code</h2>
-<p>So what <em>IS</em> Morse code? You&rsquo;ve probably at least heard the term before or maybe actually heard some in an old movie or
+<h2 id="introduction-to-morse-code">Introduction to morse code</h2>
+<p>So what <em>IS</em> morse code? You&rsquo;ve probably at least heard the term before or maybe actually heard some in an old movie or
 on Youtube. Morse code was invented by Samuel Morse in the first part of the 19th century when he co-developed an
 electric telegraph system with Josepth Henry and Alfred Vail. The &ldquo;on&rdquo;/&ldquo;off&rdquo; nature of the telegraph system&rsquo;s electrical
 signals made it obvious that establishing a code to transmit natural language over electric wire was necessary.
-Essentially, Morse code encodes all the letters of the alphabet (and some symbols) into sequences of short and long
+Essentially, morse code encodes all the letters of the alphabet (and some symbols) into sequences of short and long
 electrical pulses, seperated by varying lengths of silences. Conventionally, short pulses are referred to as &ldquo;dits&rdquo;
 while long pulses are referred to as &ldquo;dahs&rdquo;.</p>
 <p>In written form (and throughout these text files), &ldquo;dits&rdquo; are represented by &ldquo;.&rdquo; and &ldquo;dahs&rdquo; by &ldquo;-&rdquo;.</p>
 <h3 id="timing">Timing</h3>
-<p>When transmitting Morse code, timing is key. Long pulses (&ldquo;dahs&rdquo;) should be three times the length of short pulse
+<p>When transmitting morse code, timing is key. Long pulses (&ldquo;dahs&rdquo;) should be three times the length of short pulses
 (&ldquo;dits&rdquo;). Since letters are encoded using a combination of &ldquo;dits&rdquo; and &ldquo;dahs&rdquo;, the silence between the electrical pulses
 when transmitting a specific letter or symbol should be the length of a &ldquo;dit&rdquo;. Whole letter or symbol transmissions are
 separated by silences the length of three &ldquo;dits&rdquo; (or one &ldquo;dah&rdquo;). Finally, words are separated by a silence the length of
 seven &ldquo;dits&rdquo;.</p>
 <p>You probably guessed it by now, the absolute reference for all the timing is the length of a single &ldquo;dit&rdquo;. But&hellip; What
 should the length of a &ldquo;dit&rdquo; be? &ldquo;dit&rdquo; seems pretty arbitrary for a unit of meature of time.</p>
-<p>Enter &ldquo;WORDS PER MINUTE&rdquo;. Words per minute (WPM) dictate the speed at which Morse code is transmitted over a medium (be
+<p>Enter &ldquo;WORDS PER MINUTE&rdquo;. Words per minute (WPM) dictate the speed at which morse code is transmitted over a medium (be
 it a wire, radio frequency, etc). Obviously, the higher the words per minute, the faster the transmition, and
 subsequently the shorter the length of a &ldquo;dit&rdquo;. The WPM is computed from the number of times the word &ldquo;PARIS&rdquo; can be
 transmitted within a minute. The word &ldquo;PARIS&rdquo; contains 50 &ldquo;dits&rdquo; lengths.</p>
@@ -70,21 +70,21 @@ Total = 50.
 of a &ldquo;dit&rdquo; for a given number of words per minute simply becomes 60 / (50 * wpm).</p>
 <p>So, to give an example, at 15 wpm, the timing of a transmission would result in a single &ldquo;dit&rdquo; being ~80 milliseconds.</p>
 <h3 id="tone-frequency">Tone Frequency</h3>
-<p>Morse code is nothing more than a series of pulses and silences. I don&rsquo;t know about you, but I cannot hear electrical
-pulses, and I cannot see radio frequencies either. When transmitted for human interpretation, Morse is transformed into
+<p>morse code is nothing more than a series of pulses and silences. I don&rsquo;t know about you, but I cannot hear electrical
+pulses, and I cannot see radio frequencies either. When transmitted for human interpretation, morse is transformed into
 a single audible tone that is usually set to 700Hz, but can be anywhere between 500Hz and 900Hz. This &ldquo;tone&rdquo; is actually
-a sine wave at a specifically selected frequency. Note that Morse is also refered to as &ldquo;Continuous Wave&rdquo; (CW for short)
-because of this.</p>
-<h2 id="wraping-up-morse-code">Wraping up Morse code</h2>
+a sine wave at a specifically selected frequency. Note that morse is also referred to as &ldquo;Continuous Wave&rdquo; (CW for
+short) because of this.</p>
+<h2 id="wraping-up-morse-code">Wraping up morse code</h2>
 <p>In a hurry? here&rsquo;s the TL;DR.</p>
 <p>Morse code is defined by a pulsating signal. Letters and symbols are encoded into a series of short (&ldquo;dit&rdquo;) and long
-(&ldquo;dah&rdquo;) pulses surrounded by silences. In the specific case of Morse code carried in an audio signal, the pulses are
+(&ldquo;dah&rdquo;) pulses surrounded by silences. In the specific case of morse code carried in an audio signal, the pulses are
 represented by a single audible tone (CW) between 500Hz and 900Hz.</p>
 <p>Timing is also a crucial part of the encoding and decoding process. The shortest pulse (&ldquo;dit&rdquo;) is used as a reference
 for all the other lengths of pulses and silences that compose the different encodings for character. The length of the
 short pulse is dictated by the transmission speed, described as words per minute (WPM) and can be calculated by dividing
 60 (seconds) by 50 * WPM (transmission speed).</p>
-<p>This information lays down the foundations for the requirements of the Morse decoder project. Next up is breaking down
+<p>This information lays down the foundations for the requirements of the morse decoder project. Next up is breaking down
 the problem into steps that can done independently and then assembled to make a whole.</p>
 <h2 id="breaking-down-the-problem">Breaking Down The Problem</h2>
 <p>Breaking down the problem into manageable pieces with clear milestones is crucial. At least for me. Anything too large
@@ -93,18 +93,18 @@ time figuring out a plan before I even start writing down some code. Part of the
 phase as well.</p>
 <p>Anyway, going over it again, I know I&rsquo;ll be working with a sampled analog signal, essentially &ldquo;digitized&rdquo;. This is a
 fact, simply because the radio is hooked up to my laptop through USB and appears as a USB audio device. Once audio is
-sampled, I need to figure out how to detect the Morse code tone in it. Morse is a continuous wave between 500Hz and
+sampled, I need to figure out how to detect the morse code tone in it. Morse is a continuous wave between 500Hz and
 900Hz, that&rsquo;s where the tone detection effort will be focused. After that, when tone is detected, I can then move
-forward to measure the length when the tone is present and when it&rsquo;s not. Based on the timed nature of Morse code, the
-next step will be building a Morse decoder to do the interpretation of the presence of the tone and silences to
+forward to measure the length when the tone is present and when it&rsquo;s not. Based on the timed nature of morse code, the
+next step will be building a morse decoder to do the interpretation of the presence of the tone and silences to
 determine what character was received.</p>
 <p>High level, this sounds pretty simple but did require a good math refresher for the tone detection part and creative
 uses of binary trees for the decoding part. Here&rsquo;s a rough schema of how everthing will be hooked up together.</p>
 <p><img src="/img/gmorse/pt1/morse_pt1_schema.png" alt=""></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>This concludes part 1. What I covered up until now is really just understanding what Morse code and Continuous
+<p>This concludes part 1. What I covered up until now is really just understanding what morse code and Continuous
 Wave (CW) are along with their specifications. I outlined of what needs to be done and put together in order to make a
-computer decode Morse code from an audio source. Every part of this article series will tackle each &ldquo;box&rdquo; in the project
+computer decode morse code from an audio source. Every part of this article series will tackle each &ldquo;box&rdquo; in the project
 schema presented above. I&rsquo;ll go over the research done and provide a link to the code on my Github that resulted in
 putting that piece of the puzzle together.</p>
 <p>Thanks again for reading! Hope to see you in part 2!</p>
